@@ -1,0 +1,97 @@
+:root {
+  /* Color Tokens from home_page.md */
+  --color-surface: #131313;
+  --color-surface-dim: #131313;
+  --color-surface-bright: #3a3939;
+  --color-surface-container-lowest: #0e0e0e;
+  --color-surface-container-low: #1c1b1b;
+  --color-surface-container: #201f1f;
+  --color-surface-container-high: #2a2a2a;
+  --color-surface-container-highest: #353534;
+  --color-surface-variant: #353534;
+  
+  --color-on-surface: #e5e2e1;
+  --color-on-surface-variant: #c4c9ac;
+  --color-inverse-surface: #e5e2e1;
+  --color-inverse-on-surface: #313030;
+  --color-outline: #8e9379;
+  --color-outline-variant: #444933;
+  --color-surface-tint: #abd600;
+  
+  --color-primary: #ffffff;
+  --color-on-primary: #283500;
+  --color-primary-container: #c3f400;
+  --color-on-primary-container: #556d00;
+  --color-inverse-primary: #506600;
+  
+  --color-secondary: #c6c6c7;
+  --color-on-secondary: #2f3131;
+  --color-secondary-container: #454747;
+  --color-on-secondary-container: #b4b5b5;
+  
+  --color-tertiary: #ffffff;
+  --color-on-tertiary: #2f3131;
+  --color-tertiary-container: #e3e2e2;
+  --color-on-tertiary-container: #646464;
+  
+  --color-error: #ffb4ab;
+  --color-on-error: #690005;
+  --color-error-container: #93000a;
+  --color-on-error-container: #ffdad6;
+  
+  --color-primary-fixed: #c3f400;
+  --color-primary-fixed-dim: #abd600;
+  --color-on-primary-fixed: #161e00;
+  --color-on-primary-fixed-variant: #3c4d00;
+  
+  --color-secondary-fixed: #e2e2e2;
+  --color-secondary-fixed-dim: #c6c6c7;
+  --color-on-secondary-fixed: #1a1c1c;
+  --color-on-secondary-fixed-variant: #454747;
+  
+  --color-tertiary-fixed: #e3e2e2;
+  --color-tertiary-fixed-dim: #c7c6c6;
+  --color-on-tertiary-fixed: #1a1c1c;
+  --color-on-tertiary-fixed-variant: #464747;
+  
+  --color-background: #131313;
+  --color-on-background: #e5e2e1;
+
+  /* 60-30-10 Athletic Dark Mode Rules from home_page.md */
+  --bg-base: #0D0D0D;
+  --surface-card: #141414;
+  --border-subtle: 1px solid #222222;
+  --border-color: #222222;
+  --accent-lime: #CCFF00;
+  --accent-lime-dim: #abd600;
+  --text-white: #FFFFFF;
+  --text-muted: #9E9E9E;
+  --text-on-lime: #000000;
+
+  /* Typography Fonts */
+  --font-display: 'Anybody', -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+  --font-body: 'Inter', -apple-system, sans-serif;
+
+  /* Corner Radius */
+  --radius-badge: 6px;
+  --radius-sm: 0.25rem;
+  --radius-default: 0.5rem;
+  --radius-btn: 8px;
+  --radius-md: 0.75rem;
+  --radius-card: 14px;
+  --radius-lg: 1rem;
+  --radius-xl: 1.5rem;
+  --radius-full: 9999px;
+
+  /* Spacing */
+  --space-unit: 4px;
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 48px;
+  --space-gutter: 16px;
+  --space-margin-mobile: 16px;
+  --space-margin-desktop: 32px;
+}

@@ -1,0 +1,313 @@
+<!DOCTYPE html><html class="dark" lang="en" style=""><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport">
+<title>Prizes - FPL KINO HUB</title>
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Anybody:ital,wght@0,100..900;1,100..900&amp;family=Inter:wght@400;600&amp;family=JetBrains+Mono:wght@400;600;700;800&amp;family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&amp;display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        "colors": {
+                "surface": "#0D0D0D",
+                "on-surface-variant": "#c4c9ac",
+                "secondary-container": "#454747",
+                "tertiary-fixed-dim": "#c7c6c6",
+                "inverse-surface": "#e5e2e1",
+                "on-surface": "#FFFFFF",
+                "primary-container": "#CCFF00",
+                "surface-dim": "#0D0D0D",
+                "on-tertiary-fixed-variant": "#464747",
+                "outline-variant": "#222222",
+                "on-secondary": "#2f3131",
+                "on-primary-container": "#000000",
+                "tertiary-fixed": "#e3e2e2",
+                "primary-fixed-dim": "#abd600",
+                "secondary": "#c6c6c7",
+                "on-secondary-fixed": "#1a1c1c",
+                "on-primary": "#0D0D0D",
+                "on-primary-fixed-variant": "#3c4d00",
+                "surface-container-lowest": "#0e0e0e",
+                "surface-container-high": "#2a2a2a",
+                "on-primary-fixed": "#161e00",
+                "inverse-primary": "#506600",
+                "surface-variant": "#141414",
+                "on-secondary-container": "#b4b5b5",
+                "on-error": "#690005",
+                "surface-container-highest": "#353534",
+                "error-container": "#93000a",
+                "surface-bright": "#3a3939",
+                "primary-fixed": "#CCFF00",
+                "secondary-fixed-dim": "#c6c6c7",
+                "on-secondary-fixed-variant": "#454747",
+                "surface-container": "#141414",
+                "inverse-on-surface": "#313030",
+                "primary": "#CCFF00",
+                "surface-container-low": "#1c1b1b",
+                "on-error-container": "#ffdad6",
+                "secondary-fixed": "#e2e2e2",
+                "on-tertiary-fixed": "#1a1c1c",
+                "background": "#0D0D0D",
+                "tertiary": "#ffffff",
+                "tertiary-container": "#e3e2e2",
+                "on-tertiary": "#2f3131",
+                "outline": "#222222",
+                "on-tertiary-container": "#646464",
+                "on-background": "#e5e2e1",
+                "error": "#ffb4ab",
+                "surface-tint": "#abd600",
+                "text-dim": "#9E9E9E",
+                "surface-border": "#222222",
+                "surface-muted": "#1a1a1a",
+                "kino-bg": "#0D0D0D",
+                "kino-surface": "#141414",
+                "kino-border": "#222222",
+                "kino-subtitle": "#9E9E9E"
+        },
+        "borderRadius": {
+                "DEFAULT": "8px",
+                "lg": "14px",
+                "xl": "20px",
+                "full": "9999px",
+                "md": "8px",
+                "sm": "6px"
+        },
+        "spacing": {
+                "md": "16px",
+                "xl": "48px",
+                "gutter": "16px",
+                "margin-mobile": "16px",
+                "sm": "8px",
+                "unit": "4px",
+                "margin-desktop": "32px",
+                "lg": "24px",
+                "xs": "4px"
+        },
+        "fontFamily": {
+                "stat-value": [
+                        "JetBrains Mono"
+                ],
+                "body-md": [
+                        "Inter"
+                ],
+                "display-lg": [
+                        "Anybody"
+                ],
+                "headline-lg-mobile": [
+                        "Anybody"
+                ],
+                "label-caps": [
+                        "JetBrains Mono"
+                ],
+                "headline-lg": [
+                        "Anybody"
+                ],
+                "body-sm": [
+                        "Inter"
+                ],
+                "display": ["Anybody", "sans-serif"],
+                "body": ["Inter", "sans-serif"],
+                "mono": ["JetBrains Mono", "monospace"],
+        },
+        "fontSize": {
+                "stat-value": [
+                        "24px",
+                        {
+                                "lineHeight": "1",
+                                "letterSpacing": "0.08em",
+                                "fontWeight": "700"
+                        }
+                ],
+                "body-md": [
+                        "16px",
+                        {
+                                "lineHeight": "1.6",
+                                "fontWeight": "400"
+                        }
+                ],
+                "display-lg": [
+                        "48px",
+                        {
+                                "lineHeight": "1.1",
+                                "letterSpacing": "-0.02em",
+                                "fontWeight": "900"
+                        }
+                ],
+                "headline-lg-mobile": [
+                        "24px",
+                        {
+                                "lineHeight": "1.2",
+                                "fontWeight": "800"
+                        }
+                ],
+                "label-caps": [
+                        "11px",
+                        {
+                                "lineHeight": "1",
+                                "letterSpacing": "0.08em",
+                                "fontWeight": "700"
+                        }
+                ],
+                "headline-lg": [
+                        "32px",
+                        {
+                                "lineHeight": "1.2",
+                                "fontWeight": "800"
+                        }
+                ],
+                "body-sm": [
+                        "14px",
+                        {
+                                "lineHeight": "1.5",
+                                "fontWeight": "400"
+                        }
+                ]
+        }
+},
+    },
+  }
+</script>
+<style>
+        @layer base { 
+            body { 
+                @apply bg-surface text-on-surface font-body-md; 
+                -webkit-tap-highlight-color: transparent; 
+                overscroll-behavior-y: contain; 
+            } 
+            .pb-safe { padding-bottom: env(safe-area-inset-bottom, 0px); } 
+            .pt-safe { padding-top: env(safe-area-inset-top, 0px); } 
+        } 
+        ::-webkit-scrollbar { display: none; }
+        
+        h1, h2, h3, h4, .font-display {
+            font-family: 'Anybody', sans-serif;
+            text-transform: uppercase;
+        }
+        .neon-glow {
+            text-shadow: 0 0 10px rgba(204, 255, 0, 0.4);
+        }
+        .sidebar-item-active {
+            background-color: #ccff00;
+            color: #000;
+        }
+    </style>
+</head>
+<body class="flex h-screen overflow-hidden bg-surface">
+<aside class="hidden md:flex flex-col w-64 h-full bg-surface-container border-r border-surface-border flex-shrink-0 z-50">
+<div class="px-6 py-8 flex items-center gap-2">
+<span class="font-display-lg italic text-2xl text-on-surface tracking-tighter uppercase"><b>FPL KINO <span class="text-primary">HUB</span></b></span>
+</div>
+<nav class="flex-1 flex flex-col gap-2 px-4 overflow-y-auto">
+<a class="flex items-center gap-4 px-4 py-3 rounded-md text-text-dim hover:text-on-surface hover:bg-surface-muted font-label-caps text-label-caps uppercase transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">home</span>
+            HOME
+        </a>
+<a class="flex items-center gap-4 px-4 py-3 rounded-md text-text-dim hover:text-on-surface hover:bg-surface-muted font-label-caps text-label-caps uppercase transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">leaderboard</span>
+            FPL KINO LEAGUE
+        </a>
+<a class="flex items-center gap-4 px-4 py-3 rounded-md text-text-dim hover:text-on-surface hover:bg-surface-muted font-label-caps text-label-caps uppercase transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">emoji_events</span>
+            FPL KINO CUP
+        </a>
+<a class="flex items-center gap-4 px-4 py-3 rounded-md bg-primary text-on-primary font-label-caps text-label-caps uppercase transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">card_giftcard</span>
+            PRIZE POOL
+        </a>
+<a class="flex items-center gap-4 px-4 py-3 rounded-md text-text-dim hover:text-on-surface hover:bg-surface-muted font-label-caps text-label-caps uppercase transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">star</span>
+            HALL OF FAME
+        </a>
+<a class="flex items-center gap-4 px-4 py-3 rounded-md text-text-dim hover:text-on-surface hover:bg-surface-muted font-label-caps text-label-caps uppercase transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">mail</span>
+            NEWSLETTER
+        </a>
+</nav>
+<div class="p-4 mt-auto border-t border-surface-border">
+</div>
+</aside>
+<div class="flex flex-col flex-1 h-full relative overflow-y-auto bg-surface">
+<header class="md:hidden fixed top-0 w-full z-50 bg-surface/90 backdrop-blur-xl pt-safe border-b border-surface-border">
+<div class="h-16 px-margin-mobile flex items-center justify-between">
+<div class="flex items-center gap-2"><span class="font-display-lg italic text-xl text-on-surface tracking-tighter uppercase">FPL KINO <span class="text-primary">HUB</span></span></div>
+<button class="text-on-surface"><span class="material-symbols-outlined text-[24px]">menu</span></button>
+</div>
+</header>
+<main class="flex flex-col relative w-full md:pb-8 bg-surface flex-grow md:pt-0 pt-[84px]">
+<div class="flex flex-col w-full h-full relative bg-surface">
+<div class="px-margin-mobile md:px-margin-desktop py-lg md:py-xl max-w-7xl mx-auto w-full flex-grow flex flex-col gap-lg md:gap-xl z-10">
+<!-- Header Section -->
+<section class="flex flex-col gap-sm md:gap-md relative w-full border border-surface-border bg-surface-container rounded-lg overflow-hidden p-6 md:p-10">
+<div class="absolute -right-10 -bottom-10 opacity-5 pointer-events-none">
+<span class="material-symbols-outlined text-[200px] text-primary">sports_soccer</span>
+</div>
+<div class="flex flex-col gap-xs z-10">
+<p class="font-label-caps text-label-caps text-primary tracking-[0.2em] uppercase">REWARDS &amp; PRIZES</p>
+<h1 class="font-display-lg italic text-3xl md:text-display-lg text-on-surface font-extrabold leading-[0.9] uppercase whitespace-nowrap">PRIZE POOL</h1>
+<div class="flex items-center gap-2 font-label-caps text-label-caps text-text-dim tracking-[0.15em] uppercase mt-2">
+<span class="">PLAY</span>
+<span class="text-primary">•</span>
+<span class="">COMPETE</span>
+<span class="text-primary">•</span>
+<span class="">CONNECT</span>
+</div>
+</div>
+</section>
+<section class="mb-10 p-6 bg-kino-surface border border-kino-border rounded-[14px] relative overflow-hidden">
+<div class="relative z-10">
+<p class="text-[10px] font-bold font-mono text-kino-subtitle uppercase tracking-[0.2em] mb-1">TOTAL PRIZE POOL</p>
+<div class="flex items-baseline gap-3">
+<h3 class="text-4xl lg:text-6xl font-mono font-bold text-primary uppercase neon-glow tracking-tighter">PRIZE TBA</h3>
+<span class="material-symbols-outlined text-primary opacity-50">payments</span>
+</div>
+<p class="text-[10px] font-bold font-mono text-kino-subtitle uppercase tracking-widest mt-2">TOTAL REWARDS AVAILABLE FOR FPL KINO 2026/27</p>
+</div>
+<div class="absolute -right-8 -bottom-8 opacity-5">
+<span class="material-symbols-outlined text-[200px] text-primary">payments</span>
+</div>
+</section>
+<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+<section class="xl:col-span-2 space-y-6">
+<div class="bg-kino-surface border border-kino-border rounded-[14px] p-6 relative overflow-hidden group">
+<div class="absolute -right-4 -bottom-4 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-[180px] text-primary">emoji_events</span>
+</div>
+<div class="flex justify-between items-start mb-8">
+<div>
+<h3 class="text-2xl font-display font-extrabold italic uppercase text-white">OVERALL SEASON CHAMPIONS</h3>
+<p class="text-kino-subtitle font-mono text-[10px] mt-1 uppercase font-bold tracking-widest">Grand Champions of the Season</p>
+</div>
+<span class="px-3 py-1 bg-primary text-black rounded-[6px] font-mono text-[10px] font-bold uppercase tracking-tighter">FULL SEASON</span>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-4 relative z-10"><div class="order-2 sm:order-1 flex flex-col items-center justify-end pt-8"><div class="w-full bg-kino-bg p-4 border border-kino-border rounded-[14px] text-center"><span class="material-symbols-outlined text-kino-subtitle mb-2">military_tech</span><p class="font-mono font-bold text-[10px] text-kino-subtitle uppercase">2ND PLACE</p><p class="text-primary font-mono font-bold text-xl uppercase mt-1">PRIZE TBA</p></div></div><div class="order-1 sm:order-2 flex flex-col items-center justify-end"><div class="w-full bg-primary/10 border border-primary p-6 rounded-[14px] text-center"><span class="material-symbols-outlined text-primary text-4xl mb-2">workspace_premium</span><p class="font-mono font-bold text-[12px] text-white uppercase">1ST PLACE</p><p class="text-primary font-mono font-bold text-3xl uppercase neon-glow mt-2">PRIZE TBA</p></div></div><div class="order-3 sm:order-3 flex flex-col items-center justify-end pt-12"><div class="w-full bg-kino-bg p-4 border border-kino-border rounded-[14px] text-center"><span class="material-symbols-outlined text-kino-subtitle mb-2">military_tech</span><p class="font-mono font-bold text-[10px] text-kino-subtitle uppercase">3RD PLACE</p><p class="text-primary font-mono font-bold text-xl uppercase mt-1">PRIZE TBA</p></div></div></div>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+<div class="bg-kino-surface border border-kino-border rounded-[14px] p-6"><div class="flex items-center gap-3 mb-1"><span class="material-symbols-outlined text-primary">analytics</span><h4 class="font-display font-extrabold italic uppercase text-lg text-white">HALF SEASON CHAMPIONS</h4></div><p class="text-[10px] font-bold font-mono text-kino-subtitle uppercase tracking-widest mb-4">WINNERS (GW1 — GW18)</p><div class="space-y-3"><div class="flex justify-between items-center py-2 border-b border-kino-border"><span class="text-[10px] font-bold font-mono uppercase tracking-wider text-white">1ST PLACE</span><span class="font-mono font-bold uppercase text-primary">PRIZE TBA</span></div><div class="flex justify-between items-center py-2 border-b border-kino-border"><span class="text-[10px] font-bold font-mono uppercase tracking-wider text-kino-subtitle">2ND PLACE</span><span class="font-mono font-bold uppercase text-primary">PRIZE TBA</span></div><div class="flex justify-between items-center py-2"><span class="text-[10px] font-bold font-mono uppercase tracking-wider text-kino-subtitle">3RD PLACE</span><span class="font-mono font-bold uppercase text-primary">PRIZE TBA</span></div></div></div>
+<div class="bg-kino-surface border border-kino-border rounded-[14px] p-6"><div class="flex items-center gap-3 mb-4"><span class="material-symbols-outlined text-primary">sports_kabaddi</span><h4 class="font-display font-extrabold italic uppercase text-lg text-white">FPL KINO CUP</h4></div><div class="space-y-3"><div class="flex justify-between items-center py-2 border-b border-kino-border"><span class="text-[10px] font-bold font-mono uppercase tracking-wider text-white">🥇 CHAMPION</span><span class="font-mono font-bold uppercase text-primary">PRIZE TBA</span></div><div class="flex justify-between items-center py-2"><span class="text-[10px] font-bold font-mono uppercase tracking-wider text-kino-subtitle">🥈 RUNNER UP</span><span class="font-mono font-bold uppercase text-primary">PRIZE TBA</span></div></div></div>
+</div>
+</section>
+<section class="space-y-6">
+<div class="bg-kino-surface border border-kino-border rounded-[14px] p-6"><div class="flex items-center justify-between mb-6"><h4 class="font-display font-extrabold italic uppercase text-xl text-white">MANAGER OF THE <span class="text-primary">MONTH</span></h4><span class="material-symbols-outlined text-primary">calendar_month</span></div><div class="space-y-4"><div class="p-4 bg-kino-bg border border-kino-border rounded-[14px]"><p class="text-[10px] font-bold font-mono text-kino-subtitle uppercase tracking-widest mb-1">9 MONTHS 9 WINNERS</p><div class="flex justify-between items-end"><span class="font-mono font-bold text-white text-xs uppercase">1ST PLACE</span><span class="font-mono font-bold uppercase text-primary text-lg">Rp 50.000</span></div></div></div></div>
+<div class="bg-kino-surface border border-kino-border rounded-[14px] p-6"><div class="flex items-center justify-between mb-6"><h4 class="font-display font-extrabold italic uppercase text-xl text-white">MANAGER OF THE <span class="text-primary">WEEK</span></h4><span class="material-symbols-outlined text-primary">timer</span></div><div class="space-y-4"><div class="p-4 bg-kino-bg border border-kino-border rounded-[14px]"><p class="text-[10px] font-bold font-mono text-kino-subtitle uppercase tracking-widest mb-1">38 WEEKS 38 WINNERS</p><div class="flex justify-between items-end"><span class="font-mono font-bold text-white text-xs uppercase">1ST PLACE</span><span class="font-mono font-bold uppercase text-primary text-lg">FREE JAVALATTE</span></div></div><div class="mt-6"><div class="flex justify-between items-end mb-2"><span class="text-[10px] font-bold font-mono uppercase tracking-widest text-kino-subtitle">Season Progress</span><span class="text-[10px] font-bold font-mono uppercase tracking-widest text-primary">GW 2 / 38</span></div><div class="h-1 w-full bg-kino-bg rounded-full overflow-hidden border border-kino-border"><div class="h-full bg-primary" style="width: 5.2%"></div></div></div></div></div>
+</section>
+</div>
+<footer class="mt-12 border-t border-kino-border pt-8">
+<div class="flex flex-col md:flex-row justify-between gap-6">
+<div class="max-w-md">
+<h5 class="font-display font-extrabold italic uppercase mb-2 text-white">TERMS &amp; CONDITIONS</h5>
+<p class="text-[10px] font-mono text-kino-subtitle leading-relaxed uppercase font-bold tracking-tight">
+                            All results and prize calculations follow the official FPL data and scoring system. Competition decisions are final and binding.
+                        </p>
+</div>
+</div>
+</footer>
+</div>
+</div>
+</main>
+</div>
+
+
+</body></html>
