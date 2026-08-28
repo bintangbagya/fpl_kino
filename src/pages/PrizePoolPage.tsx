@@ -97,6 +97,18 @@ export const PrizePoolPage: React.FC = () => {
           zIndex: 1,
         }}
       >
+        {/* Top accent bar */}
+        <div
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            height: '3px',
+            background: 'linear-gradient(90deg, #CCFF00 0%, #00FF88 100%)',
+          }}
+        />
+
         <span
           className="material-symbols-outlined"
           style={{
@@ -170,6 +182,18 @@ export const PrizePoolPage: React.FC = () => {
           zIndex: 1,
         }}
       >
+        {/* Top accent bar */}
+        <div
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            height: '2px',
+            background: 'linear-gradient(90deg, #CCFF00 0%, #00FF88 100%)',
+            opacity: 0.8,
+          }}
+        />
         <div style={{ position: 'relative', zIndex: 10 }}>
           <p
             className="font-label-caps"

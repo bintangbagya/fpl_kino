@@ -36,26 +36,41 @@ export const HallOfFamePage: React.FC = () => {
       position: relative;
       overflow: hidden;
       display: flex;
-      flex-direction: column;
+      flexDirection: column;
       height: 100%;
-      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: all 0.25s ease;
+    }
+    .winner-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background-color: #CCFF00;
+      opacity: 0.5;
     }
     .winner-card:hover {
-      border-color: #CCFF00;
+      border-color: rgba(204, 255, 0, 0.4);
       transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
     }
     .winner-card .trophy-icon {
-      color: #222222;
+      color: #333333;
       transition: color 0.2s ease;
     }
     .winner-card:hover .trophy-icon {
       color: #CCFF00;
     }
     .winner-card.latest-winner {
-      border-color: #333333;
+      border-color: rgba(204, 255, 0, 0.3);
+    }
+    .winner-card.latest-winner::before {
+      background: linear-gradient(90deg, #CCFF00 0%, #00FF88 100%);
+      opacity: 1;
     }
     .winner-card.latest-winner:hover {
-      border-color: #CCFF00;
+      border-color: rgba(204, 255, 0, 0.6);
     }
     .winner-card.latest-winner .trophy-icon {
       color: #CCFF00;
@@ -69,9 +84,11 @@ export const HallOfFamePage: React.FC = () => {
       padding: 48px 24px;
       min-height: 256px;
       background-color: #141414;
-      border: 1px dashed #222222;
+      border: 1px solid #222222;
       border-radius: 14px;
       text-align: center;
+      position: relative;
+      overflow: hidden;
     }
 
     @media (max-width: 640px) {
@@ -132,6 +149,17 @@ export const HallOfFamePage: React.FC = () => {
           zIndex: 1,
         }}
       >
+        {/* Top accent bar */}
+        <div
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            height: '3px',
+            background: 'linear-gradient(90deg, #CCFF00 0%, #00FF88 100%)',
+          }}
+        />
         <span
           className="material-symbols-outlined"
           style={{

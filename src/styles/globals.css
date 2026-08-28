@@ -98,16 +98,30 @@ html, body {
   text-transform: uppercase;
 }
 
-/* Athletic Cards */
+/* Athletic & Newsletter Cards */
 .card-surface {
   background-color: var(--surface-card);
   border: var(--border-subtle);
   border-radius: var(--radius-card);
-  transition: border-color 0.2s ease, transform 0.2s ease;
+  transition: border-color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
+  position: relative;
+  overflow: hidden;
 }
 
 .card-surface:hover {
-  border-color: #333333;
+  border-color: rgba(204, 255, 0, 0.4);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+}
+
+.card-accent-top {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #CCFF00 0%, #00FF88 100%);
+  opacity: 0.8;
 }
 
 /* Buttons */
@@ -314,4 +328,8 @@ html, body {
   background-color: rgba(255, 255, 255, 0.03) !important;
 }
 
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
 

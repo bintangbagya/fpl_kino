@@ -7,6 +7,8 @@ interface StandingsTableProps {
 }
 
 export const StandingsTable: React.FC<StandingsTableProps> = ({ standings, onViewFull }) => {
+  const currentGw = standings[0]?.gwNumber;
+
   return (
     <div
       style={{
@@ -17,8 +19,23 @@ export const StandingsTable: React.FC<StandingsTableProps> = ({ standings, onVie
         display: 'flex',
         flexDirection: 'column',
         border: '1px solid #222222',
+        position: 'relative',
+        overflow: 'hidden',
       }}
     >
+      {/* Top accent bar */}
+      <div
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          height: '2px',
+          background: 'linear-gradient(90deg, #CCFF00 0%, #00FF88 100%)',
+          opacity: 0.8,
+        }}
+      />
+
       {/* Table Header */}
       <div
         style={{
@@ -30,30 +47,51 @@ export const StandingsTable: React.FC<StandingsTableProps> = ({ standings, onVie
           borderBottom: '1px solid #222222',
         }}
       >
-        <h2
-          className="font-headline-lg-mobile"
-          style={{
-            color: '#FFFFFF',
-            fontSize: '24px',
-            textTransform: 'uppercase',
-            letterSpacing: '-0.02em',
-            fontStyle: 'italic',
-            margin: 0,
-          }}
-        >
-          League Standings
-        </h2>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <h2
+            className="font-headline-lg"
+            style={{
+              color: '#FFFFFF',
+              fontSize: '22px',
+              textTransform: 'uppercase',
+              letterSpacing: '-0.02em',
+              fontStyle: 'italic',
+              margin: 0,
+            }}
+          >
+            League Standings
+          </h2>
+          {currentGw != null && (
+            <span
+              className="font-label-caps"
+              style={{
+                backgroundColor: 'rgba(204, 255, 0, 0.08)',
+                color: '#CCFF00',
+                border: '1px solid rgba(204, 255, 0, 0.25)',
+                fontSize: '10px',
+                fontWeight: 800,
+                letterSpacing: '0.1em',
+                padding: '3px 8px',
+                borderRadius: '6px',
+                textTransform: 'uppercase',
+              }}
+            >
+              GW{currentGw}
+            </span>
+          )}
+        </div>
         <button
           onClick={onViewFull}
           className="font-label-caps"
           style={{
             backgroundColor: '#CCFF00',
             color: '#000000',
-            fontWeight: 700,
+            fontWeight: 800,
             textTransform: 'uppercase',
             fontSize: '10px',
-            padding: '4px 8px',
-            borderRadius: '8px',
+            letterSpacing: '0.08em',
+            padding: '5px 10px',
+            borderRadius: '6px',
             border: 'none',
             cursor: 'pointer',
             display: 'flex',
@@ -62,7 +100,7 @@ export const StandingsTable: React.FC<StandingsTableProps> = ({ standings, onVie
             transition: 'background-color 0.2s ease',
           }}
         >
-          VIEW FULL
+          VIEW FULL ➔
         </button>
       </div>
 

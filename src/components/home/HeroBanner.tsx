@@ -7,16 +7,29 @@ export const HeroBanner: React.FC = () => {
         position: 'relative',
         width: '100%',
         height: '300px',
-        borderRadius: '14px',
+        borderRadius: '16px',
         overflow: 'hidden',
         display: 'flex',
         alignItems: 'center',
         padding: '32px 48px',
         backgroundColor: '#141414',
         border: '1px solid #222222',
-        boxShadow: '0 0 20px rgba(204,255,0,0.1)',
+        boxShadow: '0 0 24px rgba(204,255,0,0.08)',
       }}
     >
+      {/* Top accent bar */}
+      <div
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          height: '3px',
+          background: 'linear-gradient(90deg, #CCFF00 0%, #00FF88 100%)',
+          zIndex: 10,
+        }}
+      />
+
       {/* Gradient Overlay */}
       <div
         style={{

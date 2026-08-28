@@ -22,6 +22,8 @@ const StatCard: React.FC<StatCardProps> = ({ title, iconName, items }) => {
         borderRadius: '14px',
         padding: '16px',
         border: '1px solid #222222',
+        position: 'relative',
+        overflow: 'hidden',
         display: 'flex',
         flexDirection: 'column',
         gap: '14px',
@@ -30,6 +32,18 @@ const StatCard: React.FC<StatCardProps> = ({ title, iconName, items }) => {
         boxSizing: 'border-box',
       }}
     >
+      {/* Top accent bar */}
+      <div
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          height: '2px',
+          backgroundColor: '#CCFF00',
+          opacity: 0.5,
+        }}
+      />
       {/* Title Header */}
       <h3
         className="font-headline-lg"

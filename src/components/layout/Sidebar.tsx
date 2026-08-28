@@ -103,17 +103,18 @@ export const Sidebar: React.FC<SidebarProps> = ({
                     alignItems: 'center',
                     padding: '10px 16px',
                     borderRadius: '8px',
-                    border: 'none',
-                    backgroundColor: isActive ? '#CCFF00' : 'transparent',
-                    color: isActive ? '#000000' : '#9E9E9E',
+                    border: isActive ? '1px solid rgba(204,255,0,0.3)' : '1px solid transparent',
+                    backgroundColor: isActive ? 'rgba(204,255,0,0.08)' : 'transparent',
+                    color: isActive ? '#CCFF00' : '#9E9E9E',
                     cursor: 'pointer',
                     transition: 'all 0.15s ease',
                     textAlign: 'left',
                     width: '100%',
+                    position: 'relative',
                   }}
                   onMouseEnter={(e) => {
                     if (!isActive) {
-                      e.currentTarget.style.backgroundColor = '#222222';
+                      e.currentTarget.style.backgroundColor = '#1C1C1C';
                       e.currentTarget.style.color = '#FFFFFF';
                     }
                   }}
@@ -124,12 +125,25 @@ export const Sidebar: React.FC<SidebarProps> = ({
                     }
                   }}
                 >
+                  {isActive && (
+                    <div
+                      style={{
+                        position: 'absolute',
+                        left: 0,
+                        top: '20%',
+                        bottom: '20%',
+                        width: '3px',
+                        backgroundColor: '#CCFF00',
+                        borderRadius: '0 4px 4px 0',
+                      }}
+                    />
+                  )}
                   <span
                     className="material-symbols-outlined"
                     style={{
                       marginRight: '16px',
                       fontSize: '22px',
-                      color: isActive ? '#000000' : '#9E9E9E',
+                      color: isActive ? '#CCFF00' : '#9E9E9E',
                     }}
                   >
                     {item.icon}
@@ -140,6 +154,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                       fontSize: '12px',
                       fontWeight: isActive ? 800 : 700,
                       textTransform: 'uppercase',
+                      letterSpacing: '0.08em',
                     }}
                   >
                     {item.label}
@@ -150,16 +165,29 @@ export const Sidebar: React.FC<SidebarProps> = ({
           </nav>
         </div>
 
-        {/* GW38 Status Live Box */}
+        {/* GW Status Live Box */}
         <div
           style={{
             padding: '16px',
             backgroundColor: '#141414',
             margin: '16px',
             borderRadius: '14px',
-            border: '1px solid #222222',
+            border: '1px solid rgba(204,255,0,0.2)',
+            position: 'relative',
+            overflow: 'hidden',
           }}
         >
+          <div
+            style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              right: 0,
+              height: '2px',
+              backgroundColor: '#CCFF00',
+              opacity: 0.6,
+            }}
+          />
           <div
             className="font-label-caps"
             style={{
@@ -167,28 +195,30 @@ export const Sidebar: React.FC<SidebarProps> = ({
               color: '#9E9E9E',
               marginBottom: '4px',
               textTransform: 'uppercase',
+              letterSpacing: '0.1em',
             }}
           >
-            GW38 Status
+            GW STATUS
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <div
               style={{
-                width: '8px',
-                height: '8px',
+                width: '7px',
+                height: '7px',
                 borderRadius: '50%',
                 backgroundColor: '#CCFF00',
-                boxShadow: '0 0 8px rgba(204,255,0,0.5)',
+                boxShadow: '0 0 8px rgba(204,255,0,0.7)',
+                animation: 'pulse 1.5s ease-in-out infinite',
               }}
             />
             <span
               className="font-label-caps"
               style={{
                 fontSize: '12px',
-                fontWeight: 700,
-                color: '#FFFFFF',
+                fontWeight: 800,
+                color: '#CCFF00',
                 textTransform: 'uppercase',
-                letterSpacing: '0.08em',
+                letterSpacing: '0.12em',
               }}
             >
               LIVE NOW

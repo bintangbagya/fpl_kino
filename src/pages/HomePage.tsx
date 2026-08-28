@@ -3,20 +3,48 @@ import { HeroBanner } from '../components/home/HeroBanner';
 import { NextDeadlineWidget } from '../components/home/NextDeadlineWidget';
 import { StandingsTable } from '../components/home/StandingsTable';
 import { AnalyticsQuadGrid } from '../components/home/AnalyticsQuadGrid';
-import {
-  mockPreviousGwStats,
-  mockLeagueStandings,
-  mockMostSelected,
-  mockTopCaptains,
-  mockTransferIn,
-  mockTransferOut,
-} from '../data/dummyData';
+import { useHomePageData } from '../hooks/useHomePageData';
 
 interface HomePageProps {
   onNavigateToLeague: () => void;
 }
 
 export const HomePage: React.FC<HomePageProps> = ({ onNavigateToLeague }) => {
+  const {
+    previousGwStats,
+    nextGwNumber,
+    nextGwDeadline,
+    leagueStandings,
+    mostSelected,
+    topCaptains,
+    transferIn,
+    transferOut,
+    loading,
+    error,
+  } = useHomePageData();
+
+  if (error) {
+    return (
+      <div
+        style={{
+          padding: '48px 24px',
+          textAlign: 'center',
+          backgroundColor: '#141414',
+          borderRadius: '14px',
+          border: '1px solid #222222',
+        }}
+      >
+        <span className="material-symbols-outlined" style={{ fontSize: '48px', color: '#FF4444', marginBottom: '12px', display: 'block' }}>
+          error
+        </span>
+        <h2 className="font-headline-lg" style={{ color: '#FFFFFF', marginBottom: '8px' }}>
+          Failed to load data
+        </h2>
+        <p style={{ color: '#9E9E9E' }}>{error}</p>
+      </div>
+    );
+  }
+
   return (
     <div
       style={{
@@ -46,7 +74,11 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigateToLeague }) => {
           }}
           className="col-lg-4"
         >
-          <NextDeadlineWidget stats={mockPreviousGwStats} />
+          <NextDeadlineWidget
+            stats={previousGwStats}
+            gwNumber={nextGwNumber}
+            deadlineDate={nextGwDeadline}
+          />
         </div>
 
         {/* Right Column (8 cols on desktop): League Standings Table */}
@@ -56,17 +88,69 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigateToLeague }) => {
           }}
           className="col-lg-8"
         >
-          <StandingsTable standings={mockLeagueStandings} onViewFull={onNavigateToLeague} />
+          {loading ? (
+            <div
+              style={{
+                backgroundColor: '#141414',
+                borderRadius: '14px',
+                border: '1px solid #222222',
+                height: '300px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                flexDirection: 'column',
+                gap: '12px',
+              }}
+            >
+              <span
+                className="material-symbols-outlined"
+                style={{ fontSize: '32px', color: '#CCFF00', animation: 'spin 1s linear infinite' }}
+              >
+                autorenew
+              </span>
+              <span className="font-label-caps" style={{ color: '#9E9E9E', fontSize: '12px', letterSpacing: '0.1em' }}>
+                LOADING STANDINGS...
+              </span>
+            </div>
+          ) : (
+            <StandingsTable standings={leagueStandings} onViewFull={onNavigateToLeague} />
+          )}
         </div>
       </div>
 
       {/* 3. Bottom 4-Card Analytics Grid */}
-      <AnalyticsQuadGrid
-        mostSelected={mockMostSelected}
-        topCaptains={mockTopCaptains}
-        transferIn={mockTransferIn}
-        transferOut={mockTransferOut}
-      />
+      {loading ? (
+        <div
+          style={{
+            backgroundColor: '#141414',
+            borderRadius: '14px',
+            border: '1px solid #222222',
+            height: '200px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            flexDirection: 'column',
+            gap: '12px',
+          }}
+        >
+          <span
+            className="material-symbols-outlined"
+            style={{ fontSize: '32px', color: '#CCFF00', animation: 'spin 1s linear infinite' }}
+          >
+            autorenew
+          </span>
+          <span className="font-label-caps" style={{ color: '#9E9E9E', fontSize: '12px', letterSpacing: '0.1em' }}>
+            LOADING ANALYTICS...
+          </span>
+        </div>
+      ) : (
+        <AnalyticsQuadGrid
+          mostSelected={mostSelected}
+          topCaptains={topCaptains}
+          transferIn={transferIn}
+          transferOut={transferOut}
+        />
+      )}
     </div>
   );
 };

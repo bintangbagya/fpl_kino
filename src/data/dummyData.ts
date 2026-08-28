@@ -4,6 +4,7 @@ export interface StandingRow {
   manager: string;
   gw: number;
   tot: number;
+  gwNumber?: number;
 }
 
 export interface PlayerRankItem {

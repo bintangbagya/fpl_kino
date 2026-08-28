@@ -3,19 +3,33 @@ import { PreviousGwStats } from '../../data/dummyData';
 
 interface NextDeadlineWidgetProps {
   stats: PreviousGwStats;
+  gwNumber?: number;
+  deadlineDate?: Date | null;
 }
 
-export const NextDeadlineWidget: React.FC<NextDeadlineWidgetProps> = ({ stats }) => {
-  const [days] = useState(2);
-  const [hours] = useState(14);
-  const [minutes, setMinutes] = useState(9);
+function computeCountdown(deadline: Date | null | undefined) {
+  if (!deadline) return { days: 0, hours: 0, minutes: 0 };
+  const diff = deadline.getTime() - Date.now();
+  if (diff <= 0) return { days: 0, hours: 0, minutes: 0 };
+  const totalMinutes = Math.floor(diff / 60000);
+  const days = Math.floor(totalMinutes / (60 * 24));
+  const hours = Math.floor((totalMinutes % (60 * 24)) / 60);
+  const minutes = totalMinutes % 60;
+  return { days, hours, minutes };
+}
+
+export const NextDeadlineWidget: React.FC<NextDeadlineWidgetProps> = ({ stats, gwNumber, deadlineDate }) => {
+  const [countdown, setCountdown] = useState(() => computeCountdown(deadlineDate));
 
   useEffect(() => {
+    setCountdown(computeCountdown(deadlineDate));
     const timer = setInterval(() => {
-      setMinutes((m) => (m > 0 ? m - 1 : 59));
+      setCountdown(computeCountdown(deadlineDate));
     }, 60000);
     return () => clearInterval(timer);
-  }, []);
+  }, [deadlineDate]);
+
+  const { days, hours, minutes } = countdown;
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '24px', height: '100%' }}>
@@ -37,6 +51,17 @@ export const NextDeadlineWidget: React.FC<NextDeadlineWidgetProps> = ({ stats })
       >
         <div
           style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            height: '2px',
+            background: 'linear-gradient(90deg, #CCFF00 0%, #00FF88 100%)',
+            opacity: 0.8,
+          }}
+        />
+        <div
+          style={{
             position: 'relative',
             zIndex: 10,
             width: '100%',
@@ -52,7 +77,7 @@ export const NextDeadlineWidget: React.FC<NextDeadlineWidgetProps> = ({ stats })
             <span
               className="font-headline-lg"
               style={{
-                fontSize: '20px',
+                fontSize: '18px',
                 color: '#9E9E9E',
                 textTransform: 'uppercase',
                 letterSpacing: '0.2em',
@@ -74,7 +99,7 @@ export const NextDeadlineWidget: React.FC<NextDeadlineWidgetProps> = ({ stats })
                 lineHeight: 1,
               }}
             >
-              GW2
+              GW{gwNumber ?? '?'}
             </span>
           </div>
 
@@ -194,12 +219,25 @@ export const NextDeadlineWidget: React.FC<NextDeadlineWidgetProps> = ({ stats })
           borderRadius: '14px',
           padding: '20px',
           border: '1px solid #222222',
+          position: 'relative',
+          overflow: 'hidden',
           flex: 1,
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'space-between',
         }}
       >
+        <div
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            height: '2px',
+            backgroundColor: '#CCFF00',
+            opacity: 0.5,
+          }}
+        />
         <div
           style={{
             display: 'flex',

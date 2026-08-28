@@ -1,16 +1,10 @@
-import React, { useState } from 'react';
-import { mockLeagueStandingsByGw } from '../data/dummyData';
+import React from 'react';
+import { useLeaguePageData } from '../hooks/useLeaguePageData';
 
 export const LeaguePage: React.FC = () => {
-  const [selectedGw, setSelectedGw] = useState<string>('GW6');
-  const [selectedMonth, setSelectedMonth] = useState<string>('All Months');
+  const { standings, availableGws, selectedGw, setSelectedGw, loading, error } = useLeaguePageData();
 
-  // Available options
-  const gameweeks = ['GW6', 'GW5', 'GW4'];
-  const months = ['All Months', 'August', 'September'];
 
-  // Filter standings based on selected filters (in this prototype, we change data by GW)
-  const standings = mockLeagueStandingsByGw[selectedGw] || [];
 
   return (
     <div
@@ -51,6 +45,18 @@ export const LeaguePage: React.FC = () => {
           zIndex: 1,
         }}
       >
+        {/* Top accent bar */}
+        <div
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            height: '3px',
+            background: 'linear-gradient(90deg, #CCFF00 0%, #00FF88 100%)',
+          }}
+        />
+
         {/* Background icon decoration */}
         <span
           className="material-symbols-outlined"
@@ -119,12 +125,12 @@ export const LeaguePage: React.FC = () => {
         style={{
           display: 'flex',
           gap: '16px',
-          maxWidth: '600px',
-          width: '100%',
+          alignItems: 'flex-end',
           zIndex: 1,
         }}
       >
-        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '6px' }}>
+        {/* GW Filter */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
           <label className="font-label-caps" style={{ color: '#9E9E9E', fontSize: '11px' }}>
             Filter by Gameweek
           </label>
@@ -138,18 +144,21 @@ export const LeaguePage: React.FC = () => {
               display: 'flex',
               justifyContent: 'space-between',
               alignItems: 'center',
+              gap: '24px',
               cursor: 'pointer',
+              minWidth: '160px',
             }}
           >
             <span className="font-body-md" style={{ color: '#FFFFFF', fontSize: '14px' }}>
-              {selectedGw}
+              {selectedGw !== null ? `GW${selectedGw}` : 'Loading...'}
             </span>
             <span className="material-symbols-outlined" style={{ color: '#9E9E9E', fontSize: '20px' }}>
               expand_more
             </span>
             <select
-              value={selectedGw}
-              onChange={(e) => setSelectedGw(e.target.value)}
+              value={selectedGw ?? ''}
+              onChange={(e) => setSelectedGw(Number(e.target.value))}
+              disabled={availableGws.length === 0}
               style={{
                 position: 'absolute',
                 inset: 0,
@@ -159,59 +168,46 @@ export const LeaguePage: React.FC = () => {
                 height: '100%',
               }}
             >
-              {gameweeks.map((gw) => (
+              {availableGws.map((gw) => (
                 <option key={gw} value={gw}>
-                  {gw}
+                  GW{gw}
                 </option>
               ))}
             </select>
           </div>
         </div>
 
-        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '6px' }}>
-          <label className="font-label-caps" style={{ color: '#9E9E9E', fontSize: '11px' }}>
-            Filter by Month
-          </label>
-          <div
-            style={{
-              position: 'relative',
-              border: '1px solid #222222',
-              backgroundColor: '#141414',
-              borderRadius: '8px',
-              padding: '10px 14px',
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              cursor: 'pointer',
-            }}
-          >
-            <span className="font-body-md" style={{ color: '#FFFFFF', fontSize: '14px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-              {selectedMonth}
-            </span>
-            <span className="material-symbols-outlined" style={{ color: '#9E9E9E', fontSize: '20px' }}>
-              expand_more
-            </span>
-            <select
-              value={selectedMonth}
-              onChange={(e) => setSelectedMonth(e.target.value)}
-              style={{
-                position: 'absolute',
-                inset: 0,
-                opacity: 0,
-                cursor: 'pointer',
-                width: '100%',
-                height: '100%',
-              }}
+        {/* Live indicator */}
+        {loading && (
+          <div style={{ display: 'flex', alignItems: 'center', gap: '6px', paddingBottom: '12px' }}>
+            <span
+              className="material-symbols-outlined"
+              style={{ fontSize: '16px', color: '#CCFF00', animation: 'spin 1s linear infinite' }}
             >
-              {months.map((m) => (
-                <option key={m} value={m}>
-                  {m}
-                </option>
-              ))}
-            </select>
+              autorenew
+            </span>
+            <span className="font-label-caps" style={{ fontSize: '10px', color: '#9E9E9E' }}>
+              LOADING...
+            </span>
           </div>
-        </div>
+        )}
       </section>
+
+      {/* Error state */}
+      {error && (
+        <div
+          style={{
+            backgroundColor: '#1a0000',
+            border: '1px solid #FF4444',
+            borderRadius: '8px',
+            padding: '12px 16px',
+            color: '#FF4444',
+            fontSize: '13px',
+          }}
+        >
+          {error}
+        </div>
+      )}
 
       {/* Standings Table Card */}
       <section
@@ -219,12 +215,26 @@ export const LeaguePage: React.FC = () => {
           border: '1px solid #222222',
           backgroundColor: '#141414',
           borderRadius: '14px',
+          position: 'relative',
           overflow: 'hidden',
           display: 'flex',
           flexDirection: 'column',
           zIndex: 1,
         }}
       >
+        {/* Top accent bar */}
+        <div
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            height: '2px',
+            background: 'linear-gradient(90deg, #CCFF00 0%, #00FF88 100%)',
+            opacity: 0.8,
+            zIndex: 10,
+          }}
+        />
         {/* Banner header: Qualify info */}
         <div
           style={{
@@ -294,6 +304,18 @@ export const LeaguePage: React.FC = () => {
             flexDirection: 'column',
           }}
         >
+          {!loading && standings.length === 0 && (
+            <div
+              style={{
+                padding: '48px 16px',
+                textAlign: 'center',
+                color: '#9E9E9E',
+                fontSize: '13px',
+              }}
+            >
+              Belum ada data untuk GW ini.
+            </div>
+          )}
           {standings.map((row) => {
             const isTop3 = row.pos <= 3;
             const isQualified = row.pos <= 16;
