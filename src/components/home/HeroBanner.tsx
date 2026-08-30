@@ -2,174 +2,123 @@ import React from 'react';
 
 export const HeroBanner: React.FC = () => {
   return (
-    <div
+    <section
       style={{
-        position: 'relative',
-        width: '100%',
-        height: '300px',
+        border: '1px solid rgba(204,255,0,0.3)',
+        background: 'linear-gradient(135deg, #1a1a1a 0%, #141414 60%, #0f1a00 100%)',
         borderRadius: '16px',
+        padding: '24px 28px',
+        position: 'relative',
         overflow: 'hidden',
         display: 'flex',
-        alignItems: 'center',
-        padding: '32px 48px',
-        backgroundColor: '#141414',
-        border: '1px solid #222222',
-        boxShadow: '0 0 24px rgba(204,255,0,0.08)',
+        flexDirection: 'column',
+        gap: '10px',
+        zIndex: 1,
+        boxShadow: '0 12px 32px rgba(204,255,0,0.08)',
+        boxSizing: 'border-box',
+        width: '100%',
       }}
     >
-      {/* Top accent bar */}
+      {/* Left accent bar */}
       <div
         style={{
           position: 'absolute',
           top: 0,
           left: 0,
-          right: 0,
-          height: '3px',
-          background: 'linear-gradient(90deg, #CCFF00 0%, #00FF88 100%)',
-          zIndex: 10,
+          width: '4px',
+          height: '100%',
+          background: 'linear-gradient(180deg, #CCFF00 0%, rgba(204,255,0,0.2) 100%)',
+          borderRadius: '16px 0 0 16px',
         }}
       />
 
-      {/* Gradient Overlay */}
+      {/* Decorative background ball */}
       <div
         style={{
           position: 'absolute',
-          inset: 0,
-          background: 'linear-gradient(to right, #131313, rgba(19, 19, 19, 0.6), transparent)',
-          zIndex: 1,
-        }}
-      />
-
-      {/* Hero Content */}
-      <div
-        style={{
-          position: 'relative',
-          zIndex: 10,
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '16px',
+          right: '-20px',
+          bottom: '-20px',
+          fontSize: '180px',
+          opacity: 0.04,
+          userSelect: 'none',
+          pointerEvents: 'none',
+          lineHeight: 1,
         }}
       >
-        <div style={{ display: 'flex', flexDirection: 'column' }}>
+        ⚽
+      </div>
+
+      <div style={{ position: 'relative', zIndex: 2, display: 'flex', flexDirection: 'column', gap: '8px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
           <span
-            className="font-label-caps"
             style={{
-              color: '#CCFF00',
-              fontWeight: 700,
-              letterSpacing: '0.3em',
-              marginBottom: '4px',
+              fontFamily: 'var(--font-mono)',
+              fontSize: '10px',
+              fontWeight: 800,
+              color: '#000000',
+              backgroundColor: '#CCFF00',
+              padding: '3px 8px',
+              borderRadius: '4px',
+              letterSpacing: '0.15em',
               textTransform: 'uppercase',
-              fontSize: '11px',
             }}
           >
-            UNOfficial LEAGUE
+            UNOFFICIAL LEAGUE
           </span>
-          <h1
-            className="font-display-lg"
-            style={{
-              color: '#FFFFFF',
-              fontSize: '48px',
-              textTransform: 'uppercase',
-              letterSpacing: '-0.02em',
-              lineHeight: 1,
-              fontStyle: 'italic',
-              margin: 0,
-            }}
-          >
-            FPL Kino Indonesia
-            <br />
-            <span style={{ color: '#CCFF00' }}>2026/27</span>
-          </h1>
         </div>
 
-        {/* Slogan */}
+        <h1
+          style={{
+            fontFamily: 'var(--font-headline)',
+            color: '#FFFFFF',
+            fontSize: 'clamp(24px, 4vw, 36px)',
+            fontWeight: 900,
+            textTransform: 'uppercase',
+            letterSpacing: '-0.02em',
+            lineHeight: 1,
+            margin: 0,
+          }}
+        >
+          FPL Kino Indonesia <span style={{ color: '#CCFF00' }}>2026/27</span>
+        </h1>
+
         <div
           style={{
             display: 'flex',
             alignItems: 'center',
             gap: '8px',
-            marginTop: '16px',
+            marginTop: '2px',
             flexWrap: 'wrap',
           }}
         >
-          <span
-            className="font-label-caps"
-            style={{
-              fontWeight: 900,
-              color: '#FFFFFF',
-              letterSpacing: '0.1em',
-              fontSize: '16px',
-            }}
-          >
-            PLAY
-          </span>
-          <span
-            style={{
-              width: '6px',
-              height: '6px',
-              borderRadius: '50%',
-              backgroundColor: '#CCFF00',
-            }}
-          />
-          <span
-            className="font-label-caps"
-            style={{
-              fontWeight: 900,
-              color: '#FFFFFF',
-              letterSpacing: '0.1em',
-              fontSize: '16px',
-            }}
-          >
-            COMPETE
-          </span>
-          <span
-            style={{
-              width: '6px',
-              height: '6px',
-              borderRadius: '50%',
-              backgroundColor: '#CCFF00',
-            }}
-          />
-          <span
-            className="font-label-caps"
-            style={{
-              fontWeight: 900,
-              color: '#FFFFFF',
-              letterSpacing: '0.1em',
-              fontSize: '16px',
-            }}
-          >
-            CONNECT
-          </span>
+          {['PLAY', 'COMPETE', 'CONNECT'].map((word, idx) => (
+            <React.Fragment key={word}>
+              {idx > 0 && (
+                <div
+                  style={{
+                    width: '4px',
+                    height: '4px',
+                    borderRadius: '50%',
+                    backgroundColor: '#CCFF00',
+                  }}
+                />
+              )}
+              <span
+                style={{
+                  fontFamily: 'var(--font-mono)',
+                  fontWeight: 800,
+                  color: '#9E9E9E',
+                  letterSpacing: '0.12em',
+                  fontSize: '11px',
+                  textTransform: 'uppercase',
+                }}
+              >
+                {word}
+              </span>
+            </React.Fragment>
+          ))}
         </div>
       </div>
-
-      {/* Right Watermark */}
-      <div
-        style={{
-          position: 'absolute',
-          right: 0,
-          top: 0,
-          height: '100%',
-          width: '50%',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          opacity: 0.18,
-          pointerEvents: 'none',
-          zIndex: 0,
-        }}
-      >
-        <span
-          className="material-symbols-outlined"
-          style={{
-            fontSize: '240px',
-            color: '#CCFF00',
-          }}
-        >
-          sports_soccer
-        </span>
-      </div>
-    </div>
+    </section>
   );
 };

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { LanguageProvider } from './context/LanguageContext';
 import { Sidebar } from './components/layout/Sidebar';
 import { TopHeader } from './components/layout/TopHeader';
 import { HomePage } from './pages/HomePage';
@@ -14,14 +15,15 @@ export const App: React.FC = () => {
   const [activeTab, setActiveTab] = useState('home');
 
   return (
-    <div
-      style={{
-        minHeight: '100vh',
-        backgroundColor: 'var(--bg-base)',
-        display: 'flex',
-        flexDirection: 'column',
-      }}
-    >
+    <LanguageProvider>
+      <div
+        style={{
+          minHeight: '100vh',
+          backgroundColor: 'var(--bg-base)',
+          display: 'flex',
+          flexDirection: 'column',
+        }}
+      >
       {/* Sidebar Navigation */}
       <Sidebar
         isOpen={sidebarOpen}
@@ -46,6 +48,7 @@ export const App: React.FC = () => {
 
         {/* Page Body Container */}
         <main
+          className="app-main-content"
           style={{
             padding: '24px',
             maxWidth: '1440px',
@@ -54,7 +57,12 @@ export const App: React.FC = () => {
             boxSizing: 'border-box',
           }}
         >
-          {activeTab === 'home' && <HomePage onNavigateToLeague={() => setActiveTab('league')} />}
+          {activeTab === 'home' && (
+            <HomePage
+              onNavigateToLeague={() => setActiveTab('league')}
+              onNavigateToNewsletter={() => setActiveTab('newsletter')}
+            />
+          )}
           {activeTab === 'league' && <LeaguePage />}
           {activeTab === 'cup' && <CupPage />}
           {activeTab === 'prizes' && <PrizePoolPage />}
@@ -84,6 +92,7 @@ export const App: React.FC = () => {
         </main>
       </div>
     </div>
+    </LanguageProvider>
   );
 };
 

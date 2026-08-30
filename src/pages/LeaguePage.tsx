@@ -1,10 +1,26 @@
 import React from 'react';
 import { useLeaguePageData } from '../hooks/useLeaguePageData';
+import { useLanguage } from '../context/LanguageContext';
 
 export const LeaguePage: React.FC = () => {
-  const { standings, availableGws, selectedGw, setSelectedGw, loading, error } = useLeaguePageData();
+  const { t } = useLanguage();
+  const {
+    phases,
+    selectedPhaseId,
+    selectedPhase,
+    setSelectedPhaseId,
+    availableGwsForPhase,
+    selectedGw,
+    setSelectedGw,
+    activeFilterLabel,
+    showQualificationZone,
+    resetFilters,
+    standings,
+    loading,
+    error,
+  } = useLeaguePageData();
 
-
+  const isFilterActive = selectedPhaseId !== null || (selectedGw !== null && selectedGw !== 'all');
 
   return (
     <div
@@ -24,173 +40,391 @@ export const LeaguePage: React.FC = () => {
           right: 0,
           width: '500px',
           height: '500px',
-          background: 'radial-gradient(circle, rgba(204, 255, 0, 0.05) 0%, rgba(13, 13, 13, 0) 70%)',
+          background: 'radial-gradient(circle, rgba(204, 255, 0, 0.04) 0%, rgba(13, 13, 13, 0) 70%)',
           pointerEvents: 'none',
           zIndex: 0,
         }}
       />
 
-      {/* Header Banner Card */}
+      {/* 1. Header Banner Card */}
       <section
         style={{
-          border: '1px solid #222222',
-          backgroundColor: '#141414',
-          borderRadius: '14px',
-          padding: '24px 32px',
+          border: '1px solid rgba(204,255,0,0.3)',
+          background: 'linear-gradient(135deg, #1a1a1a 0%, #141414 60%, #0f1a00 100%)',
+          borderRadius: '16px',
+          padding: '28px 32px',
           position: 'relative',
           overflow: 'hidden',
           display: 'flex',
           flexDirection: 'column',
-          gap: '8px',
+          gap: '12px',
           zIndex: 1,
+          boxShadow: '0 12px 32px rgba(204,255,0,0.08)',
         }}
       >
-        {/* Top accent bar */}
+        {/* Left accent bar */}
         <div
           style={{
             position: 'absolute',
             top: 0,
             left: 0,
-            right: 0,
-            height: '3px',
-            background: 'linear-gradient(90deg, #CCFF00 0%, #00FF88 100%)',
+            width: '4px',
+            height: '100%',
+            background: 'linear-gradient(180deg, #CCFF00 0%, rgba(204,255,0,0.2) 100%)',
+            borderRadius: '16px 0 0 16px',
           }}
         />
 
-        {/* Background icon decoration */}
-        <span
-          className="material-symbols-outlined"
+        {/* Decorative background ball */}
+        <div
           style={{
             position: 'absolute',
             right: '-20px',
             bottom: '-20px',
             fontSize: '180px',
-            color: 'rgba(204, 255, 0, 0.03)',
-            pointerEvents: 'none',
+            opacity: 0.04,
             userSelect: 'none',
-            fontStyle: 'normal',
+            pointerEvents: 'none',
+            lineHeight: 1,
           }}
         >
-          sports_soccer
-        </span>
+          ⚽
+        </div>
 
-        <div style={{ position: 'relative', zIndex: 2 }}>
-          <p
-            className="font-label-caps"
+        <div style={{ position: 'relative', zIndex: 2, display: 'flex', flexDirection: 'column', gap: '8px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <span
+              style={{
+                fontFamily: 'var(--font-mono)',
+                fontSize: '10px',
+                fontWeight: 800,
+                color: '#000000',
+                backgroundColor: '#CCFF00',
+                padding: '3px 8px',
+                borderRadius: '4px',
+                letterSpacing: '0.15em',
+                textTransform: 'uppercase',
+              }}
+            >
+              UNOFFICIAL LEAGUE
+            </span>
+          </div>
+
+          <h1
             style={{
-              color: '#CCFF00',
-              letterSpacing: '0.2em',
+              fontFamily: 'var(--font-headline)',
+              fontSize: 'clamp(28px, 5vw, 40px)',
+              fontWeight: 900,
+              color: '#FFFFFF',
               textTransform: 'uppercase',
-              fontSize: '11px',
+              letterSpacing: '-0.02em',
+              lineHeight: 0.95,
               margin: 0,
             }}
           >
-            Unofficial League
-          </p>
-          <h1
-            className="font-display-lg"
-            style={{
-              fontSize: '40px',
-              color: '#FFFFFF',
-              fontStyle: 'italic',
-              textTransform: 'uppercase',
-              margin: '4px 0 8px 0',
-              lineHeight: 1,
-            }}
-          >
-            FPL Kino League
+            FPL KINO LEAGUE
           </h1>
+
           <div
-            className="font-label-caps"
             style={{
               display: 'flex',
               alignItems: 'center',
-              gap: '8px',
-              color: '#9E9E9E',
-              letterSpacing: '0.15em',
-              fontSize: '11px',
+              gap: '10px',
+              marginTop: '4px',
+              flexWrap: 'wrap',
             }}
           >
-            <span>PLAY</span>
-            <span style={{ color: '#CCFF00' }}>•</span>
-            <span>COMPETE</span>
-            <span style={{ color: '#CCFF00' }}>•</span>
-            <span>CONNECT</span>
+            {['PLAY', 'COMPETE', 'CONNECT'].map((word, idx) => (
+              <React.Fragment key={word}>
+                {idx > 0 && (
+                  <div
+                    style={{
+                      width: '5px',
+                      height: '5px',
+                      borderRadius: '50%',
+                      backgroundColor: '#CCFF00',
+                    }}
+                  />
+                )}
+                <span
+                  style={{
+                    fontFamily: 'var(--font-mono)',
+                    fontWeight: 800,
+                    color: '#FFFFFF',
+                    letterSpacing: '0.12em',
+                    fontSize: '12px',
+                    textTransform: 'uppercase',
+                  }}
+                >
+                  {word}
+                </span>
+              </React.Fragment>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* Filters Section */}
+      {/* 2. Filters Section (Month + GW Filters) */}
       <section
         style={{
+          backgroundColor: '#141414',
+          border: '1px solid #222222',
+          borderRadius: '14px',
+          padding: '16px 20px',
           display: 'flex',
-          gap: '16px',
-          alignItems: 'flex-end',
+          flexDirection: 'column',
+          gap: '14px',
           zIndex: 1,
+          position: 'relative',
         }}
       >
-        {/* GW Filter */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-          <label className="font-label-caps" style={{ color: '#9E9E9E', fontSize: '11px' }}>
-            Filter by Gameweek
-          </label>
-          <div
-            style={{
-              position: 'relative',
-              border: '1px solid #222222',
-              backgroundColor: '#141414',
-              borderRadius: '8px',
-              padding: '10px 14px',
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              gap: '24px',
-              cursor: 'pointer',
-              minWidth: '160px',
-            }}
-          >
-            <span className="font-body-md" style={{ color: '#FFFFFF', fontSize: '14px' }}>
-              {selectedGw !== null ? `GW${selectedGw}` : 'Loading...'}
-            </span>
-            <span className="material-symbols-outlined" style={{ color: '#9E9E9E', fontSize: '20px' }}>
-              expand_more
-            </span>
-            <select
-              value={selectedGw ?? ''}
-              onChange={(e) => setSelectedGw(Number(e.target.value))}
-              disabled={availableGws.length === 0}
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            flexWrap: 'wrap',
+            gap: '12px',
+          }}
+        >
+          {/* Section Title & Active Filter Label */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
+            <h2
               style={{
-                position: 'absolute',
-                inset: 0,
-                opacity: 0,
-                cursor: 'pointer',
-                width: '100%',
-                height: '100%',
+                fontFamily: 'var(--font-headline)',
+                fontSize: '15px',
+                fontWeight: 900,
+                color: '#FFFFFF',
+                textTransform: 'uppercase',
+                letterSpacing: '0.04em',
+                margin: 0,
               }}
             >
-              {availableGws.map((gw) => (
-                <option key={gw} value={gw}>
-                  GW{gw}
-                </option>
-              ))}
-            </select>
+              STANDINGS FILTER
+            </h2>
+
+            <div
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '6px',
+                padding: '4px 10px',
+                backgroundColor: isFilterActive ? 'rgba(204,255,0,0.12)' : 'rgba(255,255,255,0.04)',
+                border: `1px solid ${isFilterActive ? 'rgba(204,255,0,0.3)' : 'rgba(255,255,255,0.08)'}`,
+                borderRadius: '100px',
+              }}
+            >
+              <span
+                style={{
+                  width: '6px',
+                  height: '6px',
+                  borderRadius: '50%',
+                  backgroundColor: isFilterActive ? '#CCFF00' : '#9E9E9E',
+                  animation: isFilterActive ? 'pulse 1.5s ease-in-out infinite' : 'none',
+                }}
+              />
+              <span
+                style={{
+                  fontFamily: 'var(--font-mono)',
+                  fontSize: '11px',
+                  fontWeight: 800,
+                  color: isFilterActive ? '#CCFF00' : '#9E9E9E',
+                  letterSpacing: '0.08em',
+                  textTransform: 'uppercase',
+                }}
+              >
+                {activeFilterLabel}
+              </span>
+            </div>
           </div>
+
+          {/* Reset Filters Control */}
+          {isFilterActive && (
+            <button
+              onClick={resetFilters}
+              style={{
+                backgroundColor: '#1c1b1b',
+                border: '1px solid #333333',
+                color: '#CCFF00',
+                fontFamily: 'var(--font-mono)',
+                fontSize: '10px',
+                fontWeight: 800,
+                letterSpacing: '0.08em',
+                padding: '5px 12px',
+                borderRadius: '6px',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '4px',
+                transition: 'all 0.2s ease',
+              }}
+            >
+              <span className="material-symbols-outlined" style={{ fontSize: '14px' }}>
+                restart_alt
+              </span>
+              {t.resetFilters.toUpperCase()}
+            </button>
+          )}
         </div>
 
-        {/* Live indicator */}
-        {loading && (
-          <div style={{ display: 'flex', alignItems: 'center', gap: '6px', paddingBottom: '12px' }}>
-            <span
-              className="material-symbols-outlined"
-              style={{ fontSize: '16px', color: '#CCFF00', animation: 'spin 1s linear infinite' }}
+        {/* Dropdowns Row */}
+        <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap', alignItems: 'center' }}>
+          {/* 1. Month Filter Dropdown */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', flex: '1 1 200px', minWidth: '180px' }}>
+            <label
+              style={{
+                fontFamily: 'var(--font-mono)',
+                fontSize: '10px',
+                fontWeight: 700,
+                color: '#666666',
+                textTransform: 'uppercase',
+                letterSpacing: '0.12em',
+              }}
             >
-              autorenew
-            </span>
-            <span className="font-label-caps" style={{ fontSize: '10px', color: '#9E9E9E' }}>
-              LOADING...
-            </span>
+              1. {t.selectMonth.toUpperCase()} (PHASE)
+            </label>
+            <div
+              style={{
+                position: 'relative',
+                border: '1px solid #222222',
+                backgroundColor: '#0d0d0d',
+                borderRadius: '8px',
+                padding: '10px 14px',
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                gap: '12px',
+              }}
+            >
+              <span
+                style={{
+                  fontFamily: 'var(--font-mono)',
+                  fontSize: '13px',
+                  fontWeight: 700,
+                  color: selectedPhase ? '#CCFF00' : '#FFFFFF',
+                }}
+              >
+                {selectedPhase ? `${selectedPhase.name} (GW${selectedPhase.start_event}-${selectedPhase.stop_event})` : 'Season Overview (All Months)'}
+              </span>
+              <span className="material-symbols-outlined" style={{ color: '#CCFF00', fontSize: '18px' }}>
+                expand_more
+              </span>
+              <select
+                value={selectedPhaseId ?? ''}
+                onChange={(e) => {
+                  const val = e.target.value;
+                  setSelectedPhaseId(val === '' ? null : Number(val));
+                }}
+                style={{
+                  position: 'absolute',
+                  inset: 0,
+                  opacity: 0,
+                  cursor: 'pointer',
+                  width: '100%',
+                  height: '100%',
+                }}
+              >
+                <option value="">Season Overview (All Months)</option>
+                {phases.map((p) => (
+                  <option key={p.phase_id} value={p.phase_id}>
+                    {p.name} (GW{p.start_event} - GW{p.stop_event})
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
-        )}
+
+          {/* 2. Gameweek Filter Dropdown (Cascading) */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', flex: '1 1 200px', minWidth: '180px' }}>
+            <label
+              style={{
+                fontFamily: 'var(--font-mono)',
+                fontSize: '10px',
+                fontWeight: 700,
+                color: selectedPhase ? '#666666' : '#444444',
+                textTransform: 'uppercase',
+                letterSpacing: '0.12em',
+              }}
+            >
+              2. GAMEWEEK IN {selectedPhase ? selectedPhase.name.toUpperCase() : 'MONTH'}
+            </label>
+            <div
+              style={{
+                position: 'relative',
+                border: `1px solid ${selectedPhase ? '#222222' : '#1a1a1a'}`,
+                backgroundColor: selectedPhase ? '#0d0d0d' : '#111111',
+                borderRadius: '8px',
+                padding: '10px 14px',
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                gap: '12px',
+                opacity: selectedPhase ? 1 : 0.5,
+                cursor: selectedPhase ? 'pointer' : 'not-allowed',
+              }}
+            >
+              <span
+                style={{
+                  fontFamily: 'var(--font-mono)',
+                  fontSize: '13px',
+                  fontWeight: 700,
+                  color: selectedGw && selectedGw !== 'all' ? '#CCFF00' : '#FFFFFF',
+                }}
+              >
+                {!selectedPhase
+                  ? 'Select a Month first'
+                  : selectedGw === 'all' || selectedGw === null
+                  ? `All of ${selectedPhase.name} (Full Month)`
+                  : `Gameweek ${selectedGw}`}
+              </span>
+              <span className="material-symbols-outlined" style={{ color: selectedPhase ? '#CCFF00' : '#666666', fontSize: '18px' }}>
+                expand_more
+              </span>
+              <select
+                value={selectedGw ?? 'all'}
+                disabled={!selectedPhase}
+                onChange={(e) => {
+                  const val = e.target.value;
+                  setSelectedGw(val === 'all' ? 'all' : Number(val));
+                }}
+                style={{
+                  position: 'absolute',
+                  inset: 0,
+                  opacity: 0,
+                  cursor: selectedPhase ? 'pointer' : 'not-allowed',
+                  width: '100%',
+                  height: '100%',
+                }}
+              >
+                {selectedPhase && (
+                  <>
+                    <option value="all">All of {selectedPhase.name} (Full Month)</option>
+                    {availableGwsForPhase.map((gw) => (
+                      <option key={gw} value={gw}>
+                        Gameweek {gw}
+                      </option>
+                    ))}
+                  </>
+                )}
+              </select>
+            </div>
+          </div>
+
+          {/* Loading indicator */}
+          {loading && (
+            <div style={{ display: 'flex', alignItems: 'center', gap: '6px', paddingTop: '18px' }}>
+              <span
+                className="material-symbols-outlined"
+                style={{ fontSize: '16px', color: '#CCFF00', animation: 'spin 1s linear infinite' }}
+              >
+                autorenew
+              </span>
+              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', color: '#9E9E9E' }}>
+                LOADING...
+              </span>
+            </div>
+          )}
+        </div>
       </section>
 
       {/* Error state */}
@@ -202,14 +436,15 @@ export const LeaguePage: React.FC = () => {
             borderRadius: '8px',
             padding: '12px 16px',
             color: '#FF4444',
-            fontSize: '13px',
+            fontFamily: 'var(--font-mono)',
+            fontSize: '12px',
           }}
         >
-          {error}
+          ⚠️ Error loading standings: {error}
         </div>
       )}
 
-      {/* Standings Table Card */}
+      {/* 3. Standings Table Card */}
       <section
         style={{
           border: '1px solid #222222',
@@ -235,67 +470,138 @@ export const LeaguePage: React.FC = () => {
             zIndex: 10,
           }}
         />
-        {/* Banner header: Qualify info */}
+
+        {/* Banner header: Active Filter Context & Qualification Info */}
         <div
           style={{
             backgroundColor: '#141414',
-            padding: '12px 16px',
+            padding: '14px 16px',
             borderBottom: '1px solid #222222',
             display: 'flex',
             alignItems: 'center',
+            justifyContent: 'space-between',
+            flexWrap: 'wrap',
             gap: '8px',
           }}
         >
-          <span
-            style={{
-              width: '8px',
-              height: '8px',
-              backgroundColor: '#CCFF00',
-              borderRadius: '50%',
-              display: 'inline-block',
-            }}
-            className="live-dot"
-          />
-          <span
-            className="font-label-caps"
-            style={{
-              fontSize: '11px',
-              color: '#CCFF00',
-              letterSpacing: '0.1em',
-              textTransform: 'uppercase',
-            }}
-          >
-            Top 16 qualify for FPL Kino Cup
-          </span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <span
+              style={{
+                width: '7px',
+                height: '7px',
+                backgroundColor: showQualificationZone ? '#00FF88' : '#CCFF00',
+                borderRadius: '50%',
+                display: 'inline-block',
+                animation: 'pulse 1.5s ease-in-out infinite',
+              }}
+            />
+            <span
+              style={{
+                fontFamily: 'var(--font-mono)',
+                fontSize: '11px',
+                fontWeight: 800,
+                color: showQualificationZone ? '#00FF88' : '#CCFF00',
+                letterSpacing: '0.1em',
+                textTransform: 'uppercase',
+              }}
+            >
+              {selectedPhaseId ? `${selectedPhase?.name.toUpperCase()} STANDINGS` : 'SEASON OVERVIEW STANDINGS'}
+            </span>
+          </div>
+
+          {showQualificationZone && (
+            <div
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '6px',
+                backgroundColor: 'rgba(0, 255, 136, 0.12)',
+                border: '1px solid rgba(0, 255, 136, 0.3)',
+                padding: '4px 10px',
+                borderRadius: '100px',
+                whiteSpace: 'nowrap',
+                maxWidth: '100%',
+              }}
+            >
+              <span className="material-symbols-outlined" style={{ fontSize: '14px', color: '#00FF88', flexShrink: 0 }}>
+                emoji_events
+              </span>
+              <span
+                style={{
+                  fontFamily: 'var(--font-mono)',
+                  fontSize: '10px',
+                  fontWeight: 800,
+                  color: '#00FF88',
+                  letterSpacing: '0.08em',
+                  textTransform: 'uppercase',
+                  whiteSpace: 'nowrap',
+                }}
+              >
+                TOP 16 QUALIFY FOR FPL KINO CUP (GW19)
+              </span>
+            </div>
+          )}
         </div>
 
-        {/* Table Header Row */}
+        {/* Table Column Headers */}
         <div
+          className="standings-grid-layout"
           style={{
-            display: 'grid',
-            gridTemplateColumns: '48px 1fr 100px 100px',
-            gap: '12px',
-            padding: '12px 16px',
             borderBottom: '1px solid #222222',
             alignItems: 'center',
             backgroundColor: '#111111',
           }}
         >
-          <div className="font-label-caps" style={{ color: '#9E9E9E', textAlign: 'center', fontSize: '11px' }}>
-            RNK
+          <div
+            style={{
+              fontFamily: 'var(--font-mono)',
+              color: '#666666',
+              textAlign: 'center',
+              fontSize: '10px',
+              fontWeight: 800,
+              letterSpacing: '0.12em',
+            }}
+          >
+            {t.rank}
           </div>
-          <div className="font-label-caps" style={{ color: '#9E9E9E', fontSize: '11px' }}>
-            TEAM & MANAGER
+          <div
+            style={{
+              fontFamily: 'var(--font-mono)',
+              color: '#666666',
+              fontSize: '10px',
+              fontWeight: 800,
+              letterSpacing: '0.12em',
+            }}
+          >
+            {t.teamAndManager}
           </div>
-          <div className="font-label-caps" style={{ color: '#9E9E9E', textAlign: 'right', fontSize: '11px' }}>
-            GW PTS
+          <div
+            style={{
+              fontFamily: 'var(--font-mono)',
+              color: '#666666',
+              textAlign: 'right',
+              fontSize: '10px',
+              fontWeight: 800,
+              letterSpacing: '0.12em',
+            }}
+          >
+            {selectedPhaseId && (selectedGw === 'all' || selectedGw === null) ? t.monthPts : t.gwPts}
           </div>
-          <div className="font-label-caps" style={{ color: '#9E9E9E', textAlign: 'right', fontSize: '11px' }}>
-            TOTAL
+          <div
+            style={{
+              fontFamily: 'var(--font-mono)',
+              color: '#666666',
+              textAlign: 'right',
+              fontSize: '10px',
+              fontWeight: 800,
+              letterSpacing: '0.12em',
+            }}
+          >
+            {selectedPhaseId && (selectedGw === 'all' || selectedGw === null) ? t.monthPts : t.totalPts}
           </div>
         </div>
 
-        {/* Table Rows Body (Scrollable) */}
+        {/* Table Rows Body */}
         <div
           style={{
             maxHeight: '600px',
@@ -310,35 +616,37 @@ export const LeaguePage: React.FC = () => {
                 padding: '48px 16px',
                 textAlign: 'center',
                 color: '#9E9E9E',
-                fontSize: '13px',
+                fontFamily: 'var(--font-mono)',
+                fontSize: '12px',
               }}
             >
-              Belum ada data untuk GW ini.
+              Belum ada data standings untuk filter ini.
             </div>
           )}
+
           {standings.map((row) => {
             const isTop3 = row.pos <= 3;
-            const isQualified = row.pos <= 16;
-            const showQualificationDivider = row.pos === 16;
+            const isQualifyingZone = showQualificationZone && row.pos <= 16;
+            const isQualifyingNonTop3 = isQualifyingZone && !isTop3;
+            const showQualificationDivider = showQualificationZone && row.pos === 16;
 
             return (
               <React.Fragment key={`${row.pos}-${row.team}`}>
                 <div
                   style={{
-                    display: 'grid',
-                    gridTemplateColumns: '48px 1fr 100px 100px',
-                    gap: '12px',
-                    padding: '14px 16px',
-                    borderBottom: '1px solid #222222',
+                    borderBottom: '1px solid #1e1e1e',
                     alignItems: 'center',
                     position: 'relative',
-                    backgroundColor: isTop3 ? 'rgba(204, 255, 0, 0.02)' : 'transparent',
-                    transition: 'background-color 0.2s ease',
+                    backgroundColor: isTop3
+                      ? 'rgba(204, 255, 0, 0.05)'
+                      : isQualifyingNonTop3
+                      ? 'rgba(0, 255, 136, 0.035)'
+                      : 'transparent',
                   }}
-                  className="standing-row-hover"
+                  className="standings-grid-layout standing-row-hover"
                 >
-                  {/* Left accent line for qualification zone */}
-                  {isQualified && (
+                  {/* Left accent bar */}
+                  {isTop3 ? (
                     <div
                       style={{
                         position: 'absolute',
@@ -349,117 +657,125 @@ export const LeaguePage: React.FC = () => {
                         backgroundColor: '#CCFF00',
                       }}
                     />
-                  )}
+                  ) : isQualifyingNonTop3 ? (
+                    <div
+                      style={{
+                        position: 'absolute',
+                        left: 0,
+                        top: 0,
+                        bottom: 0,
+                        width: '3px',
+                        backgroundColor: '#00FF88',
+                      }}
+                    />
+                  ) : null}
 
-                  {/* Rank */}
+                  {/* Rank Number */}
                   <div
-                    className="font-stat-value"
                     style={{
+                      fontFamily: 'var(--font-mono)',
                       textAlign: 'center',
-                      fontSize: isTop3 ? '16px' : '14px',
-                      color: isTop3 ? '#CCFF00' : '#9E9E9E',
-                      fontWeight: isTop3 ? 800 : 500,
+                      fontSize: isTop3 ? '15px' : '13px',
+                      color: isTop3 ? '#CCFF00' : isQualifyingNonTop3 ? '#00FF88' : '#666666',
+                      fontWeight: isTop3 || isQualifyingNonTop3 ? 800 : 600,
                     }}
                   >
                     {row.pos}
                   </div>
 
                   {/* Team & Manager */}
-                  <div style={{ display: 'flex', flexDirection: 'column', minWidth: 0 }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <div style={{ display: 'flex', flexDirection: 'column', minWidth: 0, overflow: 'hidden' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px', minWidth: 0 }}>
                       <span
-                        className="font-body-md"
                         style={{
+                          fontFamily: 'var(--font-body)',
                           fontWeight: 700,
-                          fontSize: '14px',
-                          color: isTop3 ? '#CCFF00' : '#FFFFFF',
-                          textTransform: 'uppercase',
+                          fontSize: '13px',
+                          color: isTop3 ? '#CCFF00' : isQualifyingZone ? '#FFFFFF' : '#aaaaaa',
+                          whiteSpace: 'nowrap',
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis',
                         }}
+                        title={row.team}
                       >
                         {row.team}
                       </span>
-                      {isQualified && !isTop3 && (
-                        <span
-                          style={{
-                            width: '4px',
-                            height: '4px',
-                            backgroundColor: '#CCFF00',
-                          }}
-                        />
-                      )}
                     </div>
                     <span
-                      className="font-label-caps"
                       style={{
+                        fontFamily: 'var(--font-body)',
                         fontSize: '11px',
-                        color: isQualified ? '#CCFF00' : '#9E9E9E',
-                        opacity: isTop3 ? 1 : 0.7,
-                        textTransform: 'uppercase',
+                        color: isTop3 ? '#c4c9ac' : isQualifyingZone ? '#99ccaa' : '#666666',
                         marginTop: '2px',
+                        whiteSpace: 'nowrap',
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
                       }}
+                      title={row.manager}
                     >
                       {row.manager}
                     </span>
                   </div>
 
-                  {/* GW Pts */}
+                  {/* GW / Month Pts */}
                   <div
-                    className="font-stat-value"
                     style={{
+                      fontFamily: 'var(--font-mono)',
                       textAlign: 'right',
-                      fontSize: '14px',
-                      color: '#9E9E9E',
+                      fontSize: '12px',
+                      fontWeight: 700,
+                      color: isQualifyingZone ? '#9E9E9E' : '#666666',
                     }}
                   >
                     {row.gw}
                   </div>
 
-                  {/* Total */}
+                  {/* Total Pts */}
                   <div
-                    className="font-stat-value"
                     style={{
+                      fontFamily: 'var(--font-mono)',
                       textAlign: 'right',
                       fontSize: '14px',
-                      color: '#FFFFFF',
-                      fontWeight: 700,
+                      color: isTop3 ? '#CCFF00' : isQualifyingZone ? '#FFFFFF' : '#aaaaaa',
+                      fontWeight: isTop3 || isQualifyingZone ? 800 : 600,
                     }}
                   >
                     {row.tot}
                   </div>
                 </div>
 
-                {/* Qualification Zone Divider Marker */}
+                {/* Qualification Cutoff Divider Marker Row (Prominent Full-Width Banner) */}
                 {showQualificationDivider && (
                   <div
                     style={{
-                      backgroundColor: '#181818',
-                      padding: '10px 16px',
-                      borderBottom: '1px solid #222222',
+                      background: 'linear-gradient(90deg, rgba(0, 255, 136, 0.22) 0%, rgba(0, 255, 136, 0.05) 100%)',
+                      borderTop: '2px solid #00FF88',
+                      borderBottom: '2px solid #00FF88',
+                      padding: '14px 18px',
                       display: 'flex',
                       alignItems: 'center',
                       gap: '8px',
+                      margin: '4px 0',
+                      whiteSpace: 'nowrap',
+                      overflow: 'hidden',
+                      boxShadow: '0 4px 16px rgba(0, 255, 136, 0.1)',
                     }}
                   >
+                    <span className="material-symbols-outlined" style={{ fontSize: '20px', color: '#00FF88', flexShrink: 0 }}>
+                      emoji_events
+                    </span>
                     <span
                       style={{
-                        width: '6px',
-                        height: '6px',
-                        backgroundColor: '#CCFF00',
-                        borderRadius: '50%',
-                        display: 'inline-block',
-                      }}
-                      className="live-dot"
-                    />
-                    <span
-                      className="font-label-caps"
-                      style={{
-                        fontSize: '10px',
-                        color: '#CCFF00',
+                        fontFamily: 'var(--font-mono)',
+                        fontSize: 'clamp(10px, 2.5vw, 12px)',
+                        fontWeight: 900,
+                        color: '#00FF88',
                         letterSpacing: '0.12em',
                         textTransform: 'uppercase',
+                        whiteSpace: 'nowrap',
                       }}
                     >
-                      Kino Cup Qualification Zone
+                      FPL KINO CUP QUALIFICATION ZONE
                     </span>
                   </div>
                 )}

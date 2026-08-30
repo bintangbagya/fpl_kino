@@ -328,8 +328,66 @@ html, body {
   background-color: rgba(255, 255, 255, 0.03) !important;
 }
 
+/* Responsive Standings Grid for Mobile & Desktop */
+.standings-grid-layout {
+  display: grid;
+  grid-template-columns: 36px 1fr 48px 56px;
+  gap: 8px;
+  padding: 12px;
+}
+
+@media (min-width: 640px) {
+  .standings-grid-layout {
+    grid-template-columns: 48px 1fr 90px 90px;
+    gap: 12px;
+    padding: 12px 16px;
+  }
+}
+
 @keyframes spin {
   from { transform: rotate(0deg); }
   to   { transform: rotate(360deg); }
 }
 
+/* Mobile View Optimizations (≤640px) */
+@media (max-width: 640px) {
+  .app-main-content {
+    padding: 16px 12px !important;
+  }
+
+  /* Hero Banner Mobile Adjustments */
+  .hero-banner-card {
+    height: auto !important;
+    min-height: 220px !important;
+    padding: 24px 20px !important;
+  }
+  .hero-banner-title {
+    font-size: 26px !important;
+  }
+  .hero-banner-watermark {
+    font-size: 110px !important;
+    right: -10px !important;
+    bottom: -10px !important;
+    opacity: 0.04 !important;
+  }
+
+  /* Next Deadline Widget Mobile Adjustments */
+  .next-deadline-card {
+    height: auto !important;
+    padding: 18px 14px !important;
+  }
+  .next-deadline-gw-text {
+    font-size: 40px !important;
+  }
+  .next-deadline-countdown {
+    gap: 8px !important;
+  }
+  .next-deadline-digit {
+    font-size: 30px !important;
+  }
+
+  /* Newsletter Preview Card Mobile Adjustments */
+  .newsletter-preview-card {
+    padding: 16px !important;
+  }
+}

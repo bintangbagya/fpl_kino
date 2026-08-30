@@ -1,6 +1,12 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { useNewsletterData, type NewsletterStory } from '../hooks/useNewsletterData';
+import React, { useState } from 'react';
+import {
+  useNewsletterData,
+  type NewsletterStory,
+} from '../hooks/useNewsletterData';
 import { NewsletterDetailPage } from './NewsletterDetailPage';
+import { useLanguage } from '../context/LanguageContext';
+
+
 
 // ─── Skeleton Card ────────────────────────────────────────────────────────────
 const SkeletonCard: React.FC<{ height?: number; style?: React.CSSProperties }> = ({
@@ -31,226 +37,138 @@ const SkeletonCard: React.FC<{ height?: number; style?: React.CSSProperties }> =
   </div>
 );
 
-// ─── Stats Chip ───────────────────────────────────────────────────────────────
-const StatChip: React.FC<{ label: string; value: string; accent?: boolean }> = ({
-  label,
-  value,
-  accent,
-}) => (
-  <div
-    style={{
-      display: 'flex',
-      flexDirection: 'column',
-      gap: '2px',
-      padding: '8px 12px',
-      backgroundColor: accent ? 'rgba(204,255,0,0.08)' : 'rgba(255,255,255,0.04)',
-      border: `1px solid ${accent ? 'rgba(204,255,0,0.25)' : 'rgba(255,255,255,0.08)'}`,
-      borderRadius: '8px',
-    }}
-  >
-    <span
-      style={{
-        fontSize: '9px',
-        fontFamily: 'var(--font-mono)',
-        fontWeight: 700,
-        letterSpacing: '0.12em',
-        color: accent ? '#CCFF00' : '#9E9E9E',
-        textTransform: 'uppercase',
-      }}
-    >
-      {label}
-    </span>
-    <span
-      style={{
-        fontSize: '13px',
-        fontFamily: 'var(--font-mono)',
-        fontWeight: 700,
-        color: accent ? '#CCFF00' : '#FFFFFF',
-        lineHeight: 1.2,
-      }}
-    >
-      {value}
-    </span>
-  </div>
-);
-
-// ─── Hero Story Card ──────────────────────────────────────────────────────────
+// ─── Hero Card (Headline Story) ───────────────────────────────────────────────
 const HeroCard: React.FC<{ story: NewsletterStory; onClick: () => void }> = ({
   story,
   onClick,
-}) => (
-  <div
-    onClick={onClick}
-    className="hero-story-card"
-    style={{
-      background: 'linear-gradient(135deg, #1a1a1a 0%, #141414 60%, #0f1a00 100%)',
-      border: '1px solid rgba(204,255,0,0.3)',
-      borderRadius: '16px',
-      padding: '32px',
-      position: 'relative',
-      overflow: 'hidden',
-      cursor: 'pointer',
-      transition: 'all 0.25s ease',
-    }}
-  >
-    {/* Top-left accent bar */}
-    <div
-      style={{
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        width: '4px',
-        height: '100%',
-        background: 'linear-gradient(180deg, #CCFF00 0%, rgba(204,255,0,0.2) 100%)',
-        borderRadius: '16px 0 0 16px',
-      }}
-    />
+}) => {
+  const { t } = useLanguage();
 
-    {/* Decorative background emoji */}
+  return (
     <div
+      onClick={onClick}
+      className="hero-story-card"
       style={{
-        position: 'absolute',
-        right: '-20px',
-        bottom: '-20px',
-        fontSize: '160px',
-        opacity: 0.06,
-        userSelect: 'none',
-        pointerEvents: 'none',
-        lineHeight: 1,
-      }}
-    >
-      {story.emoji}
-    </div>
-
-    {/* LIVE badge + category */}
-    <div
-      style={{
+        backgroundColor: '#141414',
+        border: '1px solid #282828',
+        borderRadius: '14px',
+        padding: '24px 26px',
+        position: 'relative',
+        overflow: 'hidden',
+        cursor: 'pointer',
+        transition: 'all 0.2s ease',
+        boxShadow: '0 4px 20px rgba(0,0,0,0.3)',
         display: 'flex',
-        alignItems: 'center',
+        flexDirection: 'column',
         gap: '12px',
-        marginBottom: '16px',
       }}
     >
+      {/* Top accent line */}
+      <div
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          height: '2px',
+          background: 'linear-gradient(90deg, #CCFF00 0%, #00FF88 100%)',
+        }}
+      />
+
+      {/* Header Badges: HEADLINE + Category */}
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '8px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
+          <span
+            style={{
+              padding: '3px 8px',
+              backgroundColor: '#CCFF00',
+              color: '#000',
+              borderRadius: '4px',
+              fontSize: '10px',
+              fontFamily: 'var(--font-mono)',
+              fontWeight: 800,
+              letterSpacing: '0.08em',
+            }}
+          >
+            HEADLINE
+          </span>
+          <span
+            style={{
+              fontSize: '11px',
+              fontFamily: 'var(--font-mono)',
+              fontWeight: 700,
+              color: '#888888',
+              letterSpacing: '0.05em',
+            }}
+          >
+            {story.category}
+          </span>
+        </div>
+      </div>
+
+      {/* Article Title */}
+      <h2
+        style={{
+          fontSize: 'clamp(18px, 2.5vw, 24px)',
+          fontFamily: 'var(--font-headline)',
+          fontWeight: 900,
+          color: '#FFFFFF',
+          lineHeight: 1.2,
+          margin: '2px 0 0 0',
+          textTransform: 'uppercase',
+        }}
+      >
+        {story.title}
+      </h2>
+
+      {/* Summary Preview Teaser */}
+      <p
+        style={{
+          fontSize: '13.5px',
+          fontFamily: 'var(--font-body)',
+          fontWeight: 400,
+          color: '#9CA3AF',
+          margin: '0',
+          lineHeight: 1.55,
+        }}
+      >
+        {story.hook}
+      </p>
+
+      {/* Clean Read More Link */}
       <div
         style={{
           display: 'flex',
           alignItems: 'center',
-          gap: '6px',
-          padding: '4px 10px',
-          backgroundColor: '#CCFF00',
-          borderRadius: '100px',
+          justifyContent: 'flex-end',
+          marginTop: '6px',
+          paddingTop: '10px',
+          borderTop: '1px solid #1e1e1e',
         }}
       >
-        <div
-          style={{
-            width: '6px',
-            height: '6px',
-            borderRadius: '50%',
-            backgroundColor: '#000',
-            animation: 'pulse 1.5s ease-in-out infinite',
-          }}
-        />
         <span
           style={{
-            fontSize: '10px',
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '4px',
             fontFamily: 'var(--font-mono)',
+            fontSize: '11px',
             fontWeight: 800,
-            color: '#000',
-            letterSpacing: '0.1em',
+            color: '#CCFF00',
+            letterSpacing: '0.08em',
+            textTransform: 'uppercase',
           }}
         >
-          HEADLINE
+          {t.readMore.toUpperCase()} ➔
         </span>
       </div>
-      <span
-        style={{
-          fontSize: '11px',
-          fontFamily: 'var(--font-mono)',
-          fontWeight: 700,
-          color: '#9E9E9E',
-          letterSpacing: '0.08em',
-        }}
-      >
-        {story.category}
-      </span>
     </div>
-
-    {/* Title */}
-    <h2
-      style={{
-        fontSize: 'clamp(22px, 4vw, 36px)',
-        fontFamily: 'var(--font-headline)',
-        fontWeight: 900,
-        color: '#FFFFFF',
-        lineHeight: 0.95,
-        margin: '0 0 12px 0',
-        textTransform: 'uppercase',
-        letterSpacing: '-0.01em',
-      }}
-    >
-      {story.title}
-    </h2>
-
-    {/* Hook */}
-    <p
-      style={{
-        fontSize: '16px',
-        fontFamily: 'var(--font-body)',
-        fontWeight: 700,
-        color: '#CCFF00',
-        margin: '0 0 12px 0',
-        lineHeight: 1.4,
-      }}
-    >
-      {story.hook}
-    </p>
-
-    {/* Description */}
-    <p
-      style={{
-        fontSize: '14px',
-        fontFamily: 'var(--font-body)',
-        color: '#c4c9ac',
-        lineHeight: 1.7,
-        margin: '0 0 20px 0',
-        maxWidth: '680px',
-      }}
-    >
-      {story.description}
-    </p>
-
-    {/* Bottom Bar: Stats chips & Read Article Link */}
-    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '16px' }}>
-      {story.stats && (
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
-          {story.stats.map((stat, i) => (
-            <StatChip key={i} label={stat.label} value={stat.value} accent={i === 0} />
-          ))}
-        </div>
-      )}
-
-      <div
-        style={{
-          display: 'inline-flex',
-          alignItems: 'center',
-          gap: '6px',
-          fontFamily: 'var(--font-mono)',
-          fontSize: '11px',
-          fontWeight: 800,
-          color: '#CCFF00',
-          letterSpacing: '0.1em',
-          textTransform: 'uppercase',
-          marginLeft: 'auto',
-        }}
-      >
-        BACA ARTIKEL LENGKAP ➔
-      </div>
-    </div>
-  </div>
-);
+  );
+};
 
 // ─── Story Card ───────────────────────────────────────────────────────────────
 const StoryCard: React.FC<{ story: NewsletterStory; onClick: () => void }> = ({ story, onClick }) => {
+  const { t } = useLanguage();
   const accentColors: Record<string, string> = {
     '📈': '#00ff88',
     '📉': '#ff4d4d',
@@ -259,6 +177,10 @@ const StoryCard: React.FC<{ story: NewsletterStory; onClick: () => void }> = ({ 
     '🔄': '#b066ff',
     '📊': '#ffcc00',
     '🔥': '#CCFF00',
+    '⚔️': '#00e5ff',
+    '🛋️': '#ff9900',
+    '👑': '#CCFF00',
+    '🏆': '#FFD700',
   };
   const accentColor = accentColors[story.emoji] ?? '#CCFF00';
 
@@ -269,15 +191,15 @@ const StoryCard: React.FC<{ story: NewsletterStory; onClick: () => void }> = ({ 
       style={{
         backgroundColor: '#141414',
         border: '1px solid #222222',
-        borderRadius: '14px',
-        padding: '24px',
+        borderRadius: '12px',
+        padding: '18px 20px',
         position: 'relative',
         overflow: 'hidden',
         display: 'flex',
         flexDirection: 'column',
         gap: '10px',
         cursor: 'pointer',
-        transition: 'all 0.25s ease',
+        transition: 'all 0.2s ease',
         height: '100%',
         boxSizing: 'border-box',
       }}
@@ -295,134 +217,76 @@ const StoryCard: React.FC<{ story: NewsletterStory; onClick: () => void }> = ({ 
         }}
       />
 
-      {/* Category label */}
-      <span
-        style={{
-          fontSize: '10px',
-          fontFamily: 'var(--font-mono)',
-          fontWeight: 700,
-          color: accentColor,
-          letterSpacing: '0.12em',
-          textTransform: 'uppercase',
-        }}
-      >
-        {story.category}
-      </span>
+      {/* Header Tags: Category */}
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '8px' }}>
+        <span
+          style={{
+            fontSize: '10px',
+            fontFamily: 'var(--font-mono)',
+            fontWeight: 700,
+            color: accentColor,
+            letterSpacing: '0.08em',
+            textTransform: 'uppercase',
+          }}
+        >
+          {story.emoji} {story.category}
+        </span>
+      </div>
 
       {/* Title */}
       <h3
         style={{
-          fontSize: 'clamp(16px, 2.5vw, 20px)',
+          fontSize: '15px',
           fontFamily: 'var(--font-headline)',
           fontWeight: 900,
           color: '#FFFFFF',
           margin: '0',
-          lineHeight: 1.05,
+          lineHeight: 1.25,
           textTransform: 'uppercase',
         }}
       >
         {story.title}
       </h3>
 
-      {/* Hook */}
+      {/* Preview Summary Teaser */}
       <p
         style={{
           fontSize: '13px',
           fontFamily: 'var(--font-body)',
-          fontWeight: 700,
-          color: accentColor,
+          fontWeight: 400,
+          color: '#9CA3AF',
           margin: 0,
-          lineHeight: 1.4,
+          lineHeight: 1.5,
+          flex: 1,
         }}
       >
         {story.hook}
       </p>
 
-      {/* Description */}
-      <p
-        style={{
-          fontSize: '13px',
-          fontFamily: 'var(--font-body)',
-          color: '#c4c9ac',
-          lineHeight: 1.65,
-          margin: 0,
-          flex: 1,
-        }}
-      >
-        {story.description}
-      </p>
-
       {/* Read More link */}
       <div
         style={{
-          fontSize: '10px',
-          fontFamily: 'var(--font-mono)',
-          fontWeight: 800,
-          color: accentColor,
-          letterSpacing: '0.1em',
-          marginTop: '6px',
           display: 'flex',
           alignItems: 'center',
-          gap: '4px',
+          justifyContent: 'flex-end',
+          marginTop: 'auto',
+          paddingTop: '10px',
+          borderTop: '1px solid #1c1c1c',
         }}
       >
-        BACA SELENGKAPNYA ➔
-      </div>
-
-      {/* Stats chips - aligned to bottom */}
-      {story.stats && (
-        <div
+        <span
           style={{
-            display: 'flex',
-            flexWrap: 'wrap',
-            gap: '6px',
-            marginTop: 'auto',
-            paddingTop: '12px',
-            borderTop: '1px solid #1e1e1e',
+            fontSize: '11px',
+            fontFamily: 'var(--font-mono)',
+            fontWeight: 800,
+            color: accentColor,
+            letterSpacing: '0.08em',
+            textTransform: 'uppercase',
           }}
         >
-          {story.stats.map((stat, i) => (
-            <div
-              key={i}
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '2px',
-                padding: '6px 10px',
-                backgroundColor: 'rgba(255,255,255,0.03)',
-                border: '1px solid rgba(255,255,255,0.06)',
-                borderRadius: '6px',
-                flex: '1 1 0',
-                minWidth: '80px',
-              }}
-            >
-              <span
-                style={{
-                  fontSize: '8px',
-                  fontFamily: 'var(--font-mono)',
-                  fontWeight: 700,
-                  letterSpacing: '0.12em',
-                  color: '#666',
-                  textTransform: 'uppercase',
-                }}
-              >
-                {stat.label}
-              </span>
-              <span
-                style={{
-                  fontSize: '12px',
-                  fontFamily: 'var(--font-mono)',
-                  fontWeight: 700,
-                  color: '#FFFFFF',
-                  lineHeight: 1,
-                }}
-              >
-                {stat.value}
-              </span>
-            </div>
-          ))}
-        </div>
-      )}
+          {t.readMore.toUpperCase()} ➔
+        </span>
+      </div>
     </div>
   );
 };
@@ -435,6 +299,10 @@ const NewsTicker: React.FC<{ items: string[]; gwNumber: number | null }> = ({
   if (items.length === 0) return null;
   const repeatedItems = [...items, ...items, ...items];
 
+  // Calculate dynamic animation duration so text scrolls at a constant, comfortable reading speed
+  const totalChars = repeatedItems.reduce((acc, curr) => acc + curr.length, 0);
+  const durationSeconds = Math.max(18, Math.round(totalChars / 22));
+
   return (
     <div
       style={{
@@ -442,12 +310,13 @@ const NewsTicker: React.FC<{ items: string[]; gwNumber: number | null }> = ({
         overflow: 'hidden',
         display: 'flex',
         alignItems: 'center',
-        height: '36px',
+        height: '38px',
         borderRadius: '8px',
         position: 'relative',
+        boxShadow: '0 4px 20px rgba(204, 255, 0, 0.15)',
       }}
     >
-      {/* Label */}
+      {/* Left Fixed Badge */}
       <div
         style={{
           flexShrink: 0,
@@ -456,42 +325,45 @@ const NewsTicker: React.FC<{ items: string[]; gwNumber: number | null }> = ({
           display: 'flex',
           alignItems: 'center',
           padding: '0 14px',
-          gap: '6px',
+          gap: '8px',
           zIndex: 2,
+          boxShadow: '4px 0 12px rgba(0,0,0,0.4)',
         }}
       >
         <span
           style={{
-            width: '6px',
-            height: '6px',
+            width: '7px',
+            height: '7px',
             borderRadius: '50%',
             backgroundColor: '#CCFF00',
             display: 'block',
+            boxShadow: '0 0 8px #CCFF00',
             animation: 'pulse 1.5s ease-in-out infinite',
           }}
         />
         <span
           style={{
-            fontSize: '10px',
+            fontSize: '11px',
             fontFamily: 'var(--font-mono)',
             fontWeight: 800,
             color: '#CCFF00',
-            letterSpacing: '0.15em',
+            letterSpacing: '0.12em',
             whiteSpace: 'nowrap',
           }}
         >
-          GW{gwNumber} LIVE
+          GW{gwNumber ?? 2} UPDATES
         </span>
       </div>
 
-      {/* Scrolling ticker */}
+      {/* Marquee Running Text Track */}
       <div
+        className="ticker-track"
         style={{
           display: 'flex',
           alignItems: 'center',
-          animation: 'ticker 30s linear infinite',
+          animation: `ticker ${durationSeconds}s linear infinite`,
           whiteSpace: 'nowrap',
-          gap: '40px',
+          gap: '48px',
           paddingLeft: '24px',
         }}
       >
@@ -504,7 +376,7 @@ const NewsTicker: React.FC<{ items: string[]; gwNumber: number | null }> = ({
               fontWeight: 800,
               color: '#000',
               textTransform: 'uppercase',
-              letterSpacing: '0.05em',
+              letterSpacing: '0.04em',
             }}
           >
             {item}
@@ -515,21 +387,20 @@ const NewsTicker: React.FC<{ items: string[]; gwNumber: number | null }> = ({
   );
 };
 
-// ─── Main Newsletter Page ────────────────────────────────────────────────────
+// ─── Main Newsletter Page Component ──────────────────────────────────────────
 export const NewsletterPage: React.FC = () => {
-  const { gwData, loading, error, availableGws, selectedGw, setSelectedGw } = useNewsletterData();
-  const gwSwitcherRef = useRef<HTMLDivElement>(null);
-  const [selectedStory, setSelectedStory] = useState<{ gwNumber: number; storyId: string } | null>(null);
+  const { t } = useLanguage();
+  const {
+    availableGws,
+    selectedGw,
+    setSelectedGw,
+    gwData,
+    filteredStories,
+    loading,
+    error,
+  } = useNewsletterData();
 
-  // Auto-scroll GW switcher pill into view
-  useEffect(() => {
-    if (gwSwitcherRef.current) {
-      const activeEl = gwSwitcherRef.current.querySelector('.gw-pill-active');
-      if (activeEl) {
-        activeEl.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
-      }
-    }
-  }, [selectedGw]);
+  const [selectedStory, setSelectedStory] = useState<{ gwNumber: number; storyId: string } | null>(null);
 
   const styleSheet = `
     @keyframes pulse {
@@ -544,7 +415,32 @@ export const NewsletterPage: React.FC = () => {
       0% { transform: translateX(0); }
       100% { transform: translateX(-33.33%); }
     }
-    .gw-pill {
+    .ticker-track:hover {
+      animation-play-state: paused !important;
+    }
+    .filter-select {
+      appearance: none;
+      background-color: #141414;
+      border: 1px solid #333333;
+      border-radius: 8px;
+      color: #FFFFFF;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 700;
+      padding: 8px 32px 8px 14px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23CCFF00' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+      background-repeat: no-repeat;
+      background-position: right 10px center;
+      background-size: 14px;
+    }
+    .filter-select:hover, .filter-select:focus {
+      border-color: #CCFF00;
+      outline: none;
+      box-shadow: 0 0 10px rgba(204, 255, 0, 0.15);
+    }
+    .matchday-pill {
       font-family: var(--font-mono);
       font-size: 11px;
       font-weight: 700;
@@ -552,19 +448,19 @@ export const NewsletterPage: React.FC = () => {
       border-radius: 100px;
       border: 1px solid #222222;
       background-color: #141414;
-      color: #777777;
+      color: #888888;
       cursor: pointer;
       white-space: nowrap;
       transition: all 0.2s ease;
-      letter-spacing: 0.05em;
+      letter-spacing: 0.04em;
     }
-    .gw-pill:hover {
-      border-color: #444444;
+    .matchday-pill:hover {
+      border-color: #555555;
       color: #FFFFFF;
     }
-    .gw-pill-active {
+    .matchday-pill-active {
       border-color: #CCFF00 !important;
-      background-color: rgba(204,255,0,0.1) !important;
+      background-color: rgba(204,255,0,0.12) !important;
       color: #CCFF00 !important;
     }
     .newsletter-story-card:hover {
@@ -579,29 +475,15 @@ export const NewsletterPage: React.FC = () => {
     }
   `;
 
-  // Hero story & remaining grid stories
-  const heroStory = gwData?.stories?.find((s) => s.is_hero) ?? gwData?.stories?.[0];
-  const remainingStories = gwData?.stories?.filter((s) => s.id !== heroStory?.id) ?? [];
-
-  // Ticker items constructed from stories
+  // Ticker items
   const tickerItems: string[] = [];
-  if (gwData?.stories) {
-    for (const story of gwData.stories) {
+  if (filteredStories) {
+    for (const story of filteredStories) {
       tickerItems.push(`${story.emoji} ${story.title}: ${story.hook}`);
     }
   }
 
-  // Highlights extracted from story stats
-  const topScorerStory = gwData?.stories?.find((s) => s.story_id === 'top-scorer');
-  const gwStatsStory = gwData?.stories?.find((s) => s.story_id === 'gw-stats');
-  const chipStory = gwData?.stories?.find((s) => s.story_id === 'chip-usage');
-
-  const topScorerVal = topScorerStory?.stats?.find((st) => st.label.includes('Poin'))?.value ?? 'N/A';
-  const avgVal = gwStatsStory?.stats?.find((st) => st.label.includes('Avg'))?.value ?? 'N/A';
-  const highestVal = gwStatsStory?.stats?.find((st) => st.label.includes('Highest'))?.value ?? 'N/A';
-  const chipVal = chipStory?.stats?.find((st) => st.label.includes('Total'))?.value ?? '0 chips';
-
-  // If a story is clicked, show NewsletterDetailPage!
+  // If a story is clicked, show NewsletterDetailPage
   if (selectedStory) {
     return (
       <NewsletterDetailPage
@@ -616,102 +498,228 @@ export const NewsletterPage: React.FC = () => {
     <div style={{ display: 'flex', flexDirection: 'column', gap: '24px', width: '100%' }}>
       <style dangerouslySetInnerHTML={{ __html: styleSheet }} />
 
-      {/* Header Banner */}
-      <div
+      {/* Header Banner Card */}
+      <section
         style={{
+          border: '1px solid rgba(204,255,0,0.3)',
+          background: 'linear-gradient(135deg, #1a1a1a 0%, #141414 60%, #0f1a00 100%)',
+          borderRadius: '16px',
+          padding: '28px 32px',
+          position: 'relative',
+          overflow: 'hidden',
           display: 'flex',
           flexDirection: 'column',
-          gap: '8px',
-          borderBottom: '1px solid #1E1E1E',
-          paddingBottom: '20px',
+          gap: '12px',
+          zIndex: 1,
+          boxShadow: '0 12px 32px rgba(204,255,0,0.08)',
         }}
       >
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
-          <span
-            style={{
-              fontFamily: 'var(--font-mono)',
-              fontSize: '10px',
-              fontWeight: 800,
-              color: '#000',
-              backgroundColor: '#CCFF00',
-              padding: '3px 8px',
-              borderRadius: '4px',
-              letterSpacing: '0.15em',
-              textTransform: 'uppercase',
-            }}
-          >
-            FPL KINO HUB
-          </span>
-          <span
-            style={{
-              fontFamily: 'var(--font-mono)',
-              fontSize: '11px',
-              fontWeight: 700,
-              color: '#666',
-              letterSpacing: '0.1em',
-            }}
-          >
-            EDITORIAL DIGEST
-          </span>
-        </div>
+        {/* Left accent bar */}
+        <div
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '4px',
+            height: '100%',
+            background: 'linear-gradient(180deg, #CCFF00 0%, rgba(204,255,0,0.2) 100%)',
+            borderRadius: '16px 0 0 16px',
+          }}
+        />
 
-        <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', flexWrap: 'wrap', gap: '12px' }}>
-          <div>
-            <h1
-              style={{
-                fontFamily: 'var(--font-headline)',
-                fontSize: 'clamp(28px, 5vw, 48px)',
-                fontWeight: 900,
-                color: '#FFFFFF',
-                margin: 0,
-                lineHeight: 0.95,
-                textTransform: 'uppercase',
-                letterSpacing: '-0.02em',
-              }}
-            >
-              SPORTS NEWSLETTER
-            </h1>
-            <p
-              style={{
-                fontFamily: 'var(--font-body)',
-                fontSize: '13px',
-                color: '#888',
-                margin: '6px 0 0 0',
-              }}
-            >
-              Update berita, statistik, dan sorotan liga otomatis dari setiap Gameweek
-            </p>
-          </div>
+        {/* Background icon */}
+        <span
+          className="material-symbols-outlined"
+          style={{
+            position: 'absolute',
+            right: '-20px',
+            bottom: '-20px',
+            fontSize: '180px',
+            color: 'rgba(204, 255, 0, 0.04)',
+            pointerEvents: 'none',
+            userSelect: 'none',
+            fontStyle: 'normal',
+          }}
+        >
+          newspaper
+        </span>
 
-          {/* Gameweek Badge */}
-          {gwData && (
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '8px',
-                padding: '8px 14px',
-                backgroundColor: '#141414',
-                border: '1px solid #2A2A2A',
-                borderRadius: '100px',
-              }}
-            >
-              <div
+        <div style={{ position: 'relative', zIndex: 2, display: 'flex', flexDirection: 'column', gap: '8px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '12px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <span
                 style={{
-                  width: '7px',
-                  height: '7px',
-                  borderRadius: '50%',
+                  fontFamily: 'var(--font-mono)',
+                  fontSize: '10px',
+                  fontWeight: 800,
+                  color: '#000000',
                   backgroundColor: '#CCFF00',
-                  animation: 'pulse 1.5s ease-in-out infinite',
+                  padding: '3px 8px',
+                  borderRadius: '4px',
+                  letterSpacing: '0.15em',
+                  textTransform: 'uppercase',
                 }}
-              />
-              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '12px', fontWeight: 800, color: '#FFFFFF' }}>
-                {gwData.editionLabel}
+              >
+                EDITORIAL DIGEST
               </span>
             </div>
-          )}
+          </div>
+
+          <h1
+            style={{
+              fontFamily: 'var(--font-headline)',
+              fontSize: 'clamp(28px, 5vw, 40px)',
+              fontWeight: 900,
+              color: '#FFFFFF',
+              textTransform: 'uppercase',
+              letterSpacing: '-0.02em',
+              lineHeight: 0.95,
+              margin: '4px 0 0 0',
+            }}
+          >
+            NEWSLETTER
+          </h1>
+
+          {/* Subtitle words */}
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '10px',
+              marginTop: '4px',
+              flexWrap: 'wrap',
+            }}
+          >
+            {['PLAY', 'COMPETE', 'CONNECT'].map((word, idx) => (
+              <React.Fragment key={word}>
+                {idx > 0 && (
+                  <div
+                    style={{
+                      width: '5px',
+                      height: '5px',
+                      borderRadius: '50%',
+                      backgroundColor: '#CCFF00',
+                    }}
+                  />
+                )}
+                <span
+                  style={{
+                    fontFamily: 'var(--font-mono)',
+                    fontWeight: 800,
+                    color: '#FFFFFF',
+                    letterSpacing: '0.12em',
+                    fontSize: '12px',
+                    textTransform: 'uppercase',
+                  }}
+                >
+                  {word}
+                </span>
+              </React.Fragment>
+            ))}
+          </div>
+
+          {/* AI Banner tag */}
+          <div
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '6px',
+              marginTop: '8px',
+              padding: '4px 10px',
+              backgroundColor: 'rgba(204, 255, 0, 0.1)',
+              border: '1px solid rgba(204, 255, 0, 0.3)',
+              borderRadius: '6px',
+              width: 'fit-content',
+            }}
+          >
+            <span className="material-symbols-outlined" style={{ fontSize: '14px', color: '#CCFF00' }}>
+              auto_awesome
+            </span>
+            <span
+              style={{
+                fontFamily: 'var(--font-mono)',
+                fontSize: '11px',
+                fontWeight: 800,
+                color: '#CCFF00',
+                letterSpacing: '0.08em',
+                textTransform: 'uppercase',
+              }}
+            >
+              All content on this page is generated by AI.
+            </span>
+          </div>
         </div>
-      </div>
+      </section>
+
+      {/* ─── NEW FILTER BAR: GAMEWEEK + MATCHDAY ───────────────────────────── */}
+      <section
+        style={{
+          backgroundColor: '#141414',
+          border: '1px solid #222222',
+          borderRadius: '14px',
+          padding: '16px 20px',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '16px',
+        }}
+      >
+        {/* Gameweek Pill Selector */}
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '12px',
+            overflowX: 'auto',
+            whiteSpace: 'nowrap',
+            scrollbarWidth: 'none',
+            paddingBottom: '2px',
+          }}
+        >
+          <span
+            style={{
+              fontSize: '10px',
+              fontFamily: 'var(--font-mono)',
+              fontWeight: 800,
+              color: '#888888',
+              letterSpacing: '0.12em',
+              textTransform: 'uppercase',
+              flexShrink: 0,
+            }}
+          >
+            {t.selectGameweek.toUpperCase()}
+          </span>
+          <div style={{ display: 'flex', gap: '8px', alignItems: 'center', flexWrap: 'nowrap' }}>
+            {availableGws.map((gw) => {
+              const isActive = selectedGw === gw;
+              return (
+                <button
+                  key={gw}
+                  onClick={() => setSelectedGw(gw)}
+                  style={{
+                    padding: '5px 14px',
+                    borderRadius: '100px',
+                    fontFamily: 'var(--font-mono)',
+                    fontSize: '11px',
+                    fontWeight: 800,
+                    letterSpacing: '0.05em',
+                    cursor: 'pointer',
+                    whiteSpace: 'nowrap',
+                    flexShrink: 0,
+                    transition: 'all 0.2s ease',
+                    border: isActive ? '1px solid #CCFF00' : '1px solid #282828',
+                    backgroundColor: isActive ? 'rgba(204, 255, 0, 0.15)' : '#181818',
+                    color: isActive ? '#CCFF00' : '#888888',
+                    boxShadow: isActive ? '0 0 10px rgba(204, 255, 0, 0.2)' : 'none',
+                  }}
+                >
+                  GW{gw}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+      </section>
 
       {/* Live Ticker Bar */}
       {tickerItems.length > 0 && <NewsTicker items={tickerItems} gwNumber={gwData?.gwNumber ?? null} />}
@@ -765,8 +773,8 @@ export const NewsletterPage: React.FC = () => {
               COBA LAGI
             </button>
           </div>
-        ) : !gwData || gwData.stories.length === 0 ? (
-          /* Empty State */
+        ) : !gwData || filteredStories.length === 0 ? (
+          /* Empty State for GW */
           <div
             style={{
               padding: '64px 24px',
@@ -785,225 +793,51 @@ export const NewsletterPage: React.FC = () => {
                 margin: '0 0 8px 0',
               }}
             >
-              BELUM ADA BERITA UNTUK GW{selectedGw}
+              BELUM ADA BERITA UNTUK GAMEWEEK {selectedGw}
             </h3>
-            <p style={{ color: '#666', fontSize: '13px', margin: 0 }}>
+            <p style={{ color: '#666', fontSize: '13px', margin: 0, maxWidth: '480px', marginInline: 'auto' }}>
               Newsletter otomatis di-generate setelah pertandingan Gameweek ini selesai.
             </p>
           </div>
         ) : (
-          /* Stories Layout */
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '28px' }}>
-
-            {/* Hero Story Card */}
-            {heroStory && (
+          /* Gameweek Stories Layout */
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+            {/* Hero Story (First Story) */}
+            {filteredStories[0] && (
               <HeroCard
-                story={heroStory}
+                story={filteredStories[0]}
                 onClick={() =>
                   setSelectedStory({
                     gwNumber: gwData.gwNumber,
-                    storyId: heroStory.story_id,
+                    storyId: filteredStories[0].story_id,
                   })
                 }
               />
             )}
 
-            {/* GW Highlights Quick Stats Banner */}
-            <div
-              style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
-                gap: '12px',
-              }}
-            >
-              {[
-                {
-                  label: 'Rata-rata Liga',
-                  value: avgVal,
-                  sub: 'Skor rata-rata Kino Hub',
-                  icon: '📊',
-                },
-                {
-                  label: 'Highest FPL Global',
-                  value: highestVal,
-                  sub: 'Skor dunia tertinggi',
-                  icon: '🏆',
-                },
-                {
-                  label: 'Poin Top Scorer',
-                  value: topScorerVal,
-                  sub: topScorerStory?.title ?? 'Top Scorer GW',
-                  icon: '⭐',
-                },
-                {
-                  label: 'Penggunaan Chip',
-                  value: chipVal,
-                  sub: `Gameweek ${gwData.gwNumber}`,
-                  icon: '🃏',
-                },
-              ].map((item, idx) => (
-                <div
-                  key={idx}
-                  style={{
-                    backgroundColor: '#141414',
-                    border: '1px solid #222222',
-                    borderRadius: '12px',
-                    padding: '16px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '12px',
-                  }}
-                >
-                  <span style={{ fontSize: '24px', flexShrink: 0 }}>{item.icon}</span>
-                  <div>
-                    <div
-                      style={{
-                        fontSize: '9px',
-                        fontFamily: 'var(--font-mono)',
-                        fontWeight: 700,
-                        color: '#555',
-                        letterSpacing: '0.12em',
-                        textTransform: 'uppercase',
-                        marginBottom: '2px',
-                      }}
-                    >
-                      {item.label}
-                    </div>
-                    <div
-                      style={{
-                        fontSize: '18px',
-                        fontFamily: 'var(--font-mono)',
-                        fontWeight: 900,
-                        color: '#CCFF00',
-                        lineHeight: 1,
-                      }}
-                    >
-                      {item.value}
-                    </div>
-                    <div
-                      style={{
-                        fontSize: '10px',
-                        color: '#666',
-                        marginTop: '2px',
-                      }}
-                    >
-                      {item.sub}
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            {/* Stories grid — remaining stories after hero */}
-            {remainingStories.length > 0 && (
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                <div
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '12px',
-                  }}
-                >
-                  <h2
-                    style={{
-                      fontFamily: 'var(--font-headline)',
-                      fontSize: '18px',
-                      fontWeight: 900,
-                      color: '#FFFFFF',
-                      margin: 0,
-                      textTransform: 'uppercase',
-                      letterSpacing: '0.04em',
-                    }}
-                  >
-                    GW{gwData.gwNumber} STORIES
-                  </h2>
-                  <div
-                    style={{
-                      flex: 1,
-                      height: '1px',
-                      backgroundColor: '#222',
-                    }}
-                  />
-                  <span
-                    style={{
-                      fontSize: '10px',
-                      fontFamily: 'var(--font-mono)',
-                      color: '#555',
-                      whiteSpace: 'nowrap',
-                    }}
-                  >
-                    {remainingStories.length} cerita • klik card untuk detail
-                  </span>
-                </div>
-
-                <div
-                  style={{
-                    display: 'grid',
-                    gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))',
-                    gap: '14px',
-                  }}
-                >
-                  {remainingStories.map((story) => (
-                    <StoryCard
-                      key={story.id}
-                      story={story}
-                      onClick={() =>
-                        setSelectedStory({
-                          gwNumber: gwData.gwNumber,
-                          storyId: story.story_id,
-                        })
-                      }
-                    />
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* ── GW Switcher (Per Gameweek) ─────────────────────────── */}
-            <div
-              style={{
-                marginTop: '8px',
-                borderTop: '1px solid #1e1e1e',
-                paddingTop: '20px',
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '12px',
-              }}
-            >
-              <span
-                style={{
-                  fontSize: '10px',
-                  fontFamily: 'var(--font-mono)',
-                  fontWeight: 700,
-                  color: '#555',
-                  letterSpacing: '0.15em',
-                  textTransform: 'uppercase',
-                }}
-              >
-                PILIH GAMEWEEK
-              </span>
+            {/* Remaining Stories Grid */}
+            {filteredStories.length > 1 && (
               <div
-                ref={gwSwitcherRef}
                 style={{
-                  display: 'flex',
-                  gap: '8px',
-                  overflowX: 'auto',
-                  paddingBottom: '4px',
-                  scrollbarWidth: 'none',
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))',
+                  gap: '14px',
                 }}
               >
-                {availableGws.map((gw) => (
-                  <button
-                    key={gw}
-                    className={`gw-pill ${selectedGw === gw ? 'gw-pill-active' : ''}`}
-                    onClick={() => setSelectedGw(gw)}
-                  >
-                    GW{gw}
-                  </button>
+                {filteredStories.slice(1).map((story) => (
+                  <StoryCard
+                    key={story.id}
+                    story={story}
+                    onClick={() =>
+                      setSelectedStory({
+                        gwNumber: gwData.gwNumber,
+                        storyId: story.story_id,
+                      })
+                    }
+                  />
                 ))}
               </div>
-            </div>
-
+            )}
           </div>
         )}
       </div>

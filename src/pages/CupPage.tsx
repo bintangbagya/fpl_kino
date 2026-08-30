@@ -1,29 +1,8 @@
 import React from 'react';
-import { mockLeagueStandingsByGw } from '../data/dummyData';
+import { useCupPageData } from '../hooks/useCupPageData';
 
 export const CupPage: React.FC = () => {
-  // Fetch top 16 teams from GW6 standings to populate Round of 16 matchups
-  const top16Teams = mockLeagueStandingsByGw['GW6']?.slice(0, 16) || [];
-
-  // Matchups mapping:
-  // Match 1: #1 vs #9
-  // Match 2: #2 vs #10
-  // Match 3: #3 vs #11
-  // Match 4: #4 vs #12
-  // Match 5: #5 vs #13
-  // Match 6: #6 vs #14
-  // Match 7: #7 vs #15
-  // Match 8: #8 vs #16
-  const r16Matchups = [
-    { home: top16Teams[0], away: top16Teams[8] },
-    { home: top16Teams[1], away: top16Teams[9] },
-    { home: top16Teams[2], away: top16Teams[10] },
-    { home: top16Teams[3], away: top16Teams[11] },
-    { home: top16Teams[4], away: top16Teams[12] },
-    { home: top16Teams[5], away: top16Teams[13] },
-    { home: top16Teams[6], away: top16Teams[14] },
-    { home: top16Teams[7], away: top16Teams[15] },
-  ];
+  const { isGw19Finished, r16Matchups, loading, error } = useCupPageData();
 
   return (
     <div
@@ -43,103 +22,131 @@ export const CupPage: React.FC = () => {
           right: 0,
           width: '500px',
           height: '500px',
-          background: 'radial-gradient(circle, rgba(204, 255, 0, 0.05) 0%, rgba(13, 13, 13, 0) 70%)',
+          background: 'radial-gradient(circle, rgba(204, 255, 0, 0.04) 0%, rgba(13, 13, 13, 0) 70%)',
           pointerEvents: 'none',
           zIndex: 0,
         }}
       />
 
-      {/* Header Banner Card */}
+      {/* 1. Header Banner Card */}
       <section
         style={{
-          border: '1px solid #222222',
-          backgroundColor: '#141414',
-          borderRadius: '14px',
-          padding: '24px 32px',
+          border: '1px solid rgba(204,255,0,0.3)',
+          background: 'linear-gradient(135deg, #1a1a1a 0%, #141414 60%, #0f1a00 100%)',
+          borderRadius: '16px',
+          padding: '28px 32px',
           position: 'relative',
           overflow: 'hidden',
           display: 'flex',
           flexDirection: 'column',
-          gap: '8px',
+          gap: '12px',
           zIndex: 1,
+          boxShadow: '0 12px 32px rgba(204,255,0,0.08)',
         }}
       >
-        {/* Top accent bar */}
+        {/* Left accent bar */}
         <div
           style={{
             position: 'absolute',
             top: 0,
             left: 0,
-            right: 0,
-            height: '3px',
-            background: 'linear-gradient(90deg, #CCFF00 0%, #00FF88 100%)',
+            width: '4px',
+            height: '100%',
+            background: 'linear-gradient(180deg, #CCFF00 0%, rgba(204,255,0,0.2) 100%)',
+            borderRadius: '16px 0 0 16px',
           }}
         />
 
-        {/* Background Soccer Ball Decoration */}
-        <span
-          className="material-symbols-outlined"
+        {/* Decorative background trophy */}
+        <div
           style={{
             position: 'absolute',
             right: '-20px',
             bottom: '-20px',
             fontSize: '180px',
-            color: 'rgba(204, 255, 0, 0.03)',
-            pointerEvents: 'none',
+            opacity: 0.04,
             userSelect: 'none',
-            fontStyle: 'normal',
+            pointerEvents: 'none',
+            lineHeight: 1,
           }}
         >
-          sports_soccer
-        </span>
+          🏆
+        </div>
 
-        <div style={{ position: 'relative', zIndex: 2 }}>
-          <p
-            className="font-label-caps"
-            style={{
-              color: '#CCFF00',
-              letterSpacing: '0.2em',
-              textTransform: 'uppercase',
-              fontSize: '11px',
-              margin: 0,
-            }}
-          >
-            UNOFFICIAL CUP
-          </p>
+        <div style={{ position: 'relative', zIndex: 2, display: 'flex', flexDirection: 'column', gap: '8px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <span
+              style={{
+                fontFamily: 'var(--font-mono)',
+                fontSize: '10px',
+                fontWeight: 800,
+                color: '#000000',
+                backgroundColor: '#CCFF00',
+                padding: '3px 8px',
+                borderRadius: '4px',
+                letterSpacing: '0.15em',
+                textTransform: 'uppercase',
+              }}
+            >
+              UNOFFICIAL CUP
+            </span>
+          </div>
+
           <h1
-            className="font-display-lg"
             style={{
-              fontSize: '40px',
+              fontFamily: 'var(--font-headline)',
+              fontSize: 'clamp(28px, 5vw, 40px)',
+              fontWeight: 900,
               color: '#FFFFFF',
-              fontStyle: 'italic',
               textTransform: 'uppercase',
-              margin: '4px 0 8px 0',
-              lineHeight: 1,
+              letterSpacing: '-0.02em',
+              lineHeight: 0.95,
+              margin: 0,
             }}
           >
             FPL KINO CUP
           </h1>
+
           <div
-            className="font-label-caps"
             style={{
               display: 'flex',
               alignItems: 'center',
-              gap: '8px',
-              color: '#9E9E9E',
-              letterSpacing: '0.15em',
-              fontSize: '11px',
+              gap: '10px',
+              marginTop: '4px',
+              flexWrap: 'wrap',
             }}
           >
-            <span>PLAY</span>
-            <span style={{ color: '#CCFF00' }}>•</span>
-            <span>COMPETE</span>
-            <span style={{ color: '#CCFF00' }}>•</span>
-            <span>CONNECT</span>
+            {['PLAY', 'COMPETE', 'CONNECT'].map((word, idx) => (
+              <React.Fragment key={word}>
+                {idx > 0 && (
+                  <div
+                    style={{
+                      width: '5px',
+                      height: '5px',
+                      borderRadius: '50%',
+                      backgroundColor: '#CCFF00',
+                    }}
+                  />
+                )}
+                <span
+                  style={{
+                    fontFamily: 'var(--font-mono)',
+                    fontWeight: 800,
+                    color: '#FFFFFF',
+                    letterSpacing: '0.12em',
+                    fontSize: '12px',
+                    textTransform: 'uppercase',
+                  }}
+                >
+                  {word}
+                </span>
+              </React.Fragment>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* Cup Schedule Card */}
+      {/* 2. Cup Schedule Card */}
       <section
         style={{
           border: '1px solid #222222',
@@ -181,7 +188,7 @@ export const CupPage: React.FC = () => {
           style={{
             display: 'flex',
             alignItems: 'center',
-            gap: '8px',
+            gap: '10px',
             marginBottom: '24px',
             position: 'relative',
             zIndex: 2,
@@ -191,12 +198,14 @@ export const CupPage: React.FC = () => {
             calendar_month
           </span>
           <h3
-            className="font-headline-lg"
             style={{
-              fontSize: '24px',
+              fontFamily: 'var(--font-headline)',
+              fontSize: '22px',
+              fontWeight: 900,
               color: '#FFFFFF',
               margin: 0,
-              letterSpacing: '-0.01em',
+              letterSpacing: '0.02em',
+              textTransform: 'uppercase',
             }}
           >
             CUP SCHEDULE
@@ -213,7 +222,7 @@ export const CupPage: React.FC = () => {
             zIndex: 2,
           }}
         >
-          {/* Round of 16 (GW 19) */}
+          {/* Round of 16 (GW 20) */}
           <div style={{ display: 'flex', gap: '16px', alignItems: 'flex-start' }}>
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px' }}>
               <div
@@ -222,32 +231,43 @@ export const CupPage: React.FC = () => {
                   height: '16px',
                   borderRadius: '50%',
                   backgroundColor: '#CCFF00',
-                  boxShadow: '0 0 10px rgba(204, 255, 0, 0.5)',
+                  boxShadow: '0 0 12px rgba(204, 255, 0, 0.6)',
                 }}
               />
-              <div style={{ width: '1px', height: '32px', backgroundColor: 'rgba(204, 255, 0, 0.3)' }} />
+              <div style={{ width: '1px', height: '32px', backgroundColor: 'rgba(204, 255, 0, 0.4)' }} />
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', marginTop: '-2px' }}>
-              <span className="font-label-caps" style={{ color: '#CCFF00', fontSize: '10px' }}>
-                LOADING...
+              <span
+                style={{
+                  fontFamily: 'var(--font-mono)',
+                  color: '#CCFF00',
+                  fontSize: '10px',
+                  fontWeight: 800,
+                  letterSpacing: '0.1em',
+                  textTransform: 'uppercase',
+                }}
+              >
+                QUALIFICATION PHASE
               </span>
               <span
-                className="font-headline-lg"
                 style={{
+                  fontFamily: 'var(--font-headline)',
                   fontSize: '18px',
+                  fontWeight: 900,
                   color: '#FFFFFF',
                   marginTop: '2px',
+                  textTransform: 'uppercase',
                 }}
               >
                 Round of 16
               </span>
-              <span className="font-body-sm" style={{ color: '#9E9E9E', marginTop: '2px' }}>
-                Gameweek 19
+              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', color: '#9E9E9E', marginTop: '2px' }}>
+                Gameweek 20
               </span>
             </div>
           </div>
 
-          {/* Round of 8 (GW 20) */}
+          {/* Round of 8 (GW 21) */}
           <div style={{ display: 'flex', gap: '16px', alignItems: 'flex-start' }}>
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px' }}>
               <div
@@ -255,33 +275,44 @@ export const CupPage: React.FC = () => {
                   width: '16px',
                   height: '16px',
                   borderRadius: '50%',
-                  border: '2px solid #222222',
+                  border: '2px solid #333333',
                   backgroundColor: '#0D0D0D',
                 }}
               />
               <div style={{ width: '1px', height: '32px', backgroundColor: '#222222' }} />
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', marginTop: '-2px', opacity: 0.7 }}>
-              <span className="font-label-caps" style={{ color: '#9E9E9E', fontSize: '10px' }}>
+              <span
+                style={{
+                  fontFamily: 'var(--font-mono)',
+                  color: '#9E9E9E',
+                  fontSize: '10px',
+                  fontWeight: 800,
+                  letterSpacing: '0.1em',
+                  textTransform: 'uppercase',
+                }}
+              >
                 UPCOMING
               </span>
               <span
-                className="font-headline-lg"
                 style={{
+                  fontFamily: 'var(--font-headline)',
                   fontSize: '18px',
+                  fontWeight: 900,
                   color: '#FFFFFF',
                   marginTop: '2px',
+                  textTransform: 'uppercase',
                 }}
               >
-                Round of 8
+                Quarter-Finals
               </span>
-              <span className="font-body-sm" style={{ color: '#9E9E9E', marginTop: '2px' }}>
-                Gameweek 20
+              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', color: '#9E9E9E', marginTop: '2px' }}>
+                Gameweek 21
               </span>
             </div>
           </div>
 
-          {/* Semi-Finals (GW 21) */}
+          {/* Semi-Finals (GW 22) */}
           <div style={{ display: 'flex', gap: '16px', alignItems: 'flex-start' }}>
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px' }}>
               <div
@@ -289,33 +320,44 @@ export const CupPage: React.FC = () => {
                   width: '16px',
                   height: '16px',
                   borderRadius: '50%',
-                  border: '2px solid #222222',
+                  border: '2px solid #333333',
                   backgroundColor: '#0D0D0D',
                 }}
               />
               <div style={{ width: '1px', height: '32px', backgroundColor: '#222222' }} />
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', marginTop: '-2px', opacity: 0.5 }}>
-              <span className="font-label-caps" style={{ color: '#9E9E9E', fontSize: '10px' }}>
+              <span
+                style={{
+                  fontFamily: 'var(--font-mono)',
+                  color: '#9E9E9E',
+                  fontSize: '10px',
+                  fontWeight: 800,
+                  letterSpacing: '0.1em',
+                  textTransform: 'uppercase',
+                }}
+              >
                 UPCOMING
               </span>
               <span
-                className="font-headline-lg"
                 style={{
+                  fontFamily: 'var(--font-headline)',
                   fontSize: '18px',
+                  fontWeight: 900,
                   color: '#FFFFFF',
                   marginTop: '2px',
+                  textTransform: 'uppercase',
                 }}
               >
                 Semi-Finals
               </span>
-              <span className="font-body-sm" style={{ color: '#9E9E9E', marginTop: '2px' }}>
-                Gameweek 21
+              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', color: '#9E9E9E', marginTop: '2px' }}>
+                Gameweek 22
               </span>
             </div>
           </div>
 
-          {/* Final Match (GW 22) */}
+          {/* Final Match (GW 23) */}
           <div style={{ display: 'flex', gap: '16px', alignItems: 'flex-start' }}>
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px' }}>
               <div
@@ -326,38 +368,66 @@ export const CupPage: React.FC = () => {
                   alignItems: 'center',
                   justifyContent: 'center',
                   borderRadius: '50%',
-                  border: '2px solid #222222',
+                  border: '2px solid #333333',
                   backgroundColor: '#201f1f',
                 }}
               >
-                <span className="material-symbols-outlined" style={{ fontSize: '12px', color: '#9E9E9E' }}>
+                <span className="material-symbols-outlined" style={{ fontSize: '13px', color: '#CCFF00' }}>
                   emoji_events
                 </span>
               </div>
             </div>
-            <div style={{ display: 'flex', flexDirection: 'column', marginTop: '-2px', opacity: 0.4 }}>
-              <span className="font-label-caps" style={{ color: '#9E9E9E', fontSize: '10px' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', marginTop: '-2px', opacity: 0.5 }}>
+              <span
+                style={{
+                  fontFamily: 'var(--font-mono)',
+                  color: '#CCFF00',
+                  fontSize: '10px',
+                  fontWeight: 800,
+                  letterSpacing: '0.1em',
+                  textTransform: 'uppercase',
+                }}
+              >
                 THE CLIMAX
               </span>
               <span
-                className="font-headline-lg"
                 style={{
+                  fontFamily: 'var(--font-headline)',
                   fontSize: '18px',
+                  fontWeight: 900,
                   color: '#FFFFFF',
                   marginTop: '2px',
+                  textTransform: 'uppercase',
                 }}
               >
                 Final Match
               </span>
-              <span className="font-body-sm" style={{ color: '#9E9E9E', marginTop: '2px' }}>
-                Gameweek 22
+              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', color: '#9E9E9E', marginTop: '2px' }}>
+                Gameweek 23
               </span>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Tournament Bracket Section */}
+      {/* Error state */}
+      {error && (
+        <div
+          style={{
+            backgroundColor: '#1a0000',
+            border: '1px solid #FF4444',
+            borderRadius: '8px',
+            padding: '12px 16px',
+            color: '#FF4444',
+            fontFamily: 'var(--font-mono)',
+            fontSize: '12px',
+          }}
+        >
+          ⚠️ Error loading cup data: {error}
+        </div>
+      )}
+
+      {/* 3. Tournament Bracket Section */}
       <section
         style={{
           display: 'flex',
@@ -366,16 +436,75 @@ export const CupPage: React.FC = () => {
           zIndex: 1,
         }}
       >
-        <h2
-          className="font-headline-lg"
-          style={{
-            fontSize: '32px',
-            color: '#FFFFFF',
-            margin: 0,
-          }}
-        >
-          Tournament Bracket
-        </h2>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+          <h2
+            style={{
+              fontFamily: 'var(--font-headline)',
+              fontSize: '26px',
+              fontWeight: 900,
+              color: '#CCFF00',
+              textTransform: 'uppercase',
+              letterSpacing: '0.02em',
+              margin: 0,
+            }}
+          >
+            TOURNAMENT BRACKET
+          </h2>
+
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+            {!isGw19Finished && (
+              <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <span
+                  style={{
+                    fontFamily: 'var(--font-mono)',
+                    fontSize: '11px',
+                    fontWeight: 800,
+                    color: '#CCFF00',
+                    backgroundColor: 'rgba(204, 255, 0, 0.12)',
+                    border: '1px solid rgba(204, 255, 0, 0.3)',
+                    padding: '3px 10px',
+                    borderRadius: '100px',
+                    letterSpacing: '0.08em',
+                    textTransform: 'uppercase',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '6px',
+                  }}
+                >
+                  <span className="material-symbols-outlined" style={{ fontSize: '13px', color: '#CCFF00' }}>
+                    hourglass_top
+                  </span>
+                  QUALIFICATION IN PROGRESS (GW19 CUTOFF)
+                </span>
+              </div>
+            )}
+
+            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <span
+                style={{
+                  fontFamily: 'var(--font-mono)',
+                  fontSize: '11px',
+                  fontWeight: 800,
+                  color: '#CCFF00',
+                  backgroundColor: 'rgba(204, 255, 0, 0.12)',
+                  border: '1px solid rgba(204, 255, 0, 0.3)',
+                  padding: '3px 10px',
+                  borderRadius: '100px',
+                  letterSpacing: '0.08em',
+                  textTransform: 'uppercase',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                }}
+              >
+                <span className="material-symbols-outlined" style={{ fontSize: '13px', color: '#CCFF00' }}>
+                  account_tree
+                </span>
+                BRACKET MATCHES (GW20 - GW23)
+              </span>
+            </div>
+          </div>
+        </div>
 
         {/* Scrollable tree container */}
         <div
@@ -406,18 +535,20 @@ export const CupPage: React.FC = () => {
               }}
             >
               <h3
-                className="font-label-caps"
                 style={{
+                  fontFamily: 'var(--font-mono)',
                   fontSize: '12px',
                   color: '#CCFF00',
                   textAlign: 'center',
                   marginBottom: '8px',
-                  paddingBottom: '4px',
-                  borderBottom: '2px solid rgba(204, 255, 0, 0.3)',
-                  fontWeight: 700,
+                  paddingBottom: '6px',
+                  borderBottom: '2px solid rgba(204, 255, 0, 0.4)',
+                  fontWeight: 800,
+                  letterSpacing: '0.1em',
+                  textTransform: 'uppercase',
                 }}
               >
-                R16 (GW19)
+                R16 (GW20)
               </h3>
               <div
                 style={{
@@ -428,7 +559,13 @@ export const CupPage: React.FC = () => {
                   gap: '16px',
                 }}
               >
-                {r16Matchups.map((match, idx) => {
+                {loading && (
+                  <div style={{ textAlign: 'center', color: '#9E9E9E', fontFamily: 'var(--font-mono)', fontSize: '12px' }}>
+                    Loading bracket matchups...
+                  </div>
+                )}
+
+                {!loading && r16Matchups.map((match, idx) => {
                   const isUpperMatch = idx % 2 === 0;
 
                   return (
@@ -439,11 +576,12 @@ export const CupPage: React.FC = () => {
                         display: 'flex',
                         flexDirection: 'column',
                         backgroundColor: '#141414',
-                        borderRadius: '14px',
+                        borderRadius: '10px',
                         border: '1px solid #222222',
                         overflow: 'hidden',
                         height: '56px',
                         width: '100%',
+                        boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
                       }}
                     >
                       {/* Home Team */}
@@ -454,33 +592,34 @@ export const CupPage: React.FC = () => {
                           height: '50%',
                           padding: '0 12px',
                           backgroundColor: '#141414',
-                          borderBottom: '1px solid #222222',
+                          borderBottom: '1px solid #1e1e1e',
+                          opacity: isGw19Finished ? 1 : 0.9,
                         }}
                       >
                         <span
-                          className="font-label-caps"
                           style={{
+                            fontFamily: 'var(--font-mono)',
                             fontSize: '11px',
                             color: '#CCFF00',
-                            fontWeight: 700,
+                            fontWeight: 800,
                             marginRight: '8px',
                           }}
                         >
-                          #{match.home?.pos || (idx * 2 + 1)}
+                          #{match.home.pos}
                         </span>
                         <span
-                          className="font-body-sm"
                           style={{
+                            fontFamily: isGw19Finished ? 'var(--font-body)' : 'var(--font-mono)',
                             fontWeight: 700,
-                            fontSize: '13px',
-                            color: '#FFFFFF',
-                            textTransform: 'uppercase',
+                            fontSize: isGw19Finished ? '13px' : '12px',
+                            color: isGw19Finished ? '#FFFFFF' : '#CCFF00',
+                            letterSpacing: isGw19Finished ? 'normal' : '0.05em',
                             overflow: 'hidden',
                             textOverflow: 'ellipsis',
                             whiteSpace: 'nowrap',
                           }}
                         >
-                          {match.home?.team || 'LOADING...'}
+                          {match.home.team}
                         </span>
                       </div>
 
@@ -492,33 +631,33 @@ export const CupPage: React.FC = () => {
                           height: '50%',
                           padding: '0 12px',
                           backgroundColor: '#141414',
-                          opacity: 0.8,
+                          opacity: isGw19Finished ? 0.85 : 0.9,
                         }}
                       >
                         <span
-                          className="font-label-caps"
                           style={{
+                            fontFamily: 'var(--font-mono)',
                             fontSize: '11px',
-                            color: '#9E9E9E',
-                            fontWeight: 700,
+                            color: isGw19Finished ? '#9E9E9E' : '#CCFF00',
+                            fontWeight: isGw19Finished ? 700 : 800,
                             marginRight: '8px',
                           }}
                         >
-                          #{match.away?.pos || (idx * 2 + 2)}
+                          #{match.away.pos}
                         </span>
                         <span
-                          className="font-body-sm"
                           style={{
+                            fontFamily: isGw19Finished ? 'var(--font-body)' : 'var(--font-mono)',
                             fontWeight: 700,
-                            fontSize: '13px',
-                            color: '#9E9E9E',
-                            textTransform: 'uppercase',
+                            fontSize: isGw19Finished ? '13px' : '12px',
+                            color: isGw19Finished ? '#c4c9ac' : '#CCFF00',
+                            letterSpacing: isGw19Finished ? 'normal' : '0.05em',
                             overflow: 'hidden',
                             textOverflow: 'ellipsis',
                             whiteSpace: 'nowrap',
                           }}
                         >
-                          {match.away?.team || 'LOADING...'}
+                          {match.away.team}
                         </span>
                       </div>
 
@@ -530,7 +669,7 @@ export const CupPage: React.FC = () => {
                           top: '50%',
                           width: '24px',
                           height: '2px',
-                          backgroundColor: 'rgba(204, 255, 0, 0.3)',
+                          backgroundColor: 'rgba(204, 255, 0, 0.4)',
                         }}
                       />
                       <div
@@ -540,8 +679,8 @@ export const CupPage: React.FC = () => {
                           top: isUpperMatch ? '50%' : 'auto',
                           bottom: isUpperMatch ? 'auto' : '50%',
                           width: '2px',
-                          height: 'calc(50% + 20px)', // matches vertical spacing to next level
-                          backgroundColor: 'rgba(204, 255, 0, 0.3)',
+                          height: 'calc(50% + 20px)',
+                          backgroundColor: 'rgba(204, 255, 0, 0.4)',
                         }}
                       />
                     </div>
@@ -561,18 +700,20 @@ export const CupPage: React.FC = () => {
               }}
             >
               <h3
-                className="font-label-caps"
                 style={{
+                  fontFamily: 'var(--font-mono)',
                   fontSize: '12px',
-                  color: '#9E9E9E',
+                  color: '#666666',
                   textAlign: 'center',
                   marginBottom: '8px',
-                  paddingBottom: '4px',
+                  paddingBottom: '6px',
                   borderBottom: '2px solid #222222',
-                  fontWeight: 700,
+                  fontWeight: 800,
+                  letterSpacing: '0.1em',
+                  textTransform: 'uppercase',
                 }}
               >
-                QF (GW20)
+                QF (GW21)
               </h3>
               <div
                 style={{
@@ -593,7 +734,7 @@ export const CupPage: React.FC = () => {
                         display: 'flex',
                         flexDirection: 'column',
                         backgroundColor: '#141414',
-                        borderRadius: '14px',
+                        borderRadius: '10px',
                         border: '1px solid #222222',
                         padding: '4px',
                         opacity: 0.5,
@@ -604,7 +745,7 @@ export const CupPage: React.FC = () => {
                       <div
                         style={{
                           height: 'calc(50% - 2px)',
-                          backgroundColor: '#201f1f',
+                          backgroundColor: '#1c1c1c',
                           borderRadius: '6px',
                           marginBottom: '4px',
                         }}
@@ -612,7 +753,7 @@ export const CupPage: React.FC = () => {
                       <div
                         style={{
                           height: 'calc(50% - 2px)',
-                          backgroundColor: '#201f1f',
+                          backgroundColor: '#1c1c1c',
                           borderRadius: '6px',
                         }}
                       />
@@ -625,7 +766,7 @@ export const CupPage: React.FC = () => {
                           top: '50%',
                           width: '24px',
                           height: '2px',
-                          backgroundColor: 'rgba(204, 255, 0, 0.3)',
+                          backgroundColor: 'rgba(204, 255, 0, 0.4)',
                         }}
                       />
 
@@ -637,7 +778,7 @@ export const CupPage: React.FC = () => {
                           top: '50%',
                           width: '24px',
                           height: '2px',
-                          backgroundColor: 'rgba(204, 255, 0, 0.3)',
+                          backgroundColor: 'rgba(204, 255, 0, 0.4)',
                         }}
                       />
                       <div
@@ -647,8 +788,8 @@ export const CupPage: React.FC = () => {
                           top: isUpperMatch ? '50%' : 'auto',
                           bottom: isUpperMatch ? 'auto' : '50%',
                           width: '2px',
-                          height: 'calc(100% + 56px)', // larger vertical span
-                          backgroundColor: 'rgba(204, 255, 0, 0.3)',
+                          height: 'calc(100% + 56px)',
+                          backgroundColor: 'rgba(204, 255, 0, 0.4)',
                         }}
                       />
                     </div>
@@ -668,18 +809,20 @@ export const CupPage: React.FC = () => {
               }}
             >
               <h3
-                className="font-label-caps"
                 style={{
+                  fontFamily: 'var(--font-mono)',
                   fontSize: '12px',
-                  color: '#9E9E9E',
+                  color: '#666666',
                   textAlign: 'center',
                   marginBottom: '8px',
-                  paddingBottom: '4px',
+                  paddingBottom: '6px',
                   borderBottom: '2px solid #222222',
-                  fontWeight: 700,
+                  fontWeight: 800,
+                  letterSpacing: '0.1em',
+                  textTransform: 'uppercase',
                 }}
               >
-                SF (GW21)
+                SF (GW22)
               </h3>
               <div
                 style={{
@@ -700,7 +843,7 @@ export const CupPage: React.FC = () => {
                         display: 'flex',
                         flexDirection: 'column',
                         backgroundColor: '#141414',
-                        borderRadius: '14px',
+                        borderRadius: '10px',
                         border: '1px solid #222222',
                         padding: '4px',
                         opacity: 0.5,
@@ -711,7 +854,7 @@ export const CupPage: React.FC = () => {
                       <div
                         style={{
                           height: 'calc(50% - 2px)',
-                          backgroundColor: '#201f1f',
+                          backgroundColor: '#1c1c1c',
                           borderRadius: '6px',
                           marginBottom: '4px',
                         }}
@@ -719,7 +862,7 @@ export const CupPage: React.FC = () => {
                       <div
                         style={{
                           height: 'calc(50% - 2px)',
-                          backgroundColor: '#201f1f',
+                          backgroundColor: '#1c1c1c',
                           borderRadius: '6px',
                         }}
                       />
@@ -732,7 +875,7 @@ export const CupPage: React.FC = () => {
                           top: '50%',
                           width: '24px',
                           height: '2px',
-                          backgroundColor: 'rgba(204, 255, 0, 0.3)',
+                          backgroundColor: 'rgba(204, 255, 0, 0.4)',
                         }}
                       />
 
@@ -744,7 +887,7 @@ export const CupPage: React.FC = () => {
                           top: '50%',
                           width: '24px',
                           height: '2px',
-                          backgroundColor: 'rgba(204, 255, 0, 0.3)',
+                          backgroundColor: 'rgba(204, 255, 0, 0.4)',
                         }}
                       />
                       <div
@@ -754,8 +897,8 @@ export const CupPage: React.FC = () => {
                           top: isUpperMatch ? '50%' : 'auto',
                           bottom: isUpperMatch ? 'auto' : '50%',
                           width: '2px',
-                          height: 'calc(200% + 56px)', // even larger vertical span
-                          backgroundColor: 'rgba(204, 255, 0, 0.3)',
+                          height: 'calc(200% + 56px)',
+                          backgroundColor: 'rgba(204, 255, 0, 0.4)',
                         }}
                       />
                     </div>
@@ -775,18 +918,20 @@ export const CupPage: React.FC = () => {
               }}
             >
               <h3
-                className="font-label-caps"
                 style={{
+                  fontFamily: 'var(--font-mono)',
                   fontSize: '12px',
-                  color: '#9E9E9E',
+                  color: '#CCFF00',
                   textAlign: 'center',
                   marginBottom: '8px',
-                  paddingBottom: '4px',
-                  borderBottom: '2px solid #222222',
-                  fontWeight: 700,
+                  paddingBottom: '6px',
+                  borderBottom: '2px solid rgba(204, 255, 0, 0.4)',
+                  fontWeight: 800,
+                  letterSpacing: '0.1em',
+                  textTransform: 'uppercase',
                 }}
               >
-                FINAL (GW22)
+                FINAL (GW23)
               </h3>
               <div
                 style={{
@@ -802,10 +947,10 @@ export const CupPage: React.FC = () => {
                     display: 'flex',
                     flexDirection: 'column',
                     backgroundColor: '#141414',
-                    borderRadius: '14px',
+                    borderRadius: '10px',
                     border: '2px solid rgba(204, 255, 0, 0.3)',
                     padding: '4px',
-                    boxShadow: '0 0 12px rgba(204, 255, 0, 0.05)',
+                    boxShadow: '0 0 16px rgba(204, 255, 0, 0.08)',
                     height: '64px',
                     width: '100%',
                   }}
@@ -813,7 +958,7 @@ export const CupPage: React.FC = () => {
                   <div
                     style={{
                       height: 'calc(50% - 2px)',
-                      backgroundColor: '#201f1f',
+                      backgroundColor: '#1c1c1c',
                       borderRadius: '6px',
                       marginBottom: '4px',
                     }}
@@ -821,7 +966,7 @@ export const CupPage: React.FC = () => {
                   <div
                     style={{
                       height: 'calc(50% - 2px)',
-                      backgroundColor: '#201f1f',
+                      backgroundColor: '#1c1c1c',
                       borderRadius: '6px',
                     }}
                   />
@@ -834,7 +979,7 @@ export const CupPage: React.FC = () => {
                       top: '50%',
                       width: '24px',
                       height: '2px',
-                      backgroundColor: 'rgba(204, 255, 0, 0.3)',
+                      backgroundColor: 'rgba(204, 255, 0, 0.4)',
                     }}
                   />
                 </div>

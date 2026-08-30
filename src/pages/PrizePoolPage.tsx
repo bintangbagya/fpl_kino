@@ -85,30 +85,33 @@ export const PrizePoolPage: React.FC = () => {
       {/* Header Banner Card */}
       <section
         style={{
-          border: '1px solid #222222',
-          backgroundColor: '#141414',
-          borderRadius: '14px',
-          padding: '24px 32px',
+          border: '1px solid rgba(204,255,0,0.3)',
+          background: 'linear-gradient(135deg, #1a1a1a 0%, #141414 60%, #0f1a00 100%)',
+          borderRadius: '16px',
+          padding: '28px 32px',
           position: 'relative',
           overflow: 'hidden',
           display: 'flex',
           flexDirection: 'column',
-          gap: '8px',
+          gap: '12px',
           zIndex: 1,
+          boxShadow: '0 12px 32px rgba(204,255,0,0.08)',
         }}
       >
-        {/* Top accent bar */}
+        {/* Left accent bar */}
         <div
           style={{
             position: 'absolute',
             top: 0,
             left: 0,
-            right: 0,
-            height: '3px',
-            background: 'linear-gradient(90deg, #CCFF00 0%, #00FF88 100%)',
+            width: '4px',
+            height: '100%',
+            background: 'linear-gradient(180deg, #CCFF00 0%, rgba(204,255,0,0.2) 100%)',
+            borderRadius: '16px 0 0 16px',
           }}
         />
 
+        {/* Decorative background soccer icon */}
         <span
           className="material-symbols-outlined"
           style={{
@@ -116,7 +119,7 @@ export const PrizePoolPage: React.FC = () => {
             right: '-20px',
             bottom: '-20px',
             fontSize: '180px',
-            color: 'rgba(204, 255, 0, 0.03)',
+            color: 'rgba(204, 255, 0, 0.04)',
             pointerEvents: 'none',
             userSelect: 'none',
             fontStyle: 'normal',
@@ -124,48 +127,76 @@ export const PrizePoolPage: React.FC = () => {
         >
           sports_soccer
         </span>
-        <div style={{ position: 'relative', zIndex: 2 }}>
-          <p
-            className="font-label-caps"
-            style={{
-              color: '#CCFF00',
-              letterSpacing: '0.2em',
-              textTransform: 'uppercase',
-              fontSize: '11px',
-              margin: 0,
-            }}
-          >
-            REWARDS & PRIZES
-          </p>
+
+        <div style={{ position: 'relative', zIndex: 2, display: 'flex', flexDirection: 'column', gap: '8px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <span
+              style={{
+                fontFamily: 'var(--font-mono)',
+                fontSize: '10px',
+                fontWeight: 800,
+                color: '#000000',
+                backgroundColor: '#CCFF00',
+                padding: '3px 8px',
+                borderRadius: '4px',
+                letterSpacing: '0.15em',
+                textTransform: 'uppercase',
+              }}
+            >
+              REWARDS & PRIZES
+            </span>
+          </div>
+
           <h1
-            className="font-display-lg"
             style={{
-              fontSize: '40px',
+              fontFamily: 'var(--font-headline)',
+              fontSize: 'clamp(28px, 5vw, 40px)',
+              fontWeight: 900,
               color: '#FFFFFF',
-              fontStyle: 'italic',
               textTransform: 'uppercase',
-              margin: '4px 0 8px 0',
-              lineHeight: 1,
+              letterSpacing: '-0.02em',
+              lineHeight: 0.95,
+              margin: 0,
             }}
           >
             PRIZE POOL
           </h1>
+
           <div
-            className="font-label-caps"
             style={{
               display: 'flex',
               alignItems: 'center',
-              gap: '8px',
-              color: '#9E9E9E',
-              letterSpacing: '0.15em',
-              fontSize: '11px',
+              gap: '10px',
+              marginTop: '4px',
+              flexWrap: 'wrap',
             }}
           >
-            <span>PLAY</span>
-            <span style={{ color: '#CCFF00' }}>•</span>
-            <span>COMPETE</span>
-            <span style={{ color: '#CCFF00' }}>•</span>
-            <span>CONNECT</span>
+            {['PLAY', 'COMPETE', 'CONNECT'].map((word, idx) => (
+              <React.Fragment key={word}>
+                {idx > 0 && (
+                  <div
+                    style={{
+                      width: '5px',
+                      height: '5px',
+                      borderRadius: '50%',
+                      backgroundColor: '#CCFF00',
+                    }}
+                  />
+                )}
+                <span
+                  style={{
+                    fontFamily: 'var(--font-mono)',
+                    fontWeight: 800,
+                    color: '#FFFFFF',
+                    letterSpacing: '0.12em',
+                    fontSize: '12px',
+                    textTransform: 'uppercase',
+                  }}
+                >
+                  {word}
+                </span>
+              </React.Fragment>
+            ))}
           </div>
         </div>
       </section>
@@ -196,12 +227,14 @@ export const PrizePoolPage: React.FC = () => {
         />
         <div style={{ position: 'relative', zIndex: 10 }}>
           <p
-            className="font-label-caps"
             style={{
-              fontSize: '10px',
-              color: '#9E9E9E',
-              letterSpacing: '0.2em',
-              marginBottom: '4px',
+              fontFamily: 'var(--font-mono)',
+              fontSize: '11px',
+              fontWeight: 800,
+              color: '#CCFF00',
+              letterSpacing: '0.15em',
+              textTransform: 'uppercase',
+              marginBottom: '6px',
               margin: 0,
             }}
           >
@@ -209,32 +242,35 @@ export const PrizePoolPage: React.FC = () => {
           </p>
           <div style={{ display: 'flex', alignItems: 'baseline', gap: '12px' }}>
             <h3
-              className="font-display-lg neon-text-glow"
               style={{
+                fontFamily: 'var(--font-headline)',
+                fontWeight: 900,
                 fontSize: '48px',
                 color: '#CCFF00',
                 letterSpacing: '-0.02em',
                 margin: 0,
                 lineHeight: 1.1,
+                textShadow: '0 0 20px rgba(204, 255, 0, 0.3)',
               }}
             >
               PRIZE TBA
             </h3>
             <span
               className="material-symbols-outlined"
-              style={{ color: '#CCFF00', opacity: 0.5, fontSize: '24px' }}
+              style={{ color: '#CCFF00', opacity: 0.7, fontSize: '28px' }}
             >
               payments
             </span>
           </div>
           <p
-            className="font-label-caps"
             style={{
-              fontSize: '10px',
+              fontFamily: 'var(--font-mono)',
+              fontSize: '11px',
               color: '#9E9E9E',
               letterSpacing: '0.08em',
               marginTop: '8px',
               margin: 0,
+              textTransform: 'uppercase',
             }}
           >
             TOTAL REWARDS AVAILABLE FOR FPL KINO 2026/27
@@ -248,7 +284,7 @@ export const PrizePoolPage: React.FC = () => {
             bottom: '-32px',
             fontSize: '200px',
             color: '#CCFF00',
-            opacity: 0.03,
+            opacity: 0.04,
             pointerEvents: 'none',
             userSelect: 'none',
             fontStyle: 'normal',
@@ -319,37 +355,43 @@ export const PrizePoolPage: React.FC = () => {
             >
               <div>
                 <h3
-                  className="font-display-lg"
                   style={{
+                    fontFamily: 'var(--font-headline)',
                     fontSize: '24px',
+                    fontWeight: 900,
                     color: '#FFFFFF',
                     margin: 0,
+                    letterSpacing: '0.02em',
+                    textTransform: 'uppercase',
                   }}
                 >
                   OVERALL SEASON CHAMPIONS
                 </h3>
                 <p
-                  className="font-label-caps"
                   style={{
+                    fontFamily: 'var(--font-mono)',
                     color: '#9E9E9E',
-                    fontSize: '10px',
+                    fontSize: '11px',
                     letterSpacing: '0.08em',
                     marginTop: '4px',
                     margin: 0,
+                    textTransform: 'uppercase',
                   }}
                 >
                   Grand Champions of the Season
                 </p>
               </div>
               <span
-                className="font-label-caps"
                 style={{
+                  fontFamily: 'var(--font-mono)',
                   padding: '4px 12px',
                   backgroundColor: '#CCFF00',
                   color: '#000000',
                   borderRadius: '6px',
                   fontSize: '10px',
                   fontWeight: 800,
+                  letterSpacing: '0.1em',
+                  textTransform: 'uppercase',
                 }}
               >
                 FULL SEASON
@@ -372,10 +414,10 @@ export const PrizePoolPage: React.FC = () => {
                   <span className="material-symbols-outlined" style={{ color: '#9E9E9E', marginBottom: '8px', fontSize: '24px' }}>
                     military_tech
                   </span>
-                  <p className="font-label-caps" style={{ fontSize: '10px', color: '#9E9E9E', margin: 0 }}>
+                  <p style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', color: '#9E9E9E', margin: 0, fontWeight: 700 }}>
                     2ND PLACE
                   </p>
-                  <p className="font-stat-value" style={{ color: '#CCFF00', fontSize: '20px', margin: '4px 0 0 0' }}>
+                  <p style={{ fontFamily: 'var(--font-headline)', fontWeight: 900, color: '#CCFF00', fontSize: '20px', margin: '4px 0 0 0' }}>
                     PRIZE TBA
                   </p>
                 </div>
@@ -396,10 +438,19 @@ export const PrizePoolPage: React.FC = () => {
                   <span className="material-symbols-outlined" style={{ color: '#CCFF00', marginBottom: '8px', fontSize: '40px' }}>
                     workspace_premium
                   </span>
-                  <p className="font-label-caps" style={{ fontSize: '12px', color: '#FFFFFF', margin: 0 }}>
+                  <p style={{ fontFamily: 'var(--font-mono)', fontSize: '12px', color: '#FFFFFF', margin: 0, fontWeight: 800 }}>
                     1ST PLACE
                   </p>
-                  <p className="font-stat-value neon-text-glow" style={{ color: '#CCFF00', fontSize: '28px', margin: '8px 0 0 0' }}>
+                  <p
+                    style={{
+                      fontFamily: 'var(--font-headline)',
+                      fontWeight: 900,
+                      color: '#CCFF00',
+                      fontSize: '28px',
+                      margin: '8px 0 0 0',
+                      textShadow: '0 0 16px rgba(204, 255, 0, 0.4)',
+                    }}
+                  >
                     PRIZE TBA
                   </p>
                 </div>
@@ -419,10 +470,10 @@ export const PrizePoolPage: React.FC = () => {
                   <span className="material-symbols-outlined" style={{ color: '#9E9E9E', marginBottom: '8px', fontSize: '24px' }}>
                     military_tech
                   </span>
-                  <p className="font-label-caps" style={{ fontSize: '10px', color: '#9E9E9E', margin: 0 }}>
+                  <p style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', color: '#9E9E9E', margin: 0, fontWeight: 700 }}>
                     3RD PLACE
                   </p>
-                  <p className="font-stat-value" style={{ color: '#CCFF00', fontSize: '20px', margin: '4px 0 0 0' }}>
+                  <p style={{ fontFamily: 'var(--font-headline)', fontWeight: 900, color: '#CCFF00', fontSize: '20px', margin: '4px 0 0 0' }}>
                     PRIZE TBA
                   </p>
                 </div>
@@ -446,24 +497,28 @@ export const PrizePoolPage: React.FC = () => {
                   analytics
                 </span>
                 <h4
-                  className="font-display-lg"
                   style={{
+                    fontFamily: 'var(--font-headline)',
                     fontSize: '18px',
+                    fontWeight: 900,
                     color: '#FFFFFF',
                     margin: 0,
+                    letterSpacing: '0.02em',
+                    textTransform: 'uppercase',
                   }}
                 >
                   HALF SEASON CHAMPIONS
                 </h4>
               </div>
               <p
-                className="font-label-caps"
                 style={{
+                  fontFamily: 'var(--font-mono)',
                   fontSize: '10px',
                   color: '#9E9E9E',
                   letterSpacing: '0.08em',
                   marginBottom: '16px',
                   margin: 0,
+                  textTransform: 'uppercase',
                 }}
               >
                 WINNERS (GW1 — GW18)
@@ -479,10 +534,10 @@ export const PrizePoolPage: React.FC = () => {
                     borderBottom: '1px solid #222222',
                   }}
                 >
-                  <span className="font-label-caps" style={{ color: '#FFFFFF', fontSize: '10px' }}>
+                  <span style={{ fontFamily: 'var(--font-mono)', color: '#FFFFFF', fontSize: '11px', fontWeight: 700 }}>
                     1ST PLACE
                   </span>
-                  <span className="font-stat-value" style={{ color: '#CCFF00', fontSize: '14px' }}>
+                  <span style={{ fontFamily: 'var(--font-headline)', fontWeight: 900, color: '#CCFF00', fontSize: '14px' }}>
                     PRIZE TBA
                   </span>
                 </div>
@@ -495,10 +550,10 @@ export const PrizePoolPage: React.FC = () => {
                     borderBottom: '1px solid #222222',
                   }}
                 >
-                  <span className="font-label-caps" style={{ color: '#9E9E9E', fontSize: '10px' }}>
+                  <span style={{ fontFamily: 'var(--font-mono)', color: '#9E9E9E', fontSize: '11px', fontWeight: 700 }}>
                     2ND PLACE
                   </span>
-                  <span className="font-stat-value" style={{ color: '#CCFF00', fontSize: '14px' }}>
+                  <span style={{ fontFamily: 'var(--font-headline)', fontWeight: 900, color: '#CCFF00', fontSize: '14px' }}>
                     PRIZE TBA
                   </span>
                 </div>
@@ -510,10 +565,10 @@ export const PrizePoolPage: React.FC = () => {
                     padding: '8px 0',
                   }}
                 >
-                  <span className="font-label-caps" style={{ color: '#9E9E9E', fontSize: '10px' }}>
+                  <span style={{ fontFamily: 'var(--font-mono)', color: '#9E9E9E', fontSize: '11px', fontWeight: 700 }}>
                     3RD PLACE
                   </span>
-                  <span className="font-stat-value" style={{ color: '#CCFF00', fontSize: '14px' }}>
+                  <span style={{ fontFamily: 'var(--font-headline)', fontWeight: 900, color: '#CCFF00', fontSize: '14px' }}>
                     PRIZE TBA
                   </span>
                 </div>
@@ -534,11 +589,14 @@ export const PrizePoolPage: React.FC = () => {
                   sports_kabaddi
                 </span>
                 <h4
-                  className="font-display-lg"
                   style={{
+                    fontFamily: 'var(--font-headline)',
                     fontSize: '18px',
+                    fontWeight: 900,
                     color: '#FFFFFF',
                     margin: 0,
+                    letterSpacing: '0.02em',
+                    textTransform: 'uppercase',
                   }}
                 >
                   FPL KINO CUP
@@ -555,10 +613,10 @@ export const PrizePoolPage: React.FC = () => {
                     borderBottom: '1px solid #222222',
                   }}
                 >
-                  <span className="font-label-caps" style={{ color: '#FFFFFF', fontSize: '10px' }}>
+                  <span style={{ fontFamily: 'var(--font-mono)', color: '#FFFFFF', fontSize: '11px', fontWeight: 700 }}>
                     🥇 CHAMPION
                   </span>
-                  <span className="font-stat-value" style={{ color: '#CCFF00', fontSize: '14px' }}>
+                  <span style={{ fontFamily: 'var(--font-headline)', fontWeight: 900, color: '#CCFF00', fontSize: '14px' }}>
                     PRIZE TBA
                   </span>
                 </div>
@@ -570,10 +628,10 @@ export const PrizePoolPage: React.FC = () => {
                     padding: '8px 0',
                   }}
                 >
-                  <span className="font-label-caps" style={{ color: '#9E9E9E', fontSize: '10px' }}>
+                  <span style={{ fontFamily: 'var(--font-mono)', color: '#9E9E9E', fontSize: '11px', fontWeight: 700 }}>
                     🥈 RUNNER UP
                   </span>
-                  <span className="font-stat-value" style={{ color: '#CCFF00', fontSize: '14px' }}>
+                  <span style={{ fontFamily: 'var(--font-headline)', fontWeight: 900, color: '#CCFF00', fontSize: '14px' }}>
                     PRIZE TBA
                   </span>
                 </div>
@@ -603,11 +661,14 @@ export const PrizePoolPage: React.FC = () => {
           >
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '24px' }}>
               <h4
-                className="font-display-lg"
                 style={{
+                  fontFamily: 'var(--font-headline)',
                   fontSize: '18px',
+                  fontWeight: 900,
                   color: '#FFFFFF',
                   margin: 0,
+                  letterSpacing: '0.02em',
+                  textTransform: 'uppercase',
                 }}
               >
                 MANAGER OF THE <span style={{ color: '#CCFF00' }}>MONTH</span>
@@ -626,22 +687,23 @@ export const PrizePoolPage: React.FC = () => {
               }}
             >
               <p
-                className="font-label-caps"
                 style={{
+                  fontFamily: 'var(--font-mono)',
                   fontSize: '10px',
                   color: '#9E9E9E',
                   letterSpacing: '0.08em',
                   marginBottom: '8px',
                   margin: 0,
+                  textTransform: 'uppercase',
                 }}
               >
                 9 MONTHS 9 WINNERS
               </p>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
-                <span className="font-label-caps" style={{ color: '#FFFFFF', fontSize: '12px' }}>
+                <span style={{ fontFamily: 'var(--font-mono)', color: '#FFFFFF', fontSize: '12px', fontWeight: 800 }}>
                   1ST PLACE
                 </span>
-                <span className="font-stat-value" style={{ color: '#CCFF00', fontSize: '20px' }}>
+                <span style={{ fontFamily: 'var(--font-headline)', fontWeight: 900, color: '#CCFF00', fontSize: '20px' }}>
                   Rp 50.000
                 </span>
               </div>
@@ -659,11 +721,14 @@ export const PrizePoolPage: React.FC = () => {
           >
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '24px' }}>
               <h4
-                className="font-display-lg"
                 style={{
+                  fontFamily: 'var(--font-headline)',
                   fontSize: '18px',
+                  fontWeight: 900,
                   color: '#FFFFFF',
                   margin: 0,
+                  letterSpacing: '0.02em',
+                  textTransform: 'uppercase',
                 }}
               >
                 MANAGER OF THE <span style={{ color: '#CCFF00' }}>WEEK</span>
@@ -685,22 +750,23 @@ export const PrizePoolPage: React.FC = () => {
               }}
             >
               <p
-                className="font-label-caps"
                 style={{
+                  fontFamily: 'var(--font-mono)',
                   fontSize: '10px',
                   color: '#9E9E9E',
                   letterSpacing: '0.08em',
                   marginBottom: '8px',
                   margin: 0,
+                  textTransform: 'uppercase',
                 }}
               >
                 38 WEEKS 38 WINNERS
               </p>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
-                <span className="font-label-caps" style={{ color: '#FFFFFF', fontSize: '12px' }}>
+                <span style={{ fontFamily: 'var(--font-mono)', color: '#FFFFFF', fontSize: '12px', fontWeight: 800 }}>
                   1ST PLACE
                 </span>
-                <span className="font-stat-value" style={{ color: '#CCFF00', fontSize: '18px' }}>
+                <span style={{ fontFamily: 'var(--font-headline)', fontWeight: 900, color: '#CCFF00', fontSize: '18px' }}>
                   FREE JAVALATTE
                 </span>
               </div>
@@ -709,10 +775,10 @@ export const PrizePoolPage: React.FC = () => {
             {/* Season Progress */}
             <div style={{ marginTop: '24px' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '8px' }}>
-                <span className="font-label-caps" style={{ fontSize: '10px', color: '#9E9E9E', letterSpacing: '0.08em' }}>
+                <span style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', color: '#9E9E9E', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
                   Season Progress
                 </span>
-                <span className="font-label-caps" style={{ fontSize: '10px', color: '#CCFF00', letterSpacing: '0.08em' }}>
+                <span style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', color: '#CCFF00', letterSpacing: '0.08em', fontWeight: 800 }}>
                   GW 2 / 38
                 </span>
               </div>
@@ -744,24 +810,27 @@ export const PrizePoolPage: React.FC = () => {
       >
         <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', maxWidth: '600px' }}>
           <h5
-            className="font-display-lg"
             style={{
+              fontFamily: 'var(--font-headline)',
               fontSize: '14px',
+              fontWeight: 900,
               color: '#FFFFFF',
               margin: 0,
+              letterSpacing: '0.02em',
+              textTransform: 'uppercase',
             }}
           >
             TERMS & CONDITIONS
           </h5>
           <p
-            className="font-label-caps"
             style={{
-              fontSize: '10px',
+              fontFamily: 'var(--font-mono)',
+              fontSize: '11px',
               color: '#9E9E9E',
               lineHeight: '1.6',
               letterSpacing: '0.02em',
               margin: 0,
-              textTransform: 'none', // Allow standard casing for readability
+              textTransform: 'none',
             }}
           >
             All results and prize calculations follow the official FPL data and scoring system. Competition decisions are final and binding.

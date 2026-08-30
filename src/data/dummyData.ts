@@ -8,6 +8,7 @@ export interface StandingRow {
 }
 
 export interface PlayerRankItem {
+  playerId?: number;
   rank: '1st' | '2nd' | '3rd';
   name: string;
   team: string;
@@ -16,8 +17,10 @@ export interface PlayerRankItem {
 }
 
 export interface PreviousGwStats {
+  gwNumber?: number;
   averageScore: number;
   highestScore: number;
+  highestTeamName?: string;
   mostCaptained: string;
 }
 

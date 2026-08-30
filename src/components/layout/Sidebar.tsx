@@ -1,4 +1,7 @@
 import React from 'react';
+import { useGwStatus } from '../../hooks/useGwStatus';
+import { useLanguage } from '../../context/LanguageContext';
+import { LanguageToggle } from './LanguageToggle';
 
 interface SidebarProps {
   isOpen: boolean;
@@ -13,13 +16,16 @@ export const Sidebar: React.FC<SidebarProps> = ({
   activeTab,
   onSelectTab,
 }) => {
+  const { displayText, isLive } = useGwStatus();
+  const { t } = useLanguage();
+
   const navItems = [
-    { id: 'home', label: 'HOME', icon: 'home', drawerLabel: 'HOME' },
-    { id: 'league', label: 'FPL KINO LEAGUE', icon: 'leaderboard', drawerLabel: 'FPL KINO LEAGUE' },
-    { id: 'cup', label: 'FPL KINO CUP', icon: 'emoji_events', drawerLabel: 'FPL KINO CUP' },
-    { id: 'prizes', label: 'PRIZE POOL', icon: 'redeem', drawerLabel: 'PRIZE POOL' },
-    { id: 'stats', label: 'HALL OF FAME', icon: 'military_tech', drawerLabel: 'HALL OF FAME' },
-    { id: 'newsletter', label: 'NEWSLETTER', icon: 'mail', drawerLabel: 'NEWSLETTER' },
+    { id: 'home', label: t.navHome, icon: 'home', drawerLabel: t.navHome },
+    { id: 'league', label: t.navLeague, icon: 'leaderboard', drawerLabel: t.navLeague },
+    { id: 'cup', label: t.navCup, icon: 'emoji_events', drawerLabel: t.navCup },
+    { id: 'prizes', label: t.navPrizePool, icon: 'redeem', drawerLabel: t.navPrizePool },
+    { id: 'stats', label: t.navHallOfFame, icon: 'military_tech', drawerLabel: t.navHallOfFame },
+    { id: 'newsletter', label: t.navNewsletter, icon: 'mail', drawerLabel: t.navNewsletter },
   ];
 
   return (
@@ -63,23 +69,25 @@ export const Sidebar: React.FC<SidebarProps> = ({
               padding: '24px',
               display: 'flex',
               alignItems: 'center',
-              gap: '16px',
+              justifyContent: 'space-between',
+              gap: '12px',
               borderBottom: '1px solid #222222',
             }}
           >
             <span
-              className="font-headline-lg"
               style={{
-                fontSize: '24px',
+                fontFamily: 'var(--font-headline)',
+                fontSize: '20px',
+                fontWeight: 900,
                 letterSpacing: '-0.02em',
                 color: '#FFFFFF',
                 textTransform: 'uppercase',
-                fontStyle: 'italic',
                 lineHeight: 1,
               }}
             >
               FPL KINO <span style={{ color: '#CCFF00' }}>HUB</span>
             </span>
+            <LanguageToggle />
           </div>
 
           {/* Navigation Links */}
@@ -142,19 +150,19 @@ export const Sidebar: React.FC<SidebarProps> = ({
                     className="material-symbols-outlined"
                     style={{
                       marginRight: '16px',
-                      fontSize: '22px',
+                      fontSize: '20px',
                       color: isActive ? '#CCFF00' : '#9E9E9E',
                     }}
                   >
                     {item.icon}
                   </span>
                   <span
-                    className="font-label-caps"
                     style={{
-                      fontSize: '12px',
+                      fontFamily: 'var(--font-mono)',
+                      fontSize: '11px',
                       fontWeight: isActive ? 800 : 700,
                       textTransform: 'uppercase',
-                      letterSpacing: '0.08em',
+                      letterSpacing: '0.1em',
                     }}
                   >
                     {item.label}
@@ -165,14 +173,14 @@ export const Sidebar: React.FC<SidebarProps> = ({
           </nav>
         </div>
 
-        {/* GW Status Live Box */}
+        {/* GW Status Box (Bottom Left Sidebar) */}
         <div
           style={{
             padding: '16px',
             backgroundColor: '#141414',
             margin: '16px',
             borderRadius: '14px',
-            border: '1px solid rgba(204,255,0,0.2)',
+            border: `1px solid ${isLive ? 'rgba(0,255,136,0.3)' : '#222222'}`,
             position: 'relative',
             overflow: 'hidden',
           }}
@@ -184,18 +192,19 @@ export const Sidebar: React.FC<SidebarProps> = ({
               left: 0,
               right: 0,
               height: '2px',
-              backgroundColor: '#CCFF00',
-              opacity: 0.6,
+              backgroundColor: isLive ? '#00FF88' : '#CCFF00',
+              opacity: isLive ? 0.8 : 0.4,
             }}
           />
           <div
-            className="font-label-caps"
             style={{
-              fontSize: '10px',
-              color: '#9E9E9E',
-              marginBottom: '4px',
+              fontFamily: 'var(--font-mono)',
+              fontSize: '9px',
+              fontWeight: 700,
+              color: '#666666',
+              marginBottom: '6px',
               textTransform: 'uppercase',
-              letterSpacing: '0.1em',
+              letterSpacing: '0.12em',
             }}
           >
             GW STATUS
@@ -206,22 +215,23 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 width: '7px',
                 height: '7px',
                 borderRadius: '50%',
-                backgroundColor: '#CCFF00',
-                boxShadow: '0 0 8px rgba(204,255,0,0.7)',
-                animation: 'pulse 1.5s ease-in-out infinite',
+                backgroundColor: isLive ? '#00FF88' : '#9E9E9E',
+                boxShadow: isLive ? '0 0 8px rgba(0,255,136,0.7)' : 'none',
+                animation: isLive ? 'pulse 1.5s ease-in-out infinite' : 'none',
+                flexShrink: 0,
               }}
             />
             <span
-              className="font-label-caps"
               style={{
-                fontSize: '12px',
+                fontFamily: 'var(--font-mono)',
+                fontSize: '11px',
                 fontWeight: 800,
-                color: '#CCFF00',
+                color: isLive ? '#00FF88' : '#FFFFFF',
                 textTransform: 'uppercase',
-                letterSpacing: '0.12em',
+                letterSpacing: '0.08em',
               }}
             >
-              LIVE NOW
+              {displayText}
             </span>
           </div>
         </div>
@@ -315,6 +325,55 @@ export const Sidebar: React.FC<SidebarProps> = ({
             );
           })}
         </nav>
+
+        {/* Mobile GW Status Box */}
+        <div
+          style={{
+            padding: '16px',
+            backgroundColor: '#141414',
+            margin: '16px',
+            borderRadius: '14px',
+            border: `1px solid ${isLive ? 'rgba(0,255,136,0.3)' : '#222222'}`,
+          }}
+        >
+          <div
+            className="font-label-caps"
+            style={{
+              fontSize: '10px',
+              color: '#9E9E9E',
+              marginBottom: '6px',
+              textTransform: 'uppercase',
+              letterSpacing: '0.1em',
+            }}
+          >
+            GW STATUS
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <div
+              style={{
+                width: '7px',
+                height: '7px',
+                borderRadius: '50%',
+                backgroundColor: isLive ? '#00FF88' : '#9E9E9E',
+                boxShadow: isLive ? '0 0 8px rgba(0,255,136,0.7)' : 'none',
+                animation: isLive ? 'pulse 1.5s ease-in-out infinite' : 'none',
+                flexShrink: 0,
+              }}
+            />
+            <span
+              className="font-label-caps"
+              style={{
+                fontSize: '12px',
+                fontWeight: 800,
+                color: isLive ? '#00FF88' : '#FFFFFF',
+                textTransform: 'uppercase',
+                letterSpacing: '0.08em',
+              }}
+            >
+              {displayText}
+            </span>
+          </div>
+        </div>
       </div>
     </>
   );

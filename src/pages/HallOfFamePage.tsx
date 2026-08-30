@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { mockWeeklyWinners } from '../data/dummyData';
+import { useHallOfFameData } from '../hooks/useHallOfFameData';
 
 export const HallOfFamePage: React.FC = () => {
   const [activeSubTab, setActiveSubTab] = useState<'weekly' | 'monthly' | 'half-season' | 'cup' | 'overall' | 'badges'>('weekly');
+  const { weeklyWinners, monthlyWinners, loading, error } = useHallOfFameData();
 
   const styleSheet = `
     .hof-tab-btn {
@@ -36,7 +37,7 @@ export const HallOfFamePage: React.FC = () => {
       position: relative;
       overflow: hidden;
       display: flex;
-      flexDirection: column;
+      flex-direction: column;
       height: 100%;
       transition: all 0.25s ease;
     }
@@ -137,29 +138,33 @@ export const HallOfFamePage: React.FC = () => {
       {/* Header Banner Card */}
       <section
         style={{
-          border: '1px solid #222222',
-          backgroundColor: '#141414',
-          borderRadius: '14px',
-          padding: '24px 32px',
+          border: '1px solid rgba(204,255,0,0.3)',
+          background: 'linear-gradient(135deg, #1a1a1a 0%, #141414 60%, #0f1a00 100%)',
+          borderRadius: '16px',
+          padding: '28px 32px',
           position: 'relative',
           overflow: 'hidden',
           display: 'flex',
           flexDirection: 'column',
-          gap: '8px',
+          gap: '12px',
           zIndex: 1,
+          boxShadow: '0 12px 32px rgba(204,255,0,0.08)',
         }}
       >
-        {/* Top accent bar */}
+        {/* Left accent bar */}
         <div
           style={{
             position: 'absolute',
             top: 0,
             left: 0,
-            right: 0,
-            height: '3px',
-            background: 'linear-gradient(90deg, #CCFF00 0%, #00FF88 100%)',
+            width: '4px',
+            height: '100%',
+            background: 'linear-gradient(180deg, #CCFF00 0%, rgba(204,255,0,0.2) 100%)',
+            borderRadius: '16px 0 0 16px',
           }}
         />
+
+        {/* Decorative background soccer icon */}
         <span
           className="material-symbols-outlined"
           style={{
@@ -167,7 +172,7 @@ export const HallOfFamePage: React.FC = () => {
             right: '-20px',
             bottom: '-20px',
             fontSize: '180px',
-            color: 'rgba(204, 255, 0, 0.03)',
+            color: 'rgba(204, 255, 0, 0.04)',
             pointerEvents: 'none',
             userSelect: 'none',
             fontStyle: 'normal',
@@ -175,48 +180,76 @@ export const HallOfFamePage: React.FC = () => {
         >
           sports_soccer
         </span>
-        <div style={{ position: 'relative', zIndex: 2 }}>
-          <p
-            className="font-label-caps"
-            style={{
-              color: '#CCFF00',
-              letterSpacing: '0.2em',
-              textTransform: 'uppercase',
-              fontSize: '11px',
-              margin: 0,
-            }}
-          >
-            REWARDS & ACHIEVEMENTS
-          </p>
+
+        <div style={{ position: 'relative', zIndex: 2, display: 'flex', flexDirection: 'column', gap: '8px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <span
+              style={{
+                fontFamily: 'var(--font-mono)',
+                fontSize: '10px',
+                fontWeight: 800,
+                color: '#000000',
+                backgroundColor: '#CCFF00',
+                padding: '3px 8px',
+                borderRadius: '4px',
+                letterSpacing: '0.15em',
+                textTransform: 'uppercase',
+              }}
+            >
+              REWARDS & ACHIEVEMENTS
+            </span>
+          </div>
+
           <h1
-            className="font-display-lg"
             style={{
-              fontSize: '40px',
+              fontFamily: 'var(--font-headline)',
+              fontSize: 'clamp(28px, 5vw, 40px)',
+              fontWeight: 900,
               color: '#FFFFFF',
-              fontStyle: 'italic',
               textTransform: 'uppercase',
-              margin: '4px 0 8px 0',
-              lineHeight: 1,
+              letterSpacing: '-0.02em',
+              lineHeight: 0.95,
+              margin: 0,
             }}
           >
             HALL OF FAME
           </h1>
+
           <div
-            className="font-label-caps"
             style={{
               display: 'flex',
               alignItems: 'center',
-              gap: '8px',
-              color: '#9E9E9E',
-              letterSpacing: '0.15em',
-              fontSize: '11px',
+              gap: '10px',
+              marginTop: '4px',
+              flexWrap: 'wrap',
             }}
           >
-            <span>PLAY</span>
-            <span style={{ color: '#CCFF00' }}>•</span>
-            <span>COMPETE</span>
-            <span style={{ color: '#CCFF00' }}>•</span>
-            <span>CONNECT</span>
+            {['PLAY', 'COMPETE', 'CONNECT'].map((word, idx) => (
+              <React.Fragment key={word}>
+                {idx > 0 && (
+                  <div
+                    style={{
+                      width: '5px',
+                      height: '5px',
+                      borderRadius: '50%',
+                      backgroundColor: '#CCFF00',
+                    }}
+                  />
+                )}
+                <span
+                  style={{
+                    fontFamily: 'var(--font-mono)',
+                    fontWeight: 800,
+                    color: '#FFFFFF',
+                    letterSpacing: '0.12em',
+                    fontSize: '12px',
+                    textTransform: 'uppercase',
+                  }}
+                >
+                  {word}
+                </span>
+              </React.Fragment>
+            ))}
           </div>
         </div>
       </section>
@@ -274,6 +307,13 @@ export const HallOfFamePage: React.FC = () => {
           </nav>
         </div>
 
+        {/* Error notification */}
+        {error && (
+          <div style={{ backgroundColor: '#1a0000', border: '1px solid #FF4444', padding: '12px 16px', borderRadius: '8px', color: '#FF4444', fontFamily: 'var(--font-mono)', fontSize: '12px' }}>
+            ⚠️ Error loading Hall of Fame data: {error}
+          </div>
+        )}
+
         {/* Tab Content Panels */}
         
         {/* 1. WEEKLY VIEW */}
@@ -289,167 +329,375 @@ export const HallOfFamePage: React.FC = () => {
               }}
             >
               <h3
-                className="font-headline-lg"
                 style={{
+                  fontFamily: 'var(--font-headline)',
                   fontSize: '22px',
+                  fontWeight: 900,
                   color: '#FFFFFF',
                   margin: 0,
-                  fontWeight: 800,
+                  letterSpacing: '0.02em',
+                  textTransform: 'uppercase',
                 }}
               >
                 MANAGER OF THE WEEK
               </h3>
               <span
-                className="font-label-caps"
                 style={{
+                  fontFamily: 'var(--font-mono)',
                   color: '#CCFF00',
                   letterSpacing: '0.1em',
                   fontSize: '11px',
+                  fontWeight: 800,
+                  textTransform: 'uppercase',
                 }}
               >
                 38 Gameweeks • 38 Winners
               </span>
             </div>
 
-            {/* Grid of Winners */}
-            <div
-              className="winners-grid"
-              style={{
-                display: 'grid',
-                gap: '16px',
-              }}
-            >
-              {mockWeeklyWinners.map((winner, index) => {
-                const isLatest = index === 0; // The first element (GW5) is the latest
-                return (
-                  <article
-                    key={winner.gw}
-                    className={`winner-card ${isLatest ? 'latest-winner' : ''}`}
-                  >
-                    <div
-                      style={{
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        alignItems: 'flex-start',
-                        marginBottom: '40px',
-                        position: 'relative',
-                        zIndex: 10,
-                      }}
+            {loading && (
+              <div style={{ textAlign: 'center', color: '#9E9E9E', fontFamily: 'var(--font-mono)', fontSize: '12px', padding: '32px 0' }}>
+                Loading weekly winners...
+              </div>
+            )}
+
+            {!loading && weeklyWinners.length > 0 && (
+              <div
+                className="winners-grid"
+                style={{
+                  display: 'grid',
+                  gap: '16px',
+                }}
+              >
+                {weeklyWinners.map((winner, index) => {
+                  const isLatest = index === weeklyWinners.length - 1;
+                  return (
+                    <article
+                      key={winner.gw}
+                      className={`winner-card ${isLatest ? 'latest-winner' : ''}`}
                     >
-                      <div style={{ display: 'flex', flexDirection: 'column' }}>
-                        <span
-                          className="font-label-caps"
-                          style={{
-                            color: '#9E9E9E',
-                            marginBottom: '8px',
-                            letterSpacing: '0.15em',
-                            fontSize: '10px',
-                          }}
-                        >
-                          GAMEWEEK {winner.gw < 10 ? `0${winner.gw}` : winner.gw}
-                        </span>
-                        <h4
-                          className="font-headline-lg"
-                          style={{
-                            fontSize: '20px',
-                            color: '#FFFFFF',
-                            margin: 0,
-                            fontWeight: 800,
-                            overflow: 'hidden',
-                            textOverflow: 'ellipsis',
-                            whiteSpace: 'nowrap',
-                            maxWidth: '180px',
-                          }}
-                        >
-                          {winner.team}
-                        </h4>
-                        <span
-                          className="font-label-caps"
-                          style={{
-                            fontSize: '11px',
-                            fontWeight: 700,
-                            color: '#9E9E9E',
-                            marginTop: '4px',
-                            letterSpacing: '0.1em',
-                          }}
-                        >
-                          {winner.manager}
-                        </span>
-                      </div>
-                      <span
-                        className="material-symbols-outlined trophy-icon"
-                        style={{
-                          fontSize: '32px',
-                          fontVariationSettings: '"FILL" 1',
-                        }}
-                      >
-                        emoji_events
-                      </span>
-                    </div>
-                    
-                    <div
-                      style={{
-                        display: 'flex',
-                        alignItems: 'end',
-                        justifyContent: 'space-between',
-                        borderTop: '1px solid #222222',
-                        paddingTop: '16px',
-                        marginTop: 'auto',
-                        position: 'relative',
-                        zIndex: 10,
-                      }}
-                    >
-                      <span
-                        className="font-label-caps"
-                        style={{
-                          color: '#9E9E9E',
-                          letterSpacing: '0.1em',
-                          fontSize: '10px',
-                        }}
-                      >
-                        TOTAL SCORE
-                      </span>
                       <div
                         style={{
                           display: 'flex',
-                          alignItems: 'baseline',
-                          gap: '4px',
-                          color: isLatest ? '#CCFF00' : '#FFFFFF',
+                          justifyContent: 'space-between',
+                          alignItems: 'flex-start',
+                          marginBottom: '32px',
+                          position: 'relative',
+                          zIndex: 10,
                         }}
                       >
-                        <span className="font-stat-value" style={{ fontStyle: 'italic', fontSize: '24px' }}>
-                          {winner.score}
-                        </span>
-                        <span className="font-label-caps" style={{ fontSize: '11px', color: isLatest ? '#CCFF00' : '#9E9E9E' }}>
-                          PTS
+                        <div style={{ display: 'flex', flexDirection: 'column' }}>
+                          <span
+                            style={{
+                              fontFamily: 'var(--font-mono)',
+                              color: isLatest ? '#CCFF00' : '#9E9E9E',
+                              marginBottom: '6px',
+                              letterSpacing: '0.15em',
+                              fontSize: '10px',
+                              fontWeight: 800,
+                              textTransform: 'uppercase',
+                            }}
+                          >
+                            GAMEWEEK {winner.gw < 10 ? `0${winner.gw}` : winner.gw}
+                          </span>
+                          <h4
+                            style={{
+                              fontFamily: 'var(--font-headline)',
+                              fontSize: '20px',
+                              color: '#FFFFFF',
+                              margin: 0,
+                              fontWeight: 900,
+                              overflow: 'hidden',
+                              textOverflow: 'ellipsis',
+                              whiteSpace: 'nowrap',
+                              maxWidth: '180px',
+                              textTransform: 'uppercase',
+                            }}
+                          >
+                            {winner.team}
+                          </h4>
+                          <span
+                            style={{
+                              fontFamily: 'var(--font-mono)',
+                              fontSize: '11px',
+                              fontWeight: 700,
+                              color: '#9E9E9E',
+                              marginTop: '4px',
+                              letterSpacing: '0.08em',
+                            }}
+                          >
+                            {winner.manager}
+                          </span>
+                        </div>
+                        <span
+                          className="material-symbols-outlined trophy-icon"
+                          style={{
+                            fontSize: '32px',
+                            fontVariationSettings: '"FILL" 1',
+                          }}
+                        >
+                          emoji_events
                         </span>
                       </div>
-                    </div>
-                  </article>
-                );
-              })}
-            </div>
+                      
+                      <div
+                        style={{
+                          display: 'flex',
+                          alignItems: 'flex-end',
+                          justifyContent: 'space-between',
+                          borderTop: '1px solid #222222',
+                          paddingTop: '16px',
+                          marginTop: 'auto',
+                          position: 'relative',
+                          zIndex: 10,
+                        }}
+                      >
+                        <span
+                          style={{
+                            fontFamily: 'var(--font-mono)',
+                            color: '#9E9E9E',
+                            letterSpacing: '0.1em',
+                            fontSize: '10px',
+                            fontWeight: 800,
+                            textTransform: 'uppercase',
+                          }}
+                        >
+                          TOTAL SCORE
+                        </span>
+                        <div
+                          style={{
+                            display: 'flex',
+                            alignItems: 'baseline',
+                            gap: '4px',
+                            color: isLatest ? '#CCFF00' : '#FFFFFF',
+                          }}
+                        >
+                          <span style={{ fontFamily: 'var(--font-headline)', fontWeight: 900, fontSize: '24px' }}>
+                            {winner.score}
+                          </span>
+                          <span style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', fontWeight: 800, color: isLatest ? '#CCFF00' : '#9E9E9E' }}>
+                            PTS
+                          </span>
+                        </div>
+                      </div>
+                    </article>
+                  );
+                })}
+              </div>
+            )}
+
+            {!loading && weeklyWinners.length === 0 && (
+              <div className="empty-state-container">
+                <span className="material-symbols-outlined" style={{ fontSize: '40px', color: '#CCFF00', marginBottom: '16px', opacity: 0.8 }}>
+                  timer
+                </span>
+                <h3 style={{ fontFamily: 'var(--font-headline)', fontSize: '20px', color: '#FFFFFF', margin: 0, fontWeight: 900, letterSpacing: '0.02em', textTransform: 'uppercase' }}>
+                  WEEKLY WINNERS
+                </h3>
+                <p style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', color: '#9E9E9E', marginTop: '8px', maxWidth: '400px' }}>
+                  Stats will populate once gameweeks are completed.
+                </p>
+              </div>
+            )}
           </div>
         )}
 
         {/* 2. MONTHLY VIEW */}
         {activeSubTab === 'monthly' && (
-          <div className="empty-state-container">
-            <span
-              className="material-symbols-outlined"
-              style={{ fontSize: '40px', color: '#9E9E9E', marginBottom: '16px' }}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+            <div
+              style={{
+                display: 'flex',
+                flexWrap: 'wrap',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                gap: '8px',
+              }}
             >
-              calendar_month
-            </span>
-            <h3
-              className="font-headline-lg"
-              style={{ fontSize: '20px', color: '#FFFFFF', margin: 0, fontWeight: 800 }}
-            >
-              MONTHLY WINNERS
-            </h3>
-            <p className="font-body-sm" style={{ color: '#9E9E9E', marginTop: '8px', maxWidth: '400px' }}>
-              Stats will populate at the end of each calendar month.
-            </p>
+              <h3
+                style={{
+                  fontFamily: 'var(--font-headline)',
+                  fontSize: '22px',
+                  fontWeight: 900,
+                  color: '#FFFFFF',
+                  margin: 0,
+                  letterSpacing: '0.02em',
+                  textTransform: 'uppercase',
+                }}
+              >
+                MANAGER OF THE MONTH
+              </h3>
+              <span
+                style={{
+                  fontFamily: 'var(--font-mono)',
+                  color: '#CCFF00',
+                  letterSpacing: '0.1em',
+                  fontSize: '11px',
+                  fontWeight: 800,
+                  textTransform: 'uppercase',
+                }}
+              >
+                9 Months • 9 Winners
+              </span>
+            </div>
+
+            {loading && (
+              <div style={{ textAlign: 'center', color: '#9E9E9E', fontFamily: 'var(--font-mono)', fontSize: '12px', padding: '32px 0' }}>
+                Loading monthly winners...
+              </div>
+            )}
+
+            {!loading && monthlyWinners.length > 0 && (
+              <div
+                className="winners-grid"
+                style={{
+                  display: 'grid',
+                  gap: '16px',
+                }}
+              >
+                {monthlyWinners.map((winner, index) => {
+                  const isLatest = index === monthlyWinners.length - 1;
+                  return (
+                    <article
+                      key={winner.phaseId}
+                      className={`winner-card ${isLatest ? 'latest-winner' : ''}`}
+                    >
+                      <div
+                        style={{
+                          display: 'flex',
+                          justifyContent: 'space-between',
+                          alignItems: 'flex-start',
+                          marginBottom: '32px',
+                          position: 'relative',
+                          zIndex: 10,
+                        }}
+                      >
+                        <div style={{ display: 'flex', flexDirection: 'column' }}>
+                          <span
+                            style={{
+                              fontFamily: 'var(--font-mono)',
+                              color: isLatest ? '#CCFF00' : '#9E9E9E',
+                              marginBottom: '6px',
+                              letterSpacing: '0.15em',
+                              fontSize: '10px',
+                              fontWeight: 800,
+                              textTransform: 'uppercase',
+                            }}
+                          >
+                            MONTH OF {winner.phaseName.toUpperCase()}
+                          </span>
+                          <h4
+                            style={{
+                              fontFamily: 'var(--font-headline)',
+                              fontSize: '20px',
+                              color: '#FFFFFF',
+                              margin: 0,
+                              fontWeight: 900,
+                              overflow: 'hidden',
+                              textOverflow: 'ellipsis',
+                              whiteSpace: 'nowrap',
+                              maxWidth: '180px',
+                              textTransform: 'uppercase',
+                            }}
+                          >
+                            {winner.team}
+                          </h4>
+                          <span
+                            style={{
+                              fontFamily: 'var(--font-mono)',
+                              fontSize: '11px',
+                              fontWeight: 700,
+                              color: '#9E9E9E',
+                              marginTop: '4px',
+                              letterSpacing: '0.08em',
+                            }}
+                          >
+                            {winner.manager}
+                          </span>
+                        </div>
+                        <span
+                          className="material-symbols-outlined trophy-icon"
+                          style={{
+                            fontSize: '32px',
+                            fontVariationSettings: '"FILL" 1',
+                          }}
+                        >
+                          emoji_events
+                        </span>
+                      </div>
+                      
+                      <div
+                        style={{
+                          display: 'flex',
+                          alignItems: 'flex-end',
+                          justifyContent: 'space-between',
+                          borderTop: '1px solid #222222',
+                          paddingTop: '16px',
+                          marginTop: 'auto',
+                          position: 'relative',
+                          zIndex: 10,
+                        }}
+                      >
+                        <span
+                          style={{
+                            fontFamily: 'var(--font-mono)',
+                            color: '#9E9E9E',
+                            letterSpacing: '0.1em',
+                            fontSize: '10px',
+                            fontWeight: 800,
+                            textTransform: 'uppercase',
+                          }}
+                        >
+                          TOTAL SCORE
+                        </span>
+                        <div
+                          style={{
+                            display: 'flex',
+                            alignItems: 'baseline',
+                            gap: '4px',
+                            color: isLatest ? '#CCFF00' : '#FFFFFF',
+                          }}
+                        >
+                          <span style={{ fontFamily: 'var(--font-headline)', fontWeight: 900, fontSize: '24px' }}>
+                            {winner.score}
+                          </span>
+                          <span style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', fontWeight: 800, color: isLatest ? '#CCFF00' : '#9E9E9E' }}>
+                            PTS
+                          </span>
+                        </div>
+                      </div>
+                    </article>
+                  );
+                })}
+              </div>
+            )}
+
+            {!loading && monthlyWinners.length === 0 && (
+              <div className="empty-state-container">
+                <span
+                  className="material-symbols-outlined"
+                  style={{ fontSize: '40px', color: '#CCFF00', marginBottom: '16px', opacity: 0.8 }}
+                >
+                  calendar_month
+                </span>
+                <h3
+                  style={{
+                    fontFamily: 'var(--font-headline)',
+                    fontSize: '20px',
+                    color: '#FFFFFF',
+                    margin: 0,
+                    fontWeight: 900,
+                    letterSpacing: '0.02em',
+                    textTransform: 'uppercase',
+                  }}
+                >
+                  MONTHLY WINNERS
+                </h3>
+                <p style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', color: '#9E9E9E', marginTop: '8px', maxWidth: '400px' }}>
+                  Stats will populate at the end of each calendar month.
+                </p>
+              </div>
+            )}
           </div>
         )}
 
@@ -458,17 +706,24 @@ export const HallOfFamePage: React.FC = () => {
           <div className="empty-state-container">
             <span
               className="material-symbols-outlined"
-              style={{ fontSize: '40px', color: '#9E9E9E', marginBottom: '16px' }}
+              style={{ fontSize: '40px', color: '#CCFF00', marginBottom: '16px', opacity: 0.8 }}
             >
               chevron_right
             </span>
             <h3
-              className="font-headline-lg"
-              style={{ fontSize: '20px', color: '#FFFFFF', margin: 0, fontWeight: 800 }}
+              style={{
+                fontFamily: 'var(--font-headline)',
+                fontSize: '20px',
+                color: '#FFFFFF',
+                margin: 0,
+                fontWeight: 900,
+                letterSpacing: '0.02em',
+                textTransform: 'uppercase',
+              }}
             >
               HALF SEASON CHAMP
             </h3>
-            <p className="font-body-sm" style={{ color: '#9E9E9E', marginTop: '8px', maxWidth: '400px' }}>
+            <p style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', color: '#9E9E9E', marginTop: '8px', maxWidth: '400px' }}>
               Awarded at GW19.
             </p>
           </div>
@@ -479,17 +734,24 @@ export const HallOfFamePage: React.FC = () => {
           <div className="empty-state-container">
             <span
               className="material-symbols-outlined"
-              style={{ fontSize: '40px', color: '#9E9E9E', marginBottom: '16px' }}
+              style={{ fontSize: '40px', color: '#CCFF00', marginBottom: '16px', opacity: 0.8 }}
             >
               sports_soccer
             </span>
             <h3
-              className="font-headline-lg"
-              style={{ fontSize: '20px', color: '#FFFFFF', margin: 0, fontWeight: 800 }}
+              style={{
+                fontFamily: 'var(--font-headline)',
+                fontSize: '20px',
+                color: '#FFFFFF',
+                margin: 0,
+                fontWeight: 900,
+                letterSpacing: '0.02em',
+                textTransform: 'uppercase',
+              }}
             >
               FPL KINO CUP
             </h3>
-            <p className="font-body-sm" style={{ color: '#9E9E9E', marginTop: '8px', maxWidth: '400px' }}>
+            <p style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', color: '#9E9E9E', marginTop: '8px', maxWidth: '400px' }}>
               Tournament bracket begins GW30.
             </p>
           </div>
@@ -500,17 +762,24 @@ export const HallOfFamePage: React.FC = () => {
           <div className="empty-state-container">
             <span
               className="material-symbols-outlined"
-              style={{ fontSize: '40px', color: '#9E9E9E', marginBottom: '16px' }}
+              style={{ fontSize: '40px', color: '#CCFF00', marginBottom: '16px', opacity: 0.8 }}
             >
               workspace_premium
             </span>
             <h3
-              className="font-headline-lg"
-              style={{ fontSize: '20px', color: '#FFFFFF', margin: 0, fontWeight: 800 }}
+              style={{
+                fontFamily: 'var(--font-headline)',
+                fontSize: '20px',
+                color: '#FFFFFF',
+                margin: 0,
+                fontWeight: 900,
+                letterSpacing: '0.02em',
+                textTransform: 'uppercase',
+              }}
             >
               OVERALL CHAMPION
             </h3>
-            <p className="font-body-sm" style={{ color: '#9E9E9E', marginTop: '8px', maxWidth: '400px' }}>
+            <p style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', color: '#9E9E9E', marginTop: '8px', maxWidth: '400px' }}>
               The grand prize winner for 26/27.
             </p>
           </div>
@@ -521,17 +790,24 @@ export const HallOfFamePage: React.FC = () => {
           <div className="empty-state-container">
             <span
               className="material-symbols-outlined"
-              style={{ fontSize: '40px', color: '#9E9E9E', marginBottom: '16px' }}
+              style={{ fontSize: '40px', color: '#CCFF00', marginBottom: '16px', opacity: 0.8 }}
             >
               military_tech
             </span>
             <h3
-              className="font-headline-lg"
-              style={{ fontSize: '20px', color: '#FFFFFF', margin: 0, fontWeight: 800 }}
+              style={{
+                fontFamily: 'var(--font-headline)',
+                fontSize: '20px',
+                color: '#FFFFFF',
+                margin: 0,
+                fontWeight: 900,
+                letterSpacing: '0.02em',
+                textTransform: 'uppercase',
+              }}
             >
               ACHIEVEMENT BADGES
             </h3>
-            <p className="font-body-sm" style={{ color: '#9E9E9E', marginTop: '8px', maxWidth: '400px' }}>
+            <p style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', color: '#9E9E9E', marginTop: '8px', maxWidth: '400px' }}>
               Special commendations for extraordinary gameweek performance.
             </p>
           </div>

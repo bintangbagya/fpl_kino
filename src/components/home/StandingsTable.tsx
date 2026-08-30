@@ -1,5 +1,6 @@
 import React from 'react';
 import { StandingRow } from '../../data/dummyData';
+import { useLanguage } from '../../context/LanguageContext';
 
 interface StandingsTableProps {
   standings: StandingRow[];
@@ -7,7 +8,7 @@ interface StandingsTableProps {
 }
 
 export const StandingsTable: React.FC<StandingsTableProps> = ({ standings, onViewFull }) => {
-  const currentGw = standings[0]?.gwNumber;
+  const { t } = useLanguage();
 
   return (
     <div
@@ -43,92 +44,74 @@ export const StandingsTable: React.FC<StandingsTableProps> = ({ standings, onVie
           alignItems: 'center',
           justifyContent: 'space-between',
           marginBottom: '16px',
-          paddingBottom: '8px',
+          paddingBottom: '12px',
           borderBottom: '1px solid #222222',
         }}
       >
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
           <h2
-            className="font-headline-lg"
             style={{
+              fontFamily: 'var(--font-headline)',
               color: '#FFFFFF',
-              fontSize: '22px',
+              fontSize: '18px',
+              fontWeight: 900,
               textTransform: 'uppercase',
-              letterSpacing: '-0.02em',
-              fontStyle: 'italic',
+              letterSpacing: '0.04em',
               margin: 0,
             }}
           >
-            League Standings
+            LEAGUE STANDINGS
           </h2>
-          {currentGw != null && (
-            <span
-              className="font-label-caps"
-              style={{
-                backgroundColor: 'rgba(204, 255, 0, 0.08)',
-                color: '#CCFF00',
-                border: '1px solid rgba(204, 255, 0, 0.25)',
-                fontSize: '10px',
-                fontWeight: 800,
-                letterSpacing: '0.1em',
-                padding: '3px 8px',
-                borderRadius: '6px',
-                textTransform: 'uppercase',
-              }}
-            >
-              GW{currentGw}
-            </span>
-          )}
         </div>
         <button
           onClick={onViewFull}
-          className="font-label-caps"
           style={{
             backgroundColor: '#CCFF00',
             color: '#000000',
+            fontFamily: 'var(--font-mono)',
             fontWeight: 800,
             textTransform: 'uppercase',
             fontSize: '10px',
-            letterSpacing: '0.08em',
-            padding: '5px 10px',
+            letterSpacing: '0.1em',
+            padding: '6px 12px',
             borderRadius: '6px',
             border: 'none',
             cursor: 'pointer',
             display: 'flex',
             alignItems: 'center',
             gap: '4px',
-            transition: 'background-color 0.2s ease',
+            transition: 'all 0.2s ease',
           }}
         >
-          VIEW FULL ➔
+          {t.viewFullStandings} ➔
         </button>
       </div>
 
       {/* Standings Table */}
-      <div style={{ flex: 1, overflowX: 'auto' }}>
+      <div style={{ flex: 1, width: '100%', overflow: 'hidden' }}>
         <table
           style={{
             width: '100%',
             textAlign: 'left',
             borderCollapse: 'collapse',
-            minWidth: '400px',
+            tableLayout: 'fixed',
           }}
         >
           <thead>
             <tr
-              className="font-label-caps"
               style={{
-                fontSize: '12px',
-                color: '#9E9E9E',
+                fontFamily: 'var(--font-mono)',
+                fontSize: '10px',
+                color: '#666666',
                 textTransform: 'uppercase',
-                letterSpacing: '0.08em',
+                letterSpacing: '0.12em',
                 borderBottom: '1px solid #222222',
               }}
             >
-              <th style={{ padding: '12px 12px 16px 12px', fontWeight: 700, width: '60px', textAlign: 'center' }}>POS</th>
-              <th style={{ padding: '12px 12px 16px 12px', fontWeight: 700 }}>TEAM / MANAGER</th>
-              <th style={{ padding: '12px 12px 16px 12px', fontWeight: 700, textAlign: 'right' }}>GW</th>
-              <th style={{ padding: '12px 12px 16px 12px', fontWeight: 700, textAlign: 'right' }}>TOT</th>
+              <th style={{ padding: '10px 4px 12px 0px', fontWeight: 800, width: '36px', textAlign: 'center' }}>{t.rank}</th>
+              <th style={{ padding: '10px 6px 12px 6px', fontWeight: 800 }}>{t.teamAndManager}</th>
+              <th style={{ padding: '10px 4px 12px 4px', fontWeight: 800, width: '44px', textAlign: 'right' }}>{t.gwPts}</th>
+              <th style={{ padding: '10px 0px 12px 4px', fontWeight: 800, width: '54px', textAlign: 'right' }}>{t.totalPts}</th>
             </tr>
           </thead>
           <tbody>
@@ -140,73 +123,83 @@ export const StandingsTable: React.FC<StandingsTableProps> = ({ standings, onVie
                 <tr
                   key={row.pos}
                   style={{
-                    borderBottom: isLast ? 'none' : '1px solid #222222',
+                    borderBottom: isLast ? 'none' : '1px solid #1e1e1e',
                     transition: 'background-color 0.15s ease',
                   }}
                   onMouseEnter={(e) => {
-                    e.currentTarget.style.backgroundColor = '#222222';
+                    e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.03)';
                   }}
                   onMouseLeave={(e) => {
                     e.currentTarget.style.backgroundColor = 'transparent';
                   }}
                 >
                   <td
-                    className="font-stat-value"
                     style={{
-                      padding: '16px 12px',
+                      fontFamily: 'var(--font-mono)',
+                      fontWeight: 800,
+                      padding: '12px 4px 12px 0px',
                       textAlign: 'center',
                       color: isFirst ? '#CCFF00' : '#9E9E9E',
-                      fontSize: '18px',
+                      fontSize: '14px',
                     }}
                   >
                     {row.pos}
                   </td>
 
-                  <td style={{ padding: '16px 12px' }}>
+                  <td style={{ padding: '12px 6px', minWidth: 0, overflow: 'hidden' }}>
                     <div
-                      className="font-label-caps"
                       style={{
+                        fontFamily: 'var(--font-body)',
                         fontWeight: 700,
                         color: '#FFFFFF',
-                        textTransform: 'uppercase',
-                        letterSpacing: '0.05em',
-                        fontSize: '14px',
+                        fontSize: '13px',
+                        whiteSpace: 'nowrap',
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
                       }}
+                      title={row.team}
                     >
                       {row.team}
                     </div>
                     <div
-                      className="font-label-caps"
                       style={{
+                        fontFamily: 'var(--font-body)',
                         fontSize: '11px',
-                        color: '#9E9E9E',
-                        textTransform: 'uppercase',
-                        marginTop: '4px',
+                        color: '#c4c9ac',
+                        marginTop: '2px',
+                        whiteSpace: 'nowrap',
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
                       }}
+                      title={row.manager}
                     >
                       {row.manager}
                     </div>
                   </td>
 
                   <td
-                    className="font-stat-value"
                     style={{
-                      padding: '16px 12px',
+                      fontFamily: 'var(--font-mono)',
+                      fontWeight: 700,
+                      padding: '12px 4px',
                       textAlign: 'right',
-                      fontSize: '14px',
+                      fontSize: '12px',
                       color: '#9E9E9E',
+                      whiteSpace: 'nowrap',
                     }}
                   >
                     {row.gw}
                   </td>
 
                   <td
-                    className="font-stat-value"
                     style={{
-                      padding: '16px 12px',
+                      fontFamily: 'var(--font-mono)',
+                      fontWeight: 800,
+                      padding: '12px 0px 12px 4px',
                       textAlign: 'right',
-                      fontSize: '20px',
+                      fontSize: '14px',
                       color: '#FFFFFF',
+                      whiteSpace: 'nowrap',
                     }}
                   >
                     {row.tot}
