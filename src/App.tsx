@@ -2,13 +2,13 @@ import React, { useState } from 'react';
 import { LanguageProvider } from './context/LanguageContext';
 import { Sidebar } from './components/layout/Sidebar';
 import { TopHeader } from './components/layout/TopHeader';
+import { GlobalNewsTicker } from './components/layout/GlobalNewsTicker';
 import { HomePage } from './pages/HomePage';
 import { LeaguePage } from './pages/LeaguePage';
 import { CupPage } from './pages/CupPage';
 import { PrizePoolPage } from './pages/PrizePoolPage';
 import { HallOfFamePage } from './pages/HallOfFamePage';
 import { NewsletterPage } from './pages/NewsletterPage';
-
 
 export const App: React.FC = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -22,8 +22,11 @@ export const App: React.FC = () => {
           backgroundColor: 'var(--bg-base)',
           display: 'flex',
           flexDirection: 'column',
+          paddingTop: '36px', // Spacing for fixed top sticky news ticker
         }}
       >
+        {/* Global Sticky News Ticker */}
+        <GlobalNewsTicker onNavigateToNewsletter={() => setActiveTab('newsletter')} />
       {/* Sidebar Navigation */}
       <Sidebar
         isOpen={sidebarOpen}

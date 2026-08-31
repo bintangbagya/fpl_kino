@@ -344,39 +344,35 @@ export function useNewsletterData(): UseNewsletterDataReturn {
     async function fetchAvailableGws() {
       try {
         const { data, error: edErr } = await supabase
-          .from('newsletter_articles')
+          .from('newsletters')
           .select('gw_number')
-          .eq('readiness_status', 'APPROVED_PASS')
           .order('gw_number', { ascending: false });
 
         if (edErr) throw edErr;
 
         let uniqueGws = [...new Set((data ?? []).map((e) => e.gw_number as number))];
         if (uniqueGws.length === 0) {
-          const { data: issueData } = await supabase
-            .from('newsletter_issues')
-            .select('gw_number')
-            .order('gw_number', { ascending: false });
-          uniqueGws = [...new Set((issueData ?? []).map((e) => e.gw_number as number))];
+          uniqueGws = [2, 1];
         }
 
-        // Include 1, 2 as defaults sorted ascending: 1, 2
-        const mergedGws = [...new Set([...uniqueGws, 1, 2])].sort((a, b) => a - b);
-        setAvailableGws(mergedGws);
+        // Include 0 (Semua GW) at beginning, followed by GW numbers descending (2, 1)
+        const gwNums = [...new Set([...uniqueGws, 2, 1])].sort((a, b) => b - a);
+        const sortedGws = [0, ...gwNums];
+        setAvailableGws(sortedGws);
 
-        if (!selectedGw && mergedGws.length > 0) {
-          setSelectedGw(mergedGws[0]);
+        if (selectedGw === null && sortedGws.length > 0) {
+          setSelectedGw(sortedGws[1] || 2);
         }
       } catch (err) {
         console.error('[useNewsletterData] fetchAvailableGws error:', err);
-        setAvailableGws([1, 2]);
-        if (!selectedGw) setSelectedGw(1);
+        setAvailableGws([0, 2, 1]);
+        if (selectedGw === null) setSelectedGw(2);
       }
     }
     fetchAvailableGws();
   }, []);
 
-  // Step 2: Fetch GW Data for selected GW
+  // Step 2: Fetch GW Data for selected GW (or 0 for Semua GW)
   useEffect(() => {
     if (selectedGw === null) return;
 
@@ -385,28 +381,23 @@ export function useNewsletterData(): UseNewsletterDataReturn {
       setError(null);
       try {
         // Query database newsletters table
-        const { data: newslettersData } = await supabase
-          .from('newsletters')
-          .select('*')
-          .eq('gw_number', selectedGw!)
+        let query = supabase.from('newsletters').select('*');
+        if (selectedGw && selectedGw > 0) {
+          query = query.eq('gw_number', selectedGw);
+        }
+        const { data: newslettersData } = await query
+          .order('gw_number', { ascending: false })
           .order('created_at', { ascending: false });
 
-        // Query database articles
-        const { data: articlesData } = await supabase
-          .from('newsletter_articles')
-          .select('*')
-          .eq('gw_number', selectedGw!)
-          .eq('readiness_status', 'APPROVED_PASS')
-          .order('final_tier', { ascending: true });
-
-        // Check gameweek status from fpl_gameweeks
-        const { data: gwInfo } = await supabase
-          .from('fpl_gameweeks')
-          .select('finished')
-          .eq('gw_number', selectedGw!)
-          .maybeSingle();
-
-        const isFinished = gwInfo?.finished ?? (selectedGw === 1);
+        let isFinished = true;
+        if (selectedGw && selectedGw > 0) {
+          const { data: gwInfo } = await supabase
+            .from('fpl_gameweeks')
+            .select('finished')
+            .eq('gw_number', selectedGw)
+            .maybeSingle();
+          isFinished = gwInfo?.finished ?? (selectedGw === 1);
+        }
 
         if (newslettersData && newslettersData.length > 0) {
           // Map public.newsletters records into NewsletterStory items
@@ -416,11 +407,11 @@ export function useNewsletterData(): UseNewsletterDataReturn {
             const createdDate = row.created_at ? row.created_at.split('T')[0] : '2026-08-30';
 
             let emoji = '📰';
-            if (tagList.includes('MVP') || tagList.includes('Top Scorer')) emoji = '⚡';
-            else if (tagList.includes('Captain') || tagList.includes('Strategy')) emoji = '🎯';
-            else if (tagList.includes('Banter') || tagList.includes('Transfer')) emoji = '🎭';
+            if (tagList.includes('MVP') || tagList.includes('Top Scorer') || row.title.toLowerCase().includes('bruno') || row.title.toLowerCase().includes('cherki')) emoji = '⚡';
+            else if (tagList.includes('Captain') || tagList.includes('Strategy') || row.title.toLowerCase().includes('kudeta')) emoji = '🎯';
+            else if (tagList.includes('Banter') || tagList.includes('Transfer') || tagList.includes('ChipReview') || row.title.toLowerCase().includes('transfer') || row.title.toLowerCase().includes('chip')) emoji = '🎭';
             else if (tagList.includes('Preview') || tagList.includes('Watchlist')) emoji = '🔮';
-            else if (tagList.includes('Recap') || tagList.includes('Standings')) emoji = '🏆';
+            else if (tagList.includes('Recap') || tagList.includes('Standings') || row.title.toLowerCase().includes('klasemen') || row.title.toLowerCase().includes('kuasai')) emoji = '🏆';
 
             return {
               id: row.id,
@@ -470,83 +461,18 @@ export function useNewsletterData(): UseNewsletterDataReturn {
           };
 
           setGwData({
-            gwNumber: selectedGw!,
-            editionLabel: `GW${selectedGw} – Edisi Resmi Liga FPL Kino`,
+            gwNumber: selectedGw || 0,
+            editionLabel: selectedGw === 0 ? 'Semua Gameweek – Edisi Lengkap FPL Kino' : `GW${selectedGw} – Edisi Resmi Liga FPL Kino`,
             isGwFinished: isFinished,
             availableMatchdays: availableMatchdaysOpts,
             updates: [singleUpdate],
             stories: mappedStories,
           });
-        } else if (articlesData && articlesData.length > 0) {
-          // Map DB articles into NewsletterStory items
-          const mappedStories: NewsletterStory[] = articlesData.map((art, idx) => {
-            const facts = art.key_facts_used_json || {};
-            const statsList: { label: string; value: string }[] = [];
-
-            if (facts.new_leader) statsList.push({ label: 'Leader Baru', value: facts.new_leader });
-            if (facts.new_leader_pts) statsList.push({ label: 'Total Poin', value: `${facts.new_leader_pts} pts` });
-            if (facts.point_gap) statsList.push({ label: 'Selisih Poin', value: `+${facts.point_gap} pts` });
-            statsList.push({ label: 'Status', value: isFinished ? 'FINAL' : 'PROVISIONAL' });
-
-            const createdDate = art.created_at ? art.created_at.split('T')[0] : '2026-08-29';
-            return {
-              id: idx + 1,
-              gw_number: art.gw_number,
-              update_id: `GW${art.gw_number}_UPD_1`,
-              matchday_key: isFinished ? 'final' : createdDate,
-              matchday_label: isFinished ? 'Final Review' : `Update ${createdDate}`,
-              status: isFinished ? 'FINAL' : 'PROVISIONAL',
-              edition_date: createdDate,
-              story_order: idx + 1,
-              story_id: art.logical_article_id,
-              category: art.final_editorial_angle || `🔥 GW${art.gw_number} • TITLE SHIFT`,
-              emoji: '🏆',
-              title: art.headline,
-              hook: art.subheadline || art.title_direction || '',
-              description: art.article_body,
-              is_hero: art.final_tier === 1,
-              stats: statsList,
-            };
-          });
-
-          const matchdayKeys = [...new Set(mappedStories.map((s) => s.matchday_key || 'final'))];
-          const matchdayOpts: MatchdayOption[] = [{ key: 'all', label: 'All Updates' }];
-
-          matchdayKeys.forEach((key) => {
-            if (key === 'final') {
-              matchdayOpts.push({ key: 'final', label: 'Final Review', status: isFinished ? 'FINAL' : 'PROVISIONAL' });
-            } else {
-              matchdayOpts.push({ key, label: `Update ${key}`, date: key, status: isFinished ? 'FINAL' : 'PROVISIONAL' });
-            }
-          });
-
-          const singleUpdate: NewsletterUpdate = {
-            updateId: `GW${selectedGw}_UPD_1`,
-            matchdayKey: isFinished ? 'final' : '2026-08-29',
-            matchdayLabel: isFinished ? 'Final Review' : 'Live Update',
-            matchdayDate: '2026-08-29',
-            status: isFinished ? 'FINAL' : 'PROVISIONAL',
-            publishedAt: new Date().toLocaleDateString('id-ID'),
-            summary: isFinished ? 'Ulasan resmi akhir Gameweek.' : 'Pembaruan sementara Gameweek.',
-            stories: mappedStories,
-          };
-
-          setGwData({
-            gwNumber: selectedGw!,
-            editionLabel: `GW${selectedGw} – Edisi Resmi Liga FPL Kino`,
-            isGwFinished: isFinished,
-            availableMatchdays: matchdayOpts,
-            updates: [singleUpdate],
-            stories: mappedStories,
-          });
-        } else if (MOCK_MULTI_UPDATE_DATA[selectedGw!]) {
-          // Use Rich Multi-Matchday Mock Data if DB articles empty
-          setGwData(MOCK_MULTI_UPDATE_DATA[selectedGw!]);
         } else {
           // Empty Data
           setGwData({
-            gwNumber: selectedGw!,
-            editionLabel: `GW${selectedGw} – Edisi Liga FPL Kino`,
+            gwNumber: selectedGw || 0,
+            editionLabel: selectedGw === 0 ? 'Semua Gameweek – Edisi Lengkap FPL Kino' : `GW${selectedGw} – Edisi Liga FPL Kino`,
             isGwFinished: isFinished,
             availableMatchdays: [{ key: 'all', label: 'All Updates' }],
             updates: [],
@@ -556,9 +482,14 @@ export function useNewsletterData(): UseNewsletterDataReturn {
       } catch (err) {
         console.error('[useNewsletterData] fetchGwData error:', err);
         setError(err instanceof Error ? err.message : 'Unknown error');
-        if (MOCK_MULTI_UPDATE_DATA[selectedGw!]) {
-          setGwData(MOCK_MULTI_UPDATE_DATA[selectedGw!]);
-        }
+        setGwData({
+          gwNumber: selectedGw || 0,
+          editionLabel: selectedGw === 0 ? 'Semua Gameweek – Edisi Lengkap FPL Kino' : `GW${selectedGw} – Edisi Liga FPL Kino`,
+          isGwFinished: true,
+          availableMatchdays: [{ key: 'all', label: 'All Updates' }],
+          updates: [],
+          stories: [],
+        });
       } finally {
         setLoading(false);
       }
@@ -588,12 +519,19 @@ export function useNewsletterData(): UseNewsletterDataReturn {
   };
 
   // Compute Filtered Updates & Stories based on selectedMatchday
-  const filteredUpdates = (gwData?.updates ?? []).filter((u) => {
-    if (selectedMatchday === 'all') return true;
-    return u.matchdayKey === selectedMatchday;
+  const filteredStories = (gwData?.stories ?? []).filter((story) => {
+    if (!selectedMatchday || selectedMatchday === 'all') return true;
+    return (
+      story.matchday_key === selectedMatchday ||
+      story.matchday_key === `MD${selectedMatchday}` ||
+      story.matchday_key === selectedMatchday.replace('MD', '')
+    );
   });
 
-  const filteredStories = filteredUpdates.flatMap((u) => u.stories);
+  const filteredUpdates = (gwData?.updates ?? []).filter((u) => {
+    if (!selectedMatchday || selectedMatchday === 'all') return true;
+    return u.matchdayKey === selectedMatchday;
+  });
 
   return {
     availableGws,

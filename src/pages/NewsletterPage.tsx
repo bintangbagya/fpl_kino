@@ -37,12 +37,30 @@ const SkeletonCard: React.FC<{ height?: number; style?: React.CSSProperties }> =
   </div>
 );
 
+// Helper for badge styling based on card type
+function getCardTypeBadge(title: string, category: string) {
+  const t = title.toLowerCase();
+  const c = category.toLowerCase();
+
+  if (t.includes('headline') || c.includes('headline')) {
+    return { label: '🔥 HEADLINE', bg: 'rgba(204, 255, 0, 0.15)', border: 'rgba(204, 255, 0, 0.4)', color: '#CCFF00' };
+  }
+  if (t.includes('klasemen') || t.includes('takhta') || t.includes('kuasai') || c.includes('standings')) {
+    return { label: '🏆 KLASEMEN', bg: 'rgba(255, 215, 0, 0.15)', border: 'rgba(255, 215, 0, 0.4)', color: '#FFD700' };
+  }
+  if (t.includes('transfer') || t.includes('chip') || t.includes('hit') || c.includes('transfer') || c.includes('chip')) {
+    return { label: '🎭 REVIEW TRANSFER & CHIP', bg: 'rgba(176, 102, 255, 0.15)', border: 'rgba(176, 102, 255, 0.4)', color: '#B066FF' };
+  }
+  return { label: '⚡ PLAYER SPOTLIGHT', bg: 'rgba(0, 229, 255, 0.15)', border: 'rgba(0, 229, 255, 0.4)', color: '#00E5FF' };
+}
+
 // ─── Hero Card (Headline Story) ───────────────────────────────────────────────
 const HeroCard: React.FC<{ story: NewsletterStory; onClick: () => void }> = ({
   story,
   onClick,
 }) => {
   const { t } = useLanguage();
+  const cardBadge = getCardTypeBadge(story.title, story.category);
 
   return (
     <div
@@ -75,33 +93,38 @@ const HeroCard: React.FC<{ story: NewsletterStory; onClick: () => void }> = ({
         }}
       />
 
-      {/* Header Badges: HEADLINE + Category */}
+      {/* Header Badges: Card Type + GW / MD */}
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '8px' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
           <span
             style={{
-              padding: '3px 8px',
-              backgroundColor: '#CCFF00',
-              color: '#000',
-              borderRadius: '4px',
+              padding: '3px 10px',
+              backgroundColor: cardBadge.bg,
+              border: `1px solid ${cardBadge.border}`,
+              color: cardBadge.color,
+              borderRadius: '6px',
               fontSize: '10px',
               fontFamily: 'var(--font-mono)',
               fontWeight: 800,
               letterSpacing: '0.08em',
             }}
           >
-            HEADLINE
+            {cardBadge.label}
           </span>
           <span
             style={{
-              fontSize: '11px',
+              padding: '3px 8px',
+              backgroundColor: '#1f1f1f',
+              border: '1px solid #333333',
+              borderRadius: '6px',
+              fontSize: '10px',
               fontFamily: 'var(--font-mono)',
               fontWeight: 700,
-              color: '#888888',
+              color: '#CCFF00',
               letterSpacing: '0.05em',
             }}
           >
-            {story.category}
+            GW {story.gw_number} • {story.matchday_label || 'Matchday 1'}
           </span>
         </div>
       </div>
@@ -140,12 +163,15 @@ const HeroCard: React.FC<{ story: NewsletterStory; onClick: () => void }> = ({
         style={{
           display: 'flex',
           alignItems: 'center',
-          justifyContent: 'flex-end',
+          justifyContent: 'space-between',
           marginTop: '6px',
           paddingTop: '10px',
           borderTop: '1px solid #1e1e1e',
         }}
       >
+        <span style={{ fontSize: '11px', color: '#666', fontFamily: 'var(--font-mono)' }}>
+          Published: {story.edition_date}
+        </span>
         <span
           style={{
             display: 'inline-flex',
@@ -169,20 +195,7 @@ const HeroCard: React.FC<{ story: NewsletterStory; onClick: () => void }> = ({
 // ─── Story Card ───────────────────────────────────────────────────────────────
 const StoryCard: React.FC<{ story: NewsletterStory; onClick: () => void }> = ({ story, onClick }) => {
   const { t } = useLanguage();
-  const accentColors: Record<string, string> = {
-    '📈': '#00ff88',
-    '📉': '#ff4d4d',
-    '🎯': '#4d9fff',
-    '💀': '#ff6b35',
-    '🔄': '#b066ff',
-    '📊': '#ffcc00',
-    '🔥': '#CCFF00',
-    '⚔️': '#00e5ff',
-    '🛋️': '#ff9900',
-    '👑': '#CCFF00',
-    '🏆': '#FFD700',
-  };
-  const accentColor = accentColors[story.emoji] ?? '#CCFF00';
+  const cardBadge = getCardTypeBadge(story.title, story.category);
 
   return (
     <div
@@ -212,24 +225,38 @@ const StoryCard: React.FC<{ story: NewsletterStory; onClick: () => void }> = ({ 
           left: 0,
           right: 0,
           height: '2px',
-          backgroundColor: accentColor,
-          opacity: 0.6,
+          backgroundColor: cardBadge.color,
+          opacity: 0.8,
         }}
       />
 
-      {/* Header Tags: Category */}
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '8px' }}>
+      {/* Header Badges: Card Type & GW / MD */}
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '8px', flexWrap: 'wrap' }}>
+        <span
+          style={{
+            padding: '2px 8px',
+            backgroundColor: cardBadge.bg,
+            border: `1px solid ${cardBadge.border}`,
+            color: cardBadge.color,
+            borderRadius: '4px',
+            fontSize: '9.5px',
+            fontFamily: 'var(--font-mono)',
+            fontWeight: 800,
+            letterSpacing: '0.06em',
+          }}
+        >
+          {cardBadge.label}
+        </span>
         <span
           style={{
             fontSize: '10px',
             fontFamily: 'var(--font-mono)',
             fontWeight: 700,
-            color: accentColor,
-            letterSpacing: '0.08em',
-            textTransform: 'uppercase',
+            color: '#888888',
+            letterSpacing: '0.05em',
           }}
         >
-          {story.emoji} {story.category}
+          GW {story.gw_number} • {story.matchday_label || 'Matchday 1'}
         </span>
       </div>
 
@@ -268,19 +295,22 @@ const StoryCard: React.FC<{ story: NewsletterStory; onClick: () => void }> = ({ 
         style={{
           display: 'flex',
           alignItems: 'center',
-          justifyContent: 'flex-end',
+          justifyContent: 'space-between',
           marginTop: 'auto',
-          paddingTop: '10px',
-          borderTop: '1px solid #1c1c1c',
+          paddingTop: '8px',
+          borderTop: '1px solid #1e1e1e',
         }}
       >
+        <span style={{ fontSize: '10px', color: '#666', fontFamily: 'var(--font-mono)' }}>
+          Published: {story.edition_date}
+        </span>
         <span
           style={{
-            fontSize: '11px',
+            fontSize: '10px',
             fontFamily: 'var(--font-mono)',
             fontWeight: 800,
-            color: accentColor,
-            letterSpacing: '0.08em',
+            color: '#CCFF00',
+            letterSpacing: '0.05em',
             textTransform: 'uppercase',
           }}
         >
@@ -696,7 +726,7 @@ export const NewsletterPage: React.FC = () => {
                   key={gw}
                   onClick={() => setSelectedGw(gw)}
                   style={{
-                    padding: '5px 14px',
+                    padding: '6px 16px',
                     borderRadius: '100px',
                     fontFamily: 'var(--font-mono)',
                     fontSize: '11px',
@@ -712,7 +742,7 @@ export const NewsletterPage: React.FC = () => {
                     boxShadow: isActive ? '0 0 10px rgba(204, 255, 0, 0.2)' : 'none',
                   }}
                 >
-                  GW{gw}
+                  {gw === 0 ? 'SEMUA GW' : `GW${gw}`}
                 </button>
               );
             })}

@@ -49,11 +49,11 @@ export const Sidebar: React.FC<SidebarProps> = ({
       <aside
         style={{
           width: '288px',
-          height: '100vh',
+          height: 'calc(100vh - 36px)',
           backgroundColor: '#141414',
           borderRight: '1px solid #222222',
           position: 'fixed',
-          top: 0,
+          top: '36px',
           left: 0,
           zIndex: 50,
           display: 'flex',

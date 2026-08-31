@@ -56,7 +56,7 @@ export const TopHeader: React.FC<TopHeaderProps> = ({ onOpenSidebar }) => {
         justifyContent: 'space-between',
         padding: '0 16px',
         position: 'fixed',
-        top: 0,
+        top: '36px',
         left: 0,
         right: 0,
         zIndex: 40,
