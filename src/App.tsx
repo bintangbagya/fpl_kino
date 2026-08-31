@@ -60,6 +60,7 @@ export const App: React.FC = () => {
           {activeTab === 'home' && (
             <HomePage
               onNavigateToLeague={() => setActiveTab('league')}
+              onNavigateToNewsletter={() => setActiveTab('newsletter')}
             />
           )}
           {activeTab === 'league' && <LeaguePage />}
