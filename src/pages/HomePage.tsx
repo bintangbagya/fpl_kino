@@ -3,12 +3,10 @@ import { HeroBanner } from '../components/home/HeroBanner';
 import { NextDeadlineWidget } from '../components/home/NextDeadlineWidget';
 import { StandingsTable } from '../components/home/StandingsTable';
 import { AnalyticsQuadGrid } from '../components/home/AnalyticsQuadGrid';
-import { NewsletterPreviewCard } from '../components/home/NewsletterPreviewCard';
 import { useHomePageData } from '../hooks/useHomePageData';
 
 interface HomePageProps {
   onNavigateToLeague: () => void;
-  onNavigateToNewsletter?: () => void;
 }
 
 /** Section 9 — Last Updated Indicator */
@@ -61,7 +59,7 @@ function LastUpdatedBadge({ updatedAt }: { updatedAt: Date | null }) {
   );
 }
 
-export const HomePage: React.FC<HomePageProps> = ({ onNavigateToLeague, onNavigateToNewsletter }) => {
+export const HomePage: React.FC<HomePageProps> = ({ onNavigateToLeague }) => {
   const {
     previousGwStats,
     latestFinishedGw,
@@ -114,9 +112,6 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigateToLeague, onNaviga
 
       {/* Last Updated Indicator (if present) */}
       <LastUpdatedBadge updatedAt={lastUpdatedAt} />
-
-      {/* 2. Newsletter Preview Card (New Section) */}
-      <NewsletterPreviewCard onNavigateToNewsletter={onNavigateToNewsletter} />
 
       {/* 3. Middle 12-Column Grid */}
       <div
