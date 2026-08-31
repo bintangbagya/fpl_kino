@@ -181,19 +181,17 @@ export const NewsletterPreviewCard: React.FC<NewsletterPreviewCardProps> = ({
         </span>
       </div>
 
-      {/* Judul Headline */}
+      {/* Judul Headline (Full multi-line title without truncation) */}
       <h3
         style={{
           fontFamily: 'var(--font-headline)',
-          fontSize: 'clamp(16px, 2.5vw, 20px)',
+          fontSize: 'clamp(15px, 2.2vw, 19px)',
           fontWeight: 900,
           color: '#FFFFFF',
-          lineHeight: 1.25,
+          lineHeight: 1.3,
           margin: 0,
-          display: '-webkit-box',
-          WebkitLineClamp: 1,
-          WebkitBoxOrient: 'vertical',
-          overflow: 'hidden',
+          whiteSpace: 'normal',
+          wordBreak: 'break-word',
         }}
       >
         {article.title}

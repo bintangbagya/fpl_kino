@@ -179,20 +179,6 @@ export const GlobalNewsTicker: React.FC<GlobalNewsTickerProps> = ({ onNavigateTo
           >
             GW{latestGw}
           </span>
-
-          {/* Smooth Fade Overlay */}
-          <div
-            style={{
-              position: 'absolute',
-              right: '-16px',
-              top: 0,
-              bottom: 0,
-              width: '16px',
-              background: 'linear-gradient(to right, #000000 0%, transparent 100%)',
-              pointerEvents: 'none',
-              zIndex: 4,
-            }}
-          />
         </div>
 
         {/* Marquee Running Text Track (Flex-1) */}
