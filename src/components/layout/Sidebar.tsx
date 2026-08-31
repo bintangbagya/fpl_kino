@@ -75,6 +75,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
             }}
           >
             <span
+              onClick={() => onSelectTab('home')}
               style={{
                 fontFamily: 'var(--font-headline)',
                 fontSize: '20px',
@@ -83,7 +84,10 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 color: '#FFFFFF',
                 textTransform: 'uppercase',
                 lineHeight: 1,
+                cursor: 'pointer',
+                userSelect: 'none',
               }}
+              title="Kembali ke Halaman Utama"
             >
               FPL KINO <span style={{ color: '#CCFF00' }}>HUB</span>
             </span>

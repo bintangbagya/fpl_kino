@@ -47,7 +47,10 @@ export const App: React.FC = () => {
         }}
       >
         {/* Top Mobile Header */}
-        <TopHeader onOpenSidebar={() => setSidebarOpen(true)} />
+        <TopHeader
+          onOpenSidebar={() => setSidebarOpen(true)}
+          onNavigateHome={() => setActiveTab('home')}
+        />
 
         {/* Page Body Container */}
         <main

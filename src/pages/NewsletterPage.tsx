@@ -321,102 +321,6 @@ const StoryCard: React.FC<{ story: NewsletterStory; onClick: () => void }> = ({ 
   );
 };
 
-// ─── News Ticker ──────────────────────────────────────────────────────────────
-const NewsTicker: React.FC<{ items: string[]; gwNumber: number | null }> = ({
-  items,
-  gwNumber,
-}) => {
-  if (items.length === 0) return null;
-  const repeatedItems = [...items, ...items, ...items];
-
-  // Calculate dynamic animation duration so text scrolls at a constant, comfortable reading speed
-  const totalChars = repeatedItems.reduce((acc, curr) => acc + curr.length, 0);
-  const durationSeconds = Math.max(18, Math.round(totalChars / 22));
-
-  return (
-    <div
-      style={{
-        backgroundColor: '#CCFF00',
-        overflow: 'hidden',
-        display: 'flex',
-        alignItems: 'center',
-        height: '38px',
-        borderRadius: '8px',
-        position: 'relative',
-        boxShadow: '0 4px 20px rgba(204, 255, 0, 0.15)',
-      }}
-    >
-      {/* Left Fixed Badge */}
-      <div
-        style={{
-          flexShrink: 0,
-          backgroundColor: '#000',
-          height: '100%',
-          display: 'flex',
-          alignItems: 'center',
-          padding: '0 14px',
-          gap: '8px',
-          zIndex: 2,
-          boxShadow: '4px 0 12px rgba(0,0,0,0.4)',
-        }}
-      >
-        <span
-          style={{
-            width: '7px',
-            height: '7px',
-            borderRadius: '50%',
-            backgroundColor: '#CCFF00',
-            display: 'block',
-            boxShadow: '0 0 8px #CCFF00',
-            animation: 'pulse 1.5s ease-in-out infinite',
-          }}
-        />
-        <span
-          style={{
-            fontSize: '11px',
-            fontFamily: 'var(--font-mono)',
-            fontWeight: 800,
-            color: '#CCFF00',
-            letterSpacing: '0.12em',
-            whiteSpace: 'nowrap',
-          }}
-        >
-          GW{gwNumber ?? 2} UPDATES
-        </span>
-      </div>
-
-      {/* Marquee Running Text Track */}
-      <div
-        className="ticker-track"
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          animation: `ticker ${durationSeconds}s linear infinite`,
-          whiteSpace: 'nowrap',
-          gap: '48px',
-          paddingLeft: '24px',
-        }}
-      >
-        {repeatedItems.map((item, index) => (
-          <span
-            key={index}
-            style={{
-              fontSize: '12px',
-              fontFamily: 'var(--font-mono)',
-              fontWeight: 800,
-              color: '#000',
-              textTransform: 'uppercase',
-              letterSpacing: '0.04em',
-            }}
-          >
-            {item}
-          </span>
-        ))}
-      </div>
-    </div>
-  );
-};
-
 // ─── Main Newsletter Page Component ──────────────────────────────────────────
 export const NewsletterPage: React.FC = () => {
   const { t } = useLanguage();
@@ -750,9 +654,6 @@ export const NewsletterPage: React.FC = () => {
         </div>
 
       </section>
-
-      {/* Live Ticker Bar */}
-      {tickerItems.length > 0 && <NewsTicker items={tickerItems} gwNumber={gwData?.gwNumber ?? null} />}
 
       {/* Main Body */}
       <div>

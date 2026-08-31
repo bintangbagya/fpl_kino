@@ -215,43 +215,17 @@ export const NewsletterPreviewCard: React.FC<NewsletterPreviewCardProps> = ({
         {article.summary}
       </p>
 
-      {/* Tags Badges & CTA Footer */}
+      {/* CTA Footer */}
       <div
         style={{
           display: 'flex',
           alignItems: 'center',
-          justifyContent: 'space-between',
-          flexWrap: 'wrap',
-          gap: '8px',
+          justifyContent: 'flex-end',
           marginTop: '4px',
           paddingTop: '12px',
           borderTop: '1px solid rgba(255,255,255,0.06)',
         }}
       >
-        {/* Render Tags as separate pill badges */}
-        {article.tags.length > 0 ? (
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
-            {article.tags.slice(0, 4).map((tag, idx) => (
-              <span
-                key={idx}
-                style={{
-                  fontFamily: 'var(--font-mono)',
-                  fontSize: '10px',
-                  fontWeight: 600,
-                  color: '#9E9E9E',
-                  backgroundColor: '#1E1E1E',
-                  border: '1px solid #2C2C2C',
-                  padding: '2px 8px',
-                  borderRadius: '6px',
-                }}
-              >
-                #{tag}
-              </span>
-            ))}
-          </div>
-        ) : <div />}
-
-        {/* Action Link / CTA */}
         <div
           style={{
             fontFamily: 'var(--font-mono)',
@@ -262,7 +236,6 @@ export const NewsletterPreviewCard: React.FC<NewsletterPreviewCardProps> = ({
             alignItems: 'center',
             gap: '6px',
             letterSpacing: '0.05em',
-            marginLeft: 'auto',
           }}
         >
           <span>Baca Selengkapnya</span>

@@ -4,9 +4,10 @@ import { LanguageToggle } from './LanguageToggle';
 
 interface TopHeaderProps {
   onOpenSidebar: () => void;
+  onNavigateHome?: () => void;
 }
 
-export const TopHeader: React.FC<TopHeaderProps> = ({ onOpenSidebar }) => {
+export const TopHeader: React.FC<TopHeaderProps> = ({ onOpenSidebar, onNavigateHome }) => {
   const [updatedAt, setUpdatedAt] = useState<Date | null>(null);
 
   useEffect(() => {
@@ -64,6 +65,7 @@ export const TopHeader: React.FC<TopHeaderProps> = ({ onOpenSidebar }) => {
       className="lg-hide"
     >
       <span
+        onClick={onNavigateHome}
         style={{
           fontFamily: 'var(--font-headline)',
           fontSize: '18px',
@@ -71,7 +73,10 @@ export const TopHeader: React.FC<TopHeaderProps> = ({ onOpenSidebar }) => {
           letterSpacing: '-0.02em',
           color: '#FFFFFF',
           textTransform: 'uppercase',
+          cursor: 'pointer',
+          userSelect: 'none',
         }}
+        title="Kembali ke Halaman Utama"
       >
         FPL KINO <span style={{ color: '#CCFF00' }}>HUB</span>
       </span>
