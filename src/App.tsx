@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { LanguageProvider } from './context/LanguageContext';
+import { AuthProvider, useAuth } from './context/AuthContext';
+import { LoginPage } from './components/auth/LoginPage';
 import { Sidebar } from './components/layout/Sidebar';
 import { TopHeader } from './components/layout/TopHeader';
 import { GlobalNewsTicker } from './components/layout/GlobalNewsTicker';
@@ -10,7 +12,8 @@ import { PrizePoolPage } from './pages/PrizePoolPage';
 import { HallOfFamePage } from './pages/HallOfFamePage';
 import { NewsletterPage } from './pages/NewsletterPage';
 
-export const App: React.FC = () => {
+const MainLayout: React.FC = () => {
+  const { user, loading } = useAuth();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [activeTab, setActiveTab] = useState(() => {
     if (typeof window !== 'undefined') {
@@ -52,19 +55,59 @@ export const App: React.FC = () => {
     }
   }, []);
 
-  return (
-    <LanguageProvider>
+  // 1. Loading Splash
+  if (loading) {
+    return (
       <div
         style={{
           minHeight: '100vh',
-          backgroundColor: 'var(--bg-base)',
+          backgroundColor: '#0A0A0A',
           display: 'flex',
           flexDirection: 'column',
-          paddingTop: '36px', // Spacing for fixed top sticky news ticker
+          alignItems: 'center',
+          justifyContent: 'center',
+          color: '#FFFFFF',
+          fontFamily: 'Inter, sans-serif',
         }}
       >
-        {/* Global Sticky News Ticker */}
-        <GlobalNewsTicker onNavigateToNewsletter={() => setActiveTab('newsletter')} />
+        <div
+          style={{
+            width: '40px',
+            height: '40px',
+            border: '3px solid rgba(59, 130, 246, 0.2)',
+            borderTopColor: '#3B82F6',
+            borderRadius: '50%',
+            animation: 'spin 0.8s linear infinite',
+            marginBottom: '16px',
+          }}
+        />
+        <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
+        <div style={{ fontSize: '14px', fontWeight: 600, color: '#9CA3AF', letterSpacing: '0.05em' }}>
+          MEMUAT FPL KINO HUB...
+        </div>
+      </div>
+    );
+  }
+
+  // 2. Require Google SSO Login
+  if (!user) {
+    return <LoginPage />;
+  }
+
+  // 3. Authenticated App Layout
+  return (
+    <div
+      style={{
+        minHeight: '100vh',
+        backgroundColor: 'var(--bg-base)',
+        display: 'flex',
+        flexDirection: 'column',
+        paddingTop: '36px', // Spacing for fixed top sticky news ticker
+      }}
+    >
+      {/* Global Sticky News Ticker */}
+      <GlobalNewsTicker onNavigateToNewsletter={() => setActiveTab('newsletter')} />
+      
       {/* Sidebar Navigation */}
       <Sidebar
         isOpen={sidebarOpen}
@@ -136,6 +179,15 @@ export const App: React.FC = () => {
         </main>
       </div>
     </div>
+  );
+};
+
+export const App: React.FC = () => {
+  return (
+    <LanguageProvider>
+      <AuthProvider>
+        <MainLayout />
+      </AuthProvider>
     </LanguageProvider>
   );
 };

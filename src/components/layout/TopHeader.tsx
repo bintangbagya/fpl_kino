@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { supabase } from '../../lib/supabaseClient';
 import { LanguageToggle } from './LanguageToggle';
+import { useAuth } from '../../context/AuthContext';
+import { LogOut, User } from 'lucide-react';
 
 interface TopHeaderProps {
   onOpenSidebar: () => void;
@@ -9,6 +11,7 @@ interface TopHeaderProps {
 
 export const TopHeader: React.FC<TopHeaderProps> = ({ onOpenSidebar, onNavigateHome }) => {
   const [updatedAt, setUpdatedAt] = useState<Date | null>(null);
+  const { user, signOut } = useAuth();
 
   useEffect(() => {
     async function fetchLastUpdated() {
@@ -81,7 +84,7 @@ export const TopHeader: React.FC<TopHeaderProps> = ({ onOpenSidebar, onNavigateH
         FPL KINO <span style={{ color: '#CCFF00' }}>HUB</span>
       </span>
 
-      <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
         {label && (
           <span
             style={{
@@ -105,6 +108,51 @@ export const TopHeader: React.FC<TopHeaderProps> = ({ onOpenSidebar, onNavigateH
             </span>
             {label}
           </span>
+        )}
+
+        {user && (
+          <div
+            title={user.email}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px',
+              backgroundColor: '#1F1F1F',
+              border: '1px solid #333333',
+              borderRadius: '20px',
+              padding: '3px 8px',
+              fontSize: '11px',
+              color: '#E5E7EB',
+            }}
+          >
+            <User size={12} color="#3B82F6" />
+            <span
+              style={{
+                maxWidth: '90px',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                whiteSpace: 'nowrap',
+                fontWeight: 600,
+              }}
+            >
+              {user.email.split('@')[0]}
+            </span>
+            <button
+              onClick={() => signOut()}
+              title="Sign Out"
+              style={{
+                background: 'transparent',
+                border: 'none',
+                color: '#9CA3AF',
+                cursor: 'pointer',
+                padding: '2px',
+                display: 'flex',
+                alignItems: 'center',
+              }}
+            >
+              <LogOut size={12} />
+            </button>
+          </div>
         )}
 
         <LanguageToggle />

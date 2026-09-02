@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabaseClient';
 import { ArticleShareButton } from '../components/newsletter/ArticleShareButton';
+import { ReactionSection } from '../components/newsletter/ReactionSection';
+import { CommentSection } from '../components/newsletter/CommentSection';
 import { slugifyTitle } from '../utils/slugify';
 
 export interface NewsletterDetailData {
@@ -700,6 +702,12 @@ export const NewsletterDetailPage: React.FC<NewsletterDetailPageProps> = ({
               </div>
             </div>
           )}
+
+          {/* Emoji Reactions & User Comments */}
+          <div style={{ marginTop: '28px', paddingTop: '20px', borderTop: '1px solid #222222' }}>
+            <ReactionSection articleId={detail.story_id} />
+            <CommentSection articleId={detail.story_id} />
+          </div>
 
           {/* Bottom Action Footer */}
           <div

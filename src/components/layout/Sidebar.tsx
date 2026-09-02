@@ -2,6 +2,8 @@ import React from 'react';
 import { useGwStatus } from '../../hooks/useGwStatus';
 import { useLanguage } from '../../context/LanguageContext';
 import { LanguageToggle } from './LanguageToggle';
+import { useAuth } from '../../context/AuthContext';
+import { LogOut } from 'lucide-react';
 
 interface SidebarProps {
   isOpen: boolean;
@@ -18,6 +20,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
 }) => {
   const { displayText, isLive } = useGwStatus();
   const { t } = useLanguage();
+  const { user, signOut } = useAuth();
 
   const navItems = [
     { id: 'home', label: t.navHome, icon: 'home', drawerLabel: t.navHome },
@@ -177,66 +180,148 @@ export const Sidebar: React.FC<SidebarProps> = ({
           </nav>
         </div>
 
-        {/* GW Status Box (Bottom Left Sidebar) */}
-        <div
-          style={{
-            padding: '16px',
-            backgroundColor: '#141414',
-            margin: '16px',
-            borderRadius: '14px',
-            border: `1px solid ${isLive ? 'rgba(0,255,136,0.3)' : '#222222'}`,
-            position: 'relative',
-            overflow: 'hidden',
-          }}
-        >
-          <div
-            style={{
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              right: 0,
-              height: '2px',
-              backgroundColor: isLive ? '#00FF88' : '#CCFF00',
-              opacity: isLive ? 0.8 : 0.4,
-            }}
-          />
-          <div
-            style={{
-              fontFamily: 'var(--font-mono)',
-              fontSize: '9px',
-              fontWeight: 700,
-              color: '#666666',
-              marginBottom: '6px',
-              textTransform: 'uppercase',
-              letterSpacing: '0.12em',
-            }}
-          >
-            GW STATUS
-          </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+        {/* GW Status & User Account Box (Bottom Left Sidebar) */}
+        <div style={{ padding: '0 16px 16px 16px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+          {/* User Account Card */}
+          {user && (
             <div
               style={{
-                width: '7px',
-                height: '7px',
-                borderRadius: '50%',
-                backgroundColor: isLive ? '#00FF88' : '#9E9E9E',
-                boxShadow: isLive ? '0 0 8px rgba(0,255,136,0.7)' : 'none',
-                animation: isLive ? 'pulse 1.5s ease-in-out infinite' : 'none',
-                flexShrink: 0,
-              }}
-            />
-            <span
-              style={{
-                fontFamily: 'var(--font-mono)',
-                fontSize: '11px',
-                fontWeight: 800,
-                color: isLive ? '#00FF88' : '#FFFFFF',
-                textTransform: 'uppercase',
-                letterSpacing: '0.08em',
+                backgroundColor: '#181818',
+                border: '1px solid #282828',
+                borderRadius: '12px',
+                padding: '10px 12px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
               }}
             >
-              {displayText}
-            </span>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', overflow: 'hidden' }}>
+                <div
+                  style={{
+                    width: '28px',
+                    height: '28px',
+                    borderRadius: '50%',
+                    backgroundColor: '#3B82F6',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    color: '#FFFFFF',
+                    fontWeight: 700,
+                    fontSize: '12px',
+                    flexShrink: 0,
+                  }}
+                >
+                  {user.email.charAt(0).toUpperCase()}
+                </div>
+                <div style={{ overflow: 'hidden' }}>
+                  <div
+                    style={{
+                      color: '#E5E7EB',
+                      fontSize: '12px',
+                      fontWeight: 600,
+                      whiteSpace: 'nowrap',
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                    }}
+                  >
+                    {user.name || user.email.split('@')[0]}
+                  </div>
+                  <div
+                    style={{
+                      color: '#9CA3AF',
+                      fontSize: '10px',
+                      whiteSpace: 'nowrap',
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                    }}
+                  >
+                    {user.email}
+                  </div>
+                </div>
+              </div>
+
+              <button
+                onClick={() => signOut()}
+                title="Keluar / Sign Out"
+                style={{
+                  background: 'transparent',
+                  border: 'none',
+                  color: '#EF4444',
+                  cursor: 'pointer',
+                  padding: '6px',
+                  borderRadius: '6px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  transition: 'background-color 0.15s ease',
+                }}
+                onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = 'rgba(239, 68, 68, 0.1)')}
+                onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = 'transparent')}
+              >
+                <LogOut size={16} />
+              </button>
+            </div>
+          )}
+
+          <div
+            style={{
+              padding: '16px',
+              backgroundColor: '#141414',
+              borderRadius: '14px',
+              border: `1px solid ${isLive ? 'rgba(0,255,136,0.3)' : '#222222'}`,
+              position: 'relative',
+              overflow: 'hidden',
+            }}
+          >
+            <div
+              style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                right: 0,
+                height: '2px',
+                backgroundColor: isLive ? '#00FF88' : '#CCFF00',
+                opacity: isLive ? 0.8 : 0.4,
+              }}
+            />
+            <div
+              style={{
+                fontFamily: 'var(--font-mono)',
+                fontSize: '9px',
+                fontWeight: 700,
+                color: '#666666',
+                marginBottom: '6px',
+                textTransform: 'uppercase',
+                letterSpacing: '0.12em',
+              }}
+            >
+              GW STATUS
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <div
+                style={{
+                  width: '7px',
+                  height: '7px',
+                  borderRadius: '50%',
+                  backgroundColor: isLive ? '#00FF88' : '#9E9E9E',
+                  boxShadow: isLive ? '0 0 8px rgba(0,255,136,0.7)' : 'none',
+                  animation: isLive ? 'pulse 1.5s ease-in-out infinite' : 'none',
+                  flexShrink: 0,
+                }}
+              />
+              <span
+                style={{
+                  fontFamily: 'var(--font-mono)',
+                  fontSize: '11px',
+                  fontWeight: 800,
+                  color: isLive ? '#00FF88' : '#FFFFFF',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.08em',
+                }}
+              >
+                {displayText}
+              </span>
+            </div>
           </div>
         </div>
       </aside>
