@@ -413,6 +413,12 @@ export function useNewsletterData(): UseNewsletterDataReturn {
             else if (tagList.includes('Preview') || tagList.includes('Watchlist')) emoji = '🔮';
             else if (tagList.includes('Recap') || tagList.includes('Standings') || row.title.toLowerCase().includes('klasemen') || row.title.toLowerCase().includes('kuasai')) emoji = '🏆';
 
+            let image_url: string | null = null;
+            if (row.content) {
+              const imgMatch = row.content.match(/!\[.*?\]\((.*?)\)/);
+              if (imgMatch) image_url = imgMatch[1];
+            }
+
             return {
               id: row.id,
               gw_number: row.gw_number,
@@ -428,6 +434,7 @@ export function useNewsletterData(): UseNewsletterDataReturn {
               title: row.title,
               hook: row.summary || '',
               description: row.content,
+              image_url,
               is_hero: idx === 0,
               stats: null,
             };

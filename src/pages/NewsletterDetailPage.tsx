@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabaseClient';
+import { ArticleShareButton } from '../components/newsletter/ArticleShareButton';
 
 export interface NewsletterDetailData {
   id: number;
@@ -404,18 +405,17 @@ export const NewsletterDetailPage: React.FC<NewsletterDetailPageProps> = ({
     <div className="article-detail-container" style={{ width: '100%', maxWidth: '900px', margin: '0 auto' }}>
       <style dangerouslySetInnerHTML={{ __html: styleSheet }} />
 
-      {/* Navigation Top Bar */}
-      <div style={{ marginBottom: '24px' }}>
+      {/* Top back button & Share button */}
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '20px', flexWrap: 'wrap', gap: '12px' }}>
         <button
           onClick={onBack}
-          className="back-nav-btn"
           style={{
             display: 'inline-flex',
             alignItems: 'center',
-            gap: '8px',
-            background: '#141414',
-            border: '1px solid #2A2A2A',
-            color: '#A0A0A0',
+            gap: '6px',
+            backgroundColor: '#1E1E1E',
+            border: '1px solid #333333',
+            color: '#D1D5DB',
             padding: '8px 16px',
             borderRadius: '100px',
             fontFamily: 'var(--font-mono)',
@@ -427,6 +427,15 @@ export const NewsletterDetailPage: React.FC<NewsletterDetailPageProps> = ({
         >
           <span>←</span> KEMBALI KE NEWSLETTER
         </button>
+
+        {detail && (
+          <ArticleShareButton
+            title={detail.title}
+            summary={detail.subtitle || ''}
+            storyId={detail.story_id}
+            gwNumber={detail.gw_number}
+          />
+        )}
       </div>
 
       {loading ? (
@@ -665,6 +674,8 @@ export const NewsletterDetailPage: React.FC<NewsletterDetailPageProps> = ({
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'space-between',
+              flexWrap: 'wrap',
+              gap: '12px',
             }}
           >
             <button
@@ -683,9 +694,12 @@ export const NewsletterDetailPage: React.FC<NewsletterDetailPageProps> = ({
             >
               ← Kembali ke Daftar Stories
             </button>
-            <span style={{ fontSize: '11px', fontFamily: 'var(--font-mono)', color: '#444' }}>
-              FPL KINO HUB • GAMWEEK {detail.gw_number}
-            </span>
+            <ArticleShareButton
+              title={detail.title}
+              summary={detail.subtitle || ''}
+              storyId={detail.story_id}
+              gwNumber={detail.gw_number}
+            />
           </div>
         </article>
       )}

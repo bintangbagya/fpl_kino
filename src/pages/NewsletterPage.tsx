@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   useNewsletterData,
   type NewsletterStory,
@@ -336,6 +336,43 @@ export const NewsletterPage: React.FC = () => {
 
   const [selectedStory, setSelectedStory] = useState<{ gwNumber: number; storyId: string } | null>(null);
 
+  // Deep linking: check URL search params for direct article link on mount
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search);
+      const articleParam = params.get('article');
+      const gwParam = params.get('gw');
+      if (articleParam) {
+        setSelectedStory({
+          gwNumber: gwParam ? Number(gwParam) : 2,
+          storyId: articleParam,
+        });
+      }
+    }
+  }, []);
+
+  const handleSelectStory = (storyId: string, gwNumber: number) => {
+    setSelectedStory({ gwNumber, storyId });
+    if (typeof window !== 'undefined') {
+      const url = new URL(window.location.href);
+      const cleanId = storyId.startsWith('news_') ? storyId.replace('news_', '') : storyId;
+      url.searchParams.set('tab', 'newsletter');
+      url.searchParams.set('article', cleanId);
+      if (gwNumber) url.searchParams.set('gw', String(gwNumber));
+      window.history.pushState({}, '', url.toString());
+    }
+  };
+
+  const handleBackToList = () => {
+    setSelectedStory(null);
+    if (typeof window !== 'undefined') {
+      const url = new URL(window.location.href);
+      url.searchParams.delete('article');
+      url.searchParams.set('tab', 'newsletter');
+      window.history.pushState({}, '', url.toString());
+    }
+  };
+
   const styleSheet = `
     @keyframes pulse {
       0%, 100% { opacity: 1; transform: scale(1); }
@@ -423,7 +460,7 @@ export const NewsletterPage: React.FC = () => {
       <NewsletterDetailPage
         gwNumber={selectedStory.gwNumber}
         storyId={selectedStory.storyId}
-        onBack={() => setSelectedStory(null)}
+        onBack={handleBackToList}
       />
     );
   }
@@ -738,10 +775,7 @@ export const NewsletterPage: React.FC = () => {
               <HeroCard
                 story={filteredStories[0]}
                 onClick={() =>
-                  setSelectedStory({
-                    gwNumber: gwData.gwNumber,
-                    storyId: filteredStories[0].story_id,
-                  })
+                  handleSelectStory(filteredStories[0].story_id, filteredStories[0].gw_number || gwData.gwNumber)
                 }
               />
             )}
@@ -760,10 +794,7 @@ export const NewsletterPage: React.FC = () => {
                     key={story.id}
                     story={story}
                     onClick={() =>
-                      setSelectedStory({
-                        gwNumber: gwData.gwNumber,
-                        storyId: story.story_id,
-                      })
+                      handleSelectStory(story.story_id, story.gw_number || gwData.gwNumber)
                     }
                   />
                 ))}

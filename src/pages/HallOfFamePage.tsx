@@ -537,7 +537,7 @@ export const HallOfFamePage: React.FC = () => {
                   textTransform: 'uppercase',
                 }}
               >
-                9 Months • 9 Winners
+                10 Months • 10 Winners
               </span>
             </div>
 

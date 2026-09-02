@@ -268,7 +268,7 @@ export const PrizePoolPage: React.FC = () => {
                     lineHeight: 1.1,
                   }}
                 >
-                  Rp4.310.000
+                  Rp4.410.000
                 </h3>
                 <span
                   className="material-symbols-outlined"
@@ -822,7 +822,7 @@ export const PrizePoolPage: React.FC = () => {
                 textTransform: 'uppercase',
               }}
             >
-              9 MONTHLY AWARDS × 9 WINNERS
+              10 MONTHLY AWARDS × 10 WINNERS
             </p>
 
             <div
@@ -1015,7 +1015,7 @@ export const PrizePoolPage: React.FC = () => {
         <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
           {[
             { cat: 'Full Season Champion', detail: '1st Place (Rp750.000) + 2nd Place (Rp400.000) + 3rd Place (Rp250.000)', subtotal: 'Rp1.400.000' },
-            { cat: 'Manager of the Month', detail: '9 Monthly Awards × Rp100.000', subtotal: 'Rp900.000' },
+            { cat: 'Manager of the Month', detail: '10 Monthly Awards × Rp100.000', subtotal: 'Rp1.000.000' },
             { cat: 'Half Season Champion', detail: '1st Place (Rp350.000) + 2nd Place (Rp200.000) + 3rd Place (Rp150.000)', subtotal: 'Rp700.000' },
             { cat: 'FPL Kino Cup', detail: 'Champion (Rp350.000) + Runner Up (Rp200.000)', subtotal: 'Rp550.000' },
             { cat: 'Manager of the Week', detail: '38 Gameweeks × FREE JavaLatte BlueLane (Rp20.000)', subtotal: 'Rp760.000' },
@@ -1070,7 +1070,7 @@ export const PrizePoolPage: React.FC = () => {
             className="neon-text-glow"
             style={{ fontFamily: 'var(--font-headline)', fontSize: '24px', fontWeight: 900, color: '#CCFF00', letterSpacing: '0.02em' }}
           >
-            Rp4.310.000
+            Rp4.410.000
           </span>
         </div>
       </section>

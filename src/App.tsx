@@ -12,7 +12,27 @@ import { NewsletterPage } from './pages/NewsletterPage';
 
 export const App: React.FC = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [activeTab, setActiveTab] = useState('home');
+  const [activeTab, setActiveTab] = useState(() => {
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search);
+      const article = params.get('article');
+      const tab = params.get('tab');
+      if (article || tab === 'newsletter') return 'newsletter';
+      if (tab && ['home', 'league', 'cup', 'prizes', 'stats'].includes(tab)) return tab;
+    }
+    return 'home';
+  });
+
+  React.useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search);
+      const article = params.get('article');
+      const tab = params.get('tab');
+      if (article || tab === 'newsletter') {
+        setActiveTab('newsletter');
+      }
+    }
+  }, []);
 
   return (
     <LanguageProvider>
