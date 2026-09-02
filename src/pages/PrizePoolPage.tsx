@@ -24,6 +24,11 @@ export const PrizePoolPage: React.FC = () => {
       .rewards-grid-2col {
         grid-template-columns: 1fr !important;
       }
+      .summary-grid-item {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 4px !important;
+      }
     }
     @media (min-width: 641px) {
       .podium-container {
@@ -49,10 +54,17 @@ export const PrizePoolPage: React.FC = () => {
       }
     }
     .neon-text-glow {
-      text-shadow: 0 0 10px rgba(204, 255, 0, 0.4);
+      text-shadow: 0 0 16px rgba(204, 255, 0, 0.4);
     }
     .podium-first-glow {
-      box-shadow: 0 0 20px rgba(204, 255, 0, 0.15);
+      box-shadow: 0 0 24px rgba(204, 255, 0, 0.18);
+    }
+    .prize-row-hover {
+      transition: background-color 0.2s ease, border-color 0.2s ease;
+    }
+    .prize-row-hover:hover {
+      background-color: rgba(204, 255, 0, 0.03);
+      border-color: rgba(204, 255, 0, 0.25);
     }
   `;
 
@@ -129,7 +141,7 @@ export const PrizePoolPage: React.FC = () => {
         </span>
 
         <div style={{ position: 'relative', zIndex: 2, display: 'flex', flexDirection: 'column', gap: '8px' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
             <span
               style={{
                 fontFamily: 'var(--font-mono)',
@@ -201,7 +213,7 @@ export const PrizePoolPage: React.FC = () => {
         </div>
       </section>
 
-      {/* Total Prize Pool Section */}
+      {/* Total Prize Pool Highlight Section */}
       <section
         style={{
           position: 'relative',
@@ -209,7 +221,7 @@ export const PrizePoolPage: React.FC = () => {
           backgroundColor: '#141414',
           border: '1px solid #222222',
           borderRadius: '14px',
-          padding: '24px',
+          padding: '28px 24px',
           zIndex: 1,
         }}
       >
@@ -225,66 +237,73 @@ export const PrizePoolPage: React.FC = () => {
             opacity: 0.8,
           }}
         />
+
         <div style={{ position: 'relative', zIndex: 10 }}>
-          <p
-            style={{
-              fontFamily: 'var(--font-mono)',
-              fontSize: '11px',
-              fontWeight: 800,
-              color: '#CCFF00',
-              letterSpacing: '0.15em',
-              textTransform: 'uppercase',
-              marginBottom: '6px',
-              margin: 0,
-            }}
-          >
-            TOTAL PRIZE POOL
-          </p>
-          <div style={{ display: 'flex', alignItems: 'baseline', gap: '12px' }}>
-            <h3
-              style={{
-                fontFamily: 'var(--font-headline)',
-                fontWeight: 900,
-                fontSize: '48px',
-                color: '#CCFF00',
-                letterSpacing: '-0.02em',
-                margin: 0,
-                lineHeight: 1.1,
-                textShadow: '0 0 20px rgba(204, 255, 0, 0.3)',
-              }}
-            >
-              PRIZE TBA
-            </h3>
-            <span
-              className="material-symbols-outlined"
-              style={{ color: '#CCFF00', opacity: 0.7, fontSize: '28px' }}
-            >
-              payments
-            </span>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '12px' }}>
+            <div>
+              <p
+                style={{
+                  fontFamily: 'var(--font-mono)',
+                  fontSize: '11px',
+                  fontWeight: 800,
+                  color: '#CCFF00',
+                  letterSpacing: '0.15em',
+                  textTransform: 'uppercase',
+                  marginBottom: '6px',
+                  margin: 0,
+                }}
+              >
+                TOTAL PRIZE POOL
+              </p>
+              <div style={{ display: 'flex', alignItems: 'baseline', gap: '12px', flexWrap: 'wrap' }}>
+                <h3
+                  className="neon-text-glow"
+                  style={{
+                    fontFamily: 'var(--font-headline)',
+                    fontWeight: 900,
+                    fontSize: 'clamp(36px, 6vw, 56px)',
+                    color: '#CCFF00',
+                    letterSpacing: '-0.02em',
+                    margin: 0,
+                    lineHeight: 1.1,
+                  }}
+                >
+                  Rp4.310.000
+                </h3>
+                <span
+                  className="material-symbols-outlined"
+                  style={{ color: '#CCFF00', opacity: 0.8, fontSize: '32px' }}
+                >
+                  payments
+                </span>
+              </div>
+            </div>
           </div>
+
           <p
             style={{
               fontFamily: 'var(--font-mono)',
               fontSize: '11px',
               color: '#9E9E9E',
               letterSpacing: '0.08em',
-              marginTop: '8px',
+              marginTop: '12px',
               margin: 0,
               textTransform: 'uppercase',
             }}
           >
-            TOTAL REWARDS AVAILABLE FOR FPL KINO 2026/27
+            TOTAL REWARDS & CASH PRIZES AVAILABLE FOR FPL KINO INDONESIA 2026/27
           </p>
         </div>
+
         <span
           className="material-symbols-outlined"
           style={{
             position: 'absolute',
             right: '-32px',
             bottom: '-32px',
-            fontSize: '200px',
+            fontSize: '220px',
             color: '#CCFF00',
-            opacity: 0.04,
+            opacity: 0.03,
             pointerEvents: 'none',
             userSelect: 'none',
             fontStyle: 'normal',
@@ -294,7 +313,7 @@ export const PrizePoolPage: React.FC = () => {
         </span>
       </section>
 
-      {/* Layout Columns */}
+      {/* Main Layout Grid */}
       <div
         style={{
           display: 'grid',
@@ -303,7 +322,7 @@ export const PrizePoolPage: React.FC = () => {
           zIndex: 1,
         }}
       >
-        {/* Left Column: Overall Season & Second Tier Prizes */}
+        {/* Left Column: Overall Full Season, Half Season & Kino Cup */}
         <div
           style={{
             gridColumn: 'span 12',
@@ -313,7 +332,7 @@ export const PrizePoolPage: React.FC = () => {
           }}
           className="col-lg-8"
         >
-          {/* Overall Season Champions Podium Card */}
+          {/* Full Season Champions Podium Card */}
           <div
             style={{
               backgroundColor: '#141414',
@@ -348,16 +367,18 @@ export const PrizePoolPage: React.FC = () => {
                 display: 'flex',
                 justifyContent: 'space-between',
                 alignItems: 'flex-start',
-                marginBottom: '32px',
+                marginBottom: '28px',
                 position: 'relative',
                 zIndex: 10,
+                flexWrap: 'wrap',
+                gap: '12px',
               }}
             >
               <div>
                 <h3
                   style={{
                     fontFamily: 'var(--font-headline)',
-                    fontSize: '24px',
+                    fontSize: '22px',
                     fontWeight: 900,
                     color: '#FFFFFF',
                     margin: 0,
@@ -365,7 +386,7 @@ export const PrizePoolPage: React.FC = () => {
                     textTransform: 'uppercase',
                   }}
                 >
-                  OVERALL SEASON CHAMPIONS
+                  FULL SEASON CHAMPIONS
                 </h3>
                 <p
                   style={{
@@ -378,24 +399,42 @@ export const PrizePoolPage: React.FC = () => {
                     textTransform: 'uppercase',
                   }}
                 >
-                  Grand Champions of the Season
+                  Grand Champions of the Season (GW1 — GW38)
                 </p>
               </div>
-              <span
-                style={{
-                  fontFamily: 'var(--font-mono)',
-                  padding: '4px 12px',
-                  backgroundColor: '#CCFF00',
-                  color: '#000000',
-                  borderRadius: '6px',
-                  fontSize: '10px',
-                  fontWeight: 800,
-                  letterSpacing: '0.1em',
-                  textTransform: 'uppercase',
-                }}
-              >
-                FULL SEASON
-              </span>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <span
+                  style={{
+                    fontFamily: 'var(--font-mono)',
+                    padding: '4px 10px',
+                    backgroundColor: '#CCFF00',
+                    color: '#000000',
+                    borderRadius: '6px',
+                    fontSize: '10px',
+                    fontWeight: 800,
+                    letterSpacing: '0.1em',
+                    textTransform: 'uppercase',
+                  }}
+                >
+                  FULL SEASON
+                </span>
+                <span
+                  style={{
+                    fontFamily: 'var(--font-mono)',
+                    padding: '4px 10px',
+                    backgroundColor: '#0D0D0D',
+                    border: '1px solid #333333',
+                    color: '#CCFF00',
+                    borderRadius: '6px',
+                    fontSize: '10px',
+                    fontWeight: 800,
+                    letterSpacing: '0.08em',
+                    textTransform: 'uppercase',
+                  }}
+                >
+                  TOTAL: Rp1.400.000
+                </span>
+              </div>
             </div>
 
             {/* Podium grid */}
@@ -405,20 +444,21 @@ export const PrizePoolPage: React.FC = () => {
                 <div
                   style={{
                     backgroundColor: '#0D0D0D',
-                    padding: '16px',
+                    padding: '20px 16px',
                     border: '1px solid #222222',
                     borderRadius: '14px',
                     textAlign: 'center',
+                    position: 'relative',
                   }}
                 >
-                  <span className="material-symbols-outlined" style={{ color: '#9E9E9E', marginBottom: '8px', fontSize: '24px' }}>
+                  <span className="material-symbols-outlined" style={{ color: '#C0C0C0', marginBottom: '8px', fontSize: '32px' }}>
                     military_tech
                   </span>
-                  <p style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', color: '#9E9E9E', margin: 0, fontWeight: 700 }}>
+                  <p style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', color: '#9E9E9E', margin: 0, fontWeight: 700, letterSpacing: '0.08em' }}>
                     2ND PLACE
                   </p>
-                  <p style={{ fontFamily: 'var(--font-headline)', fontWeight: 900, color: '#CCFF00', fontSize: '20px', margin: '4px 0 0 0' }}>
-                    PRIZE TBA
+                  <p style={{ fontFamily: 'var(--font-headline)', fontWeight: 900, color: '#CCFF00', fontSize: '24px', margin: '6px 0 0 0' }}>
+                    Rp400.000
                   </p>
                 </div>
               </div>
@@ -428,30 +468,50 @@ export const PrizePoolPage: React.FC = () => {
                 <div
                   className="podium-first-glow"
                   style={{
-                    backgroundColor: 'rgba(204, 255, 0, 0.05)',
+                    backgroundColor: 'rgba(204, 255, 0, 0.06)',
                     border: '1px solid #CCFF00',
-                    padding: '24px 16px',
+                    padding: '28px 16px',
                     borderRadius: '14px',
                     textAlign: 'center',
+                    position: 'relative',
                   }}
                 >
-                  <span className="material-symbols-outlined" style={{ color: '#CCFF00', marginBottom: '8px', fontSize: '40px' }}>
+                  <div
+                    style={{
+                      position: 'absolute',
+                      top: '-12px',
+                      left: '50%',
+                      transform: 'translateX(-50%)',
+                      backgroundColor: '#CCFF00',
+                      color: '#000000',
+                      fontFamily: 'var(--font-mono)',
+                      fontSize: '9px',
+                      fontWeight: 900,
+                      padding: '2px 8px',
+                      borderRadius: '4px',
+                      letterSpacing: '0.1em',
+                      textTransform: 'uppercase',
+                    }}
+                  >
+                    CHAMPION
+                  </div>
+                  <span className="material-symbols-outlined" style={{ color: '#CCFF00', marginBottom: '8px', fontSize: '44px' }}>
                     workspace_premium
                   </span>
-                  <p style={{ fontFamily: 'var(--font-mono)', fontSize: '12px', color: '#FFFFFF', margin: 0, fontWeight: 800 }}>
+                  <p style={{ fontFamily: 'var(--font-mono)', fontSize: '12px', color: '#FFFFFF', margin: 0, fontWeight: 800, letterSpacing: '0.08em' }}>
                     1ST PLACE
                   </p>
                   <p
+                    className="neon-text-glow"
                     style={{
                       fontFamily: 'var(--font-headline)',
                       fontWeight: 900,
                       color: '#CCFF00',
-                      fontSize: '28px',
+                      fontSize: '32px',
                       margin: '8px 0 0 0',
-                      textShadow: '0 0 16px rgba(204, 255, 0, 0.4)',
                     }}
                   >
-                    PRIZE TBA
+                    Rp750.000
                   </p>
                 </div>
               </div>
@@ -461,27 +521,28 @@ export const PrizePoolPage: React.FC = () => {
                 <div
                   style={{
                     backgroundColor: '#0D0D0D',
-                    padding: '16px',
+                    padding: '20px 16px',
                     border: '1px solid #222222',
                     borderRadius: '14px',
                     textAlign: 'center',
+                    position: 'relative',
                   }}
                 >
-                  <span className="material-symbols-outlined" style={{ color: '#9E9E9E', marginBottom: '8px', fontSize: '24px' }}>
+                  <span className="material-symbols-outlined" style={{ color: '#CD7F32', marginBottom: '8px', fontSize: '32px' }}>
                     military_tech
                   </span>
-                  <p style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', color: '#9E9E9E', margin: 0, fontWeight: 700 }}>
+                  <p style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', color: '#9E9E9E', margin: 0, fontWeight: 700, letterSpacing: '0.08em' }}>
                     3RD PLACE
                   </p>
-                  <p style={{ fontFamily: 'var(--font-headline)', fontWeight: 900, color: '#CCFF00', fontSize: '20px', margin: '4px 0 0 0' }}>
-                    PRIZE TBA
+                  <p style={{ fontFamily: 'var(--font-headline)', fontWeight: 900, color: '#CCFF00', fontSize: '24px', margin: '6px 0 0 0' }}>
+                    Rp250.000
                   </p>
                 </div>
               </div>
             </div>
           </div>
 
-          {/* Half Season & FPL Kino Cup grid */}
+          {/* Half Season & FPL Kino Cup Grid */}
           <div className="rewards-grid-2col" style={{ display: 'grid', gap: '24px' }}>
             {/* Half Season Champions */}
             <div
@@ -490,87 +551,118 @@ export const PrizePoolPage: React.FC = () => {
                 border: '1px solid #222222',
                 borderRadius: '14px',
                 padding: '24px',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'space-between',
               }}
             >
-              <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '4px' }}>
-                <span className="material-symbols-outlined" style={{ color: '#CCFF00', fontSize: '20px' }}>
-                  analytics
-                </span>
-                <h4
+              <div>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '4px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                    <span className="material-symbols-outlined" style={{ color: '#CCFF00', fontSize: '22px' }}>
+                      analytics
+                    </span>
+                    <h4
+                      style={{
+                        fontFamily: 'var(--font-headline)',
+                        fontSize: '18px',
+                        fontWeight: 900,
+                        color: '#FFFFFF',
+                        margin: 0,
+                        letterSpacing: '0.02em',
+                        textTransform: 'uppercase',
+                      }}
+                    >
+                      HALF SEASON
+                    </h4>
+                  </div>
+                  <span
+                    style={{
+                      fontFamily: 'var(--font-mono)',
+                      fontSize: '10px',
+                      fontWeight: 800,
+                      color: '#CCFF00',
+                      backgroundColor: 'rgba(204, 255, 0, 0.1)',
+                      border: '1px solid rgba(204, 255, 0, 0.2)',
+                      padding: '2px 6px',
+                      borderRadius: '4px',
+                    }}
+                  >
+                    Rp700.000
+                  </span>
+                </div>
+                <p
                   style={{
-                    fontFamily: 'var(--font-headline)',
-                    fontSize: '18px',
-                    fontWeight: 900,
-                    color: '#FFFFFF',
+                    fontFamily: 'var(--font-mono)',
+                    fontSize: '10px',
+                    color: '#9E9E9E',
+                    letterSpacing: '0.08em',
+                    marginBottom: '20px',
                     margin: 0,
-                    letterSpacing: '0.02em',
                     textTransform: 'uppercase',
                   }}
                 >
-                  HALF SEASON CHAMPIONS
-                </h4>
-              </div>
-              <p
-                style={{
-                  fontFamily: 'var(--font-mono)',
-                  fontSize: '10px',
-                  color: '#9E9E9E',
-                  letterSpacing: '0.08em',
-                  marginBottom: '16px',
-                  margin: 0,
-                  textTransform: 'uppercase',
-                }}
-              >
-                WINNERS (GW1 — GW18)
-              </p>
+                  TOP MANAGERS (GW1 — GW19)
+                </p>
 
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-                <div
-                  style={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                    padding: '8px 0',
-                    borderBottom: '1px solid #222222',
-                  }}
-                >
-                  <span style={{ fontFamily: 'var(--font-mono)', color: '#FFFFFF', fontSize: '11px', fontWeight: 700 }}>
-                    1ST PLACE
-                  </span>
-                  <span style={{ fontFamily: 'var(--font-headline)', fontWeight: 900, color: '#CCFF00', fontSize: '14px' }}>
-                    PRIZE TBA
-                  </span>
-                </div>
-                <div
-                  style={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                    padding: '8px 0',
-                    borderBottom: '1px solid #222222',
-                  }}
-                >
-                  <span style={{ fontFamily: 'var(--font-mono)', color: '#9E9E9E', fontSize: '11px', fontWeight: 700 }}>
-                    2ND PLACE
-                  </span>
-                  <span style={{ fontFamily: 'var(--font-headline)', fontWeight: 900, color: '#CCFF00', fontSize: '14px' }}>
-                    PRIZE TBA
-                  </span>
-                </div>
-                <div
-                  style={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                    padding: '8px 0',
-                  }}
-                >
-                  <span style={{ fontFamily: 'var(--font-mono)', color: '#9E9E9E', fontSize: '11px', fontWeight: 700 }}>
-                    3RD PLACE
-                  </span>
-                  <span style={{ fontFamily: 'var(--font-headline)', fontWeight: 900, color: '#CCFF00', fontSize: '14px' }}>
-                    PRIZE TBA
-                  </span>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                  <div
+                    className="prize-row-hover"
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                      padding: '10px 12px',
+                      backgroundColor: '#0D0D0D',
+                      border: '1px solid #222222',
+                      borderRadius: '8px',
+                    }}
+                  >
+                    <span style={{ fontFamily: 'var(--font-mono)', color: '#FFFFFF', fontSize: '11px', fontWeight: 800 }}>
+                      🥇 1ST PLACE
+                    </span>
+                    <span style={{ fontFamily: 'var(--font-headline)', fontWeight: 900, color: '#CCFF00', fontSize: '16px' }}>
+                      Rp350.000
+                    </span>
+                  </div>
+                  <div
+                    className="prize-row-hover"
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                      padding: '10px 12px',
+                      backgroundColor: '#0D0D0D',
+                      border: '1px solid #222222',
+                      borderRadius: '8px',
+                    }}
+                  >
+                    <span style={{ fontFamily: 'var(--font-mono)', color: '#9E9E9E', fontSize: '11px', fontWeight: 700 }}>
+                      🥈 2ND PLACE
+                    </span>
+                    <span style={{ fontFamily: 'var(--font-headline)', fontWeight: 900, color: '#CCFF00', fontSize: '16px' }}>
+                      Rp200.000
+                    </span>
+                  </div>
+                  <div
+                    className="prize-row-hover"
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                      padding: '10px 12px',
+                      backgroundColor: '#0D0D0D',
+                      border: '1px solid #222222',
+                      borderRadius: '8px',
+                    }}
+                  >
+                    <span style={{ fontFamily: 'var(--font-mono)', color: '#9E9E9E', fontSize: '11px', fontWeight: 700 }}>
+                      🥉 3RD PLACE
+                    </span>
+                    <span style={{ fontFamily: 'var(--font-headline)', fontWeight: 900, color: '#CCFF00', fontSize: '16px' }}>
+                      Rp150.000
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -582,58 +674,99 @@ export const PrizePoolPage: React.FC = () => {
                 border: '1px solid #222222',
                 borderRadius: '14px',
                 padding: '24px',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'space-between',
               }}
             >
-              <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
-                <span className="material-symbols-outlined" style={{ color: '#CCFF00', fontSize: '20px' }}>
-                  sports_kabaddi
-                </span>
-                <h4
+              <div>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '4px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                    <span className="material-symbols-outlined" style={{ color: '#CCFF00', fontSize: '22px' }}>
+                      sports_kabaddi
+                    </span>
+                    <h4
+                      style={{
+                        fontFamily: 'var(--font-headline)',
+                        fontSize: '18px',
+                        fontWeight: 900,
+                        color: '#FFFFFF',
+                        margin: 0,
+                        letterSpacing: '0.02em',
+                        textTransform: 'uppercase',
+                      }}
+                    >
+                      FPL KINO CUP
+                    </h4>
+                  </div>
+                  <span
+                    style={{
+                      fontFamily: 'var(--font-mono)',
+                      fontSize: '10px',
+                      fontWeight: 800,
+                      color: '#CCFF00',
+                      backgroundColor: 'rgba(204, 255, 0, 0.1)',
+                      border: '1px solid rgba(204, 255, 0, 0.2)',
+                      padding: '2px 6px',
+                      borderRadius: '4px',
+                    }}
+                  >
+                    Rp550.000
+                  </span>
+                </div>
+                <p
                   style={{
-                    fontFamily: 'var(--font-headline)',
-                    fontSize: '18px',
-                    fontWeight: 900,
-                    color: '#FFFFFF',
+                    fontFamily: 'var(--font-mono)',
+                    fontSize: '10px',
+                    color: '#9E9E9E',
+                    letterSpacing: '0.08em',
+                    marginBottom: '20px',
                     margin: 0,
-                    letterSpacing: '0.02em',
                     textTransform: 'uppercase',
                   }}
                 >
-                  FPL KINO CUP
-                </h4>
-              </div>
+                  KNOCKOUT TOURNAMENT WINNERS
+                </p>
 
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-                <div
-                  style={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                    padding: '8px 0',
-                    borderBottom: '1px solid #222222',
-                  }}
-                >
-                  <span style={{ fontFamily: 'var(--font-mono)', color: '#FFFFFF', fontSize: '11px', fontWeight: 700 }}>
-                    🥇 CHAMPION
-                  </span>
-                  <span style={{ fontFamily: 'var(--font-headline)', fontWeight: 900, color: '#CCFF00', fontSize: '14px' }}>
-                    PRIZE TBA
-                  </span>
-                </div>
-                <div
-                  style={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                    padding: '8px 0',
-                  }}
-                >
-                  <span style={{ fontFamily: 'var(--font-mono)', color: '#9E9E9E', fontSize: '11px', fontWeight: 700 }}>
-                    🥈 RUNNER UP
-                  </span>
-                  <span style={{ fontFamily: 'var(--font-headline)', fontWeight: 900, color: '#CCFF00', fontSize: '14px' }}>
-                    PRIZE TBA
-                  </span>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                  <div
+                    className="prize-row-hover"
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                      padding: '12px',
+                      backgroundColor: '#0D0D0D',
+                      border: '1px solid #222222',
+                      borderRadius: '8px',
+                    }}
+                  >
+                    <span style={{ fontFamily: 'var(--font-mono)', color: '#FFFFFF', fontSize: '11px', fontWeight: 800 }}>
+                      🏆 CHAMPION
+                    </span>
+                    <span style={{ fontFamily: 'var(--font-headline)', fontWeight: 900, color: '#CCFF00', fontSize: '16px' }}>
+                      Rp350.000
+                    </span>
+                  </div>
+                  <div
+                    className="prize-row-hover"
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                      padding: '12px',
+                      backgroundColor: '#0D0D0D',
+                      border: '1px solid #222222',
+                      borderRadius: '8px',
+                    }}
+                  >
+                    <span style={{ fontFamily: 'var(--font-mono)', color: '#9E9E9E', fontSize: '11px', fontWeight: 700 }}>
+                      🥈 RUNNER UP
+                    </span>
+                    <span style={{ fontFamily: 'var(--font-headline)', fontWeight: 900, color: '#CCFF00', fontSize: '16px' }}>
+                      Rp200.000
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -659,7 +792,7 @@ export const PrizePoolPage: React.FC = () => {
               padding: '24px',
             }}
           >
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '24px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }}>
               <h4
                 style={{
                   fontFamily: 'var(--font-headline)',
@@ -678,35 +811,62 @@ export const PrizePoolPage: React.FC = () => {
               </span>
             </div>
 
+            <p
+              style={{
+                fontFamily: 'var(--font-mono)',
+                fontSize: '10px',
+                color: '#9E9E9E',
+                letterSpacing: '0.08em',
+                marginBottom: '16px',
+                margin: 0,
+                textTransform: 'uppercase',
+              }}
+            >
+              9 MONTHLY AWARDS × 9 WINNERS
+            </p>
+
             <div
               style={{
                 backgroundColor: '#0D0D0D',
-                border: '1px solid #222222',
-                borderRadius: '14px',
+                border: '1px solid rgba(204, 255, 0, 0.25)',
+                borderRadius: '12px',
                 padding: '16px',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '10px',
+                background: 'linear-gradient(135deg, #0D0D0D 0%, #161a00 100%)',
               }}
             >
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <span className="material-symbols-outlined" style={{ color: '#CCFF00', fontSize: '18px' }}>
+                  event_available
+                </span>
+                <span style={{ fontFamily: 'var(--font-mono)', color: '#FFFFFF', fontSize: '11px', fontWeight: 800, letterSpacing: '0.08em' }}>
+                  MONTHLY WINNER PRIZE
+                </span>
+              </div>
+              <div
+                style={{
+                  fontFamily: 'var(--font-headline)',
+                  fontWeight: 900,
+                  color: '#CCFF00',
+                  fontSize: '18px',
+                  letterSpacing: '0.02em',
+                }}
+              >
+                Rp100.000
+              </div>
               <p
                 style={{
                   fontFamily: 'var(--font-mono)',
                   fontSize: '10px',
                   color: '#9E9E9E',
-                  letterSpacing: '0.08em',
-                  marginBottom: '8px',
                   margin: 0,
-                  textTransform: 'uppercase',
+                  lineHeight: '1.4',
                 }}
               >
-                9 MONTHS 9 WINNERS
+                Awarded to the highest scoring manager of each month across 10 months.
               </p>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
-                <span style={{ fontFamily: 'var(--font-mono)', color: '#FFFFFF', fontSize: '12px', fontWeight: 800 }}>
-                  1ST PLACE
-                </span>
-                <span style={{ fontFamily: 'var(--font-headline)', fontWeight: 900, color: '#CCFF00', fontSize: '20px' }}>
-                  Rp 50.000
-                </span>
-              </div>
             </div>
           </div>
 
@@ -719,7 +879,7 @@ export const PrizePoolPage: React.FC = () => {
               padding: '24px',
             }}
           >
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '24px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }}>
               <h4
                 style={{
                   fontFamily: 'var(--font-headline)',
@@ -734,42 +894,66 @@ export const PrizePoolPage: React.FC = () => {
                 MANAGER OF THE <span style={{ color: '#CCFF00' }}>WEEK</span>
               </h4>
               <span className="material-symbols-outlined" style={{ color: '#CCFF00', fontSize: '24px' }}>
-                timer
+                local_cafe
               </span>
             </div>
+
+            <p
+              style={{
+                fontFamily: 'var(--font-mono)',
+                fontSize: '10px',
+                color: '#9E9E9E',
+                letterSpacing: '0.08em',
+                marginBottom: '16px',
+                margin: 0,
+                textTransform: 'uppercase',
+              }}
+            >
+              38 GAMEWEEKS × 38 WINNERS
+            </p>
 
             <div
               style={{
                 backgroundColor: '#0D0D0D',
-                border: '1px solid #222222',
-                borderRadius: '14px',
+                border: '1px solid rgba(204, 255, 0, 0.25)',
+                borderRadius: '12px',
                 padding: '16px',
                 display: 'flex',
                 flexDirection: 'column',
-                gap: '8px',
+                gap: '10px',
+                background: 'linear-gradient(135deg, #0D0D0D 0%, #161a00 100%)',
               }}
             >
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <span className="material-symbols-outlined" style={{ color: '#CCFF00', fontSize: '18px' }}>
+                  emoji_food_beverage
+                </span>
+                <span style={{ fontFamily: 'var(--font-mono)', color: '#FFFFFF', fontSize: '11px', fontWeight: 800, letterSpacing: '0.08em' }}>
+                  WEEKLY WINNER PRIZE
+                </span>
+              </div>
+              <div
+                style={{
+                  fontFamily: 'var(--font-headline)',
+                  fontWeight: 900,
+                  color: '#CCFF00',
+                  fontSize: '18px',
+                  letterSpacing: '0.02em',
+                }}
+              >
+                FREE JavaLatte BlueLane
+              </div>
               <p
                 style={{
                   fontFamily: 'var(--font-mono)',
                   fontSize: '10px',
                   color: '#9E9E9E',
-                  letterSpacing: '0.08em',
-                  marginBottom: '8px',
                   margin: 0,
-                  textTransform: 'uppercase',
+                  lineHeight: '1.4',
                 }}
               >
-                38 WEEKS 38 WINNERS
+                Awarded to the highest scoring manager of each individual Gameweek across 38 GWs.
               </p>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
-                <span style={{ fontFamily: 'var(--font-mono)', color: '#FFFFFF', fontSize: '12px', fontWeight: 800 }}>
-                  1ST PLACE
-                </span>
-                <span style={{ fontFamily: 'var(--font-headline)', fontWeight: 900, color: '#CCFF00', fontSize: '18px' }}>
-                  FREE JAVALATTE
-                </span>
-              </div>
             </div>
 
             {/* Season Progress */}
@@ -784,7 +968,7 @@ export const PrizePoolPage: React.FC = () => {
               </div>
               <div
                 style={{
-                  height: '4px',
+                  height: '6px',
                   width: '100%',
                   backgroundColor: '#0D0D0D',
                   borderRadius: '9999px',
@@ -792,17 +976,109 @@ export const PrizePoolPage: React.FC = () => {
                   border: '1px solid #222222',
                 }}
               >
-                <div style={{ height: '100%', backgroundColor: '#CCFF00', width: '5.2%' }}></div>
+                <div style={{ height: '100%', backgroundColor: '#CCFF00', width: '5.2%', borderRadius: '9999px' }}></div>
               </div>
             </div>
           </div>
         </div>
       </div>
 
+      {/* Grand Total Summary Card */}
+      <section
+        style={{
+          backgroundColor: '#141414',
+          border: '1px solid #222222',
+          borderRadius: '14px',
+          padding: '24px',
+          zIndex: 1,
+        }}
+      >
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px', flexWrap: 'wrap' }}>
+          <span className="material-symbols-outlined" style={{ color: '#CCFF00', fontSize: '24px' }}>
+            summarize
+          </span>
+          <h4
+            style={{
+              fontFamily: 'var(--font-headline)',
+              fontSize: '20px',
+              fontWeight: 900,
+              color: '#FFFFFF',
+              margin: 0,
+              letterSpacing: '0.02em',
+              textTransform: 'uppercase',
+            }}
+          >
+            GRAND TOTAL PRIZE BREAKDOWN
+          </h4>
+        </div>
+
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+          {[
+            { cat: 'Full Season Champion', detail: '1st Place (Rp750.000) + 2nd Place (Rp400.000) + 3rd Place (Rp250.000)', subtotal: 'Rp1.400.000' },
+            { cat: 'Manager of the Month', detail: '9 Monthly Awards × Rp100.000', subtotal: 'Rp900.000' },
+            { cat: 'Half Season Champion', detail: '1st Place (Rp350.000) + 2nd Place (Rp200.000) + 3rd Place (Rp150.000)', subtotal: 'Rp700.000' },
+            { cat: 'FPL Kino Cup', detail: 'Champion (Rp350.000) + Runner Up (Rp200.000)', subtotal: 'Rp550.000' },
+            { cat: 'Manager of the Week', detail: '38 Gameweeks × FREE JavaLatte BlueLane (Rp20.000)', subtotal: 'Rp760.000' },
+          ].map((row, idx) => (
+            <div
+              key={idx}
+              className="summary-grid-item"
+              style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                padding: '12px 16px',
+                backgroundColor: '#0D0D0D',
+                border: '1px solid #222222',
+                borderRadius: '8px',
+              }}
+            >
+              <div style={{ display: 'flex', flexDirection: 'column' }}>
+                <span style={{ fontFamily: 'var(--font-mono)', fontSize: '12px', color: '#FFFFFF', fontWeight: 800 }}>
+                  {row.cat}
+                </span>
+                <span style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', color: '#9E9E9E' }}>
+                  {row.detail}
+                </span>
+              </div>
+              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '13px', color: '#CCFF00', fontWeight: 900 }}>
+                {row.subtotal}
+              </span>
+            </div>
+          ))}
+        </div>
+
+        {/* Grand Total Footer Bar */}
+        <div
+          style={{
+            marginTop: '16px',
+            padding: '16px',
+            backgroundColor: 'rgba(204, 255, 0, 0.08)',
+            border: '1px solid #CCFF00',
+            borderRadius: '10px',
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            flexWrap: 'wrap',
+            gap: '12px',
+          }}
+        >
+          <span style={{ fontFamily: 'var(--font-headline)', fontSize: '16px', fontWeight: 900, color: '#FFFFFF', letterSpacing: '0.05em' }}>
+            GRAND TOTAL PRIZES
+          </span>
+          <span
+            className="neon-text-glow"
+            style={{ fontFamily: 'var(--font-headline)', fontSize: '24px', fontWeight: 900, color: '#CCFF00', letterSpacing: '0.02em' }}
+          >
+            Rp4.310.000
+          </span>
+        </div>
+      </section>
+
       {/* Terms & Conditions Footer */}
       <footer
         style={{
-          marginTop: '32px',
+          marginTop: '16px',
           borderTop: '1px solid #222222',
           paddingTop: '24px',
           zIndex: 1,
