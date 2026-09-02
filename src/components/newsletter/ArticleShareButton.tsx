@@ -1,25 +1,16 @@
 import React, { useState, useEffect } from 'react';
+import { getArticlePublicUrl } from '../../utils/slugify';
 
 interface ArticleShareButtonProps {
   title: string;
   summary: string;
-  storyId: string;
-  gwNumber: number;
-}
-
-export function getArticlePublicUrl(storyId: string, gwNumber?: number): string {
-  const origin = typeof window !== 'undefined' ? window.location.origin : '';
-  const pathname = typeof window !== 'undefined' ? window.location.pathname : '/';
-  const cleanId = storyId.startsWith('news_') ? storyId.replace('news_', '') : storyId;
-  const gwParam = gwNumber ? `&gw=${gwNumber}` : '';
-  return `${origin}${pathname}?tab=newsletter&article=${cleanId}${gwParam}`;
+  storyId?: string;
+  gwNumber?: number;
 }
 
 export const ArticleShareButton: React.FC<ArticleShareButtonProps> = ({
   title,
   summary,
-  storyId,
-  gwNumber,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
@@ -33,7 +24,7 @@ export const ArticleShareButton: React.FC<ArticleShareButtonProps> = ({
     }
   }, [toastMessage]);
 
-  const articleUrl = getArticlePublicUrl(storyId, gwNumber);
+  const articleUrl = getArticlePublicUrl(title);
 
   const handleShareWhatsApp = () => {
     const cleanSummary = summary ? summary.replace(/\n+/g, ' ').trim() : '';

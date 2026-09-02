@@ -11,6 +11,11 @@ export interface PhaseInfo {
 
 export interface ExtendedStandingRow extends StandingRow {
   isPhaseTotal?: boolean;
+  gwNumber?: number;
+  lastGwPts?: number;
+  seasonTotalPts?: number;
+  monthTotalPts?: number;
+  gwPointsMap?: Record<number, number>;
 }
 
 export function useLeaguePageData() {
@@ -127,13 +132,13 @@ export function useLeaguePageData() {
           const stopEvt = selectedPhase.stop_event;
           const currentActive = activeGwNumber;
 
-          const monthlyPointsMap: Record<number, number> = {};
+          const gwPointsPerManager: Record<number, Record<number, number>> = {};
+          const cumulativeMap: Record<number, number> = {};
 
           // 2A. Query finished GWs strictly in manager_gameweek_stats (gw_number < activeGwNumber)
-          // To prevent double counting, exclude any active GW rows from stats
           let statsQuery = supabase
             .from('manager_gameweek_stats')
-            .select('manager_id, gw_number, points, event_transfers_cost')
+            .select('manager_id, gw_number, points, event_transfers_cost, total_points')
             .gte('gw_number', startEvt)
             .lte('gw_number', stopEvt);
 
@@ -146,10 +151,17 @@ export function useLeaguePageData() {
 
           (statsData ?? []).forEach((s) => {
             const netPts = (s.points ?? 0) - (s.event_transfers_cost ?? 0);
-            monthlyPointsMap[s.manager_id] = (monthlyPointsMap[s.manager_id] || 0) + netPts;
+            if (!gwPointsPerManager[s.manager_id]) {
+              gwPointsPerManager[s.manager_id] = {};
+            }
+            gwPointsPerManager[s.manager_id][s.gw_number] = netPts;
+            // Record latest cumulative total_points available in this phase for this manager
+            if (s.total_points !== undefined && s.total_points !== null) {
+              cumulativeMap[s.manager_id] = s.total_points;
+            }
           });
 
-          // 2B. If current active GW is within this phase range, add live_gw_points from v_live_manager_standings
+          // 2B. If current active GW is within this phase range, add live_gw_points & live_total_points from v_live_manager_standings
           if (
             currentActive !== null &&
             currentActive >= startEvt &&
@@ -157,17 +169,22 @@ export function useLeaguePageData() {
           ) {
             const { data: liveData, error: liveErr } = await supabase
               .from('v_live_manager_standings')
-              .select('manager_id, live_gw_points, team_name, manager_name');
+              .select('manager_id, live_gw_points, live_total_points');
 
             if (liveErr) throw liveErr;
 
             (liveData ?? []).forEach((row) => {
-              monthlyPointsMap[row.manager_id] =
-                (monthlyPointsMap[row.manager_id] || 0) + (row.live_gw_points ?? 0);
+              if (!gwPointsPerManager[row.manager_id]) {
+                gwPointsPerManager[row.manager_id] = {};
+              }
+              gwPointsPerManager[row.manager_id][currentActive] = row.live_gw_points ?? 0;
+              if (row.live_total_points !== undefined && row.live_total_points !== null) {
+                cumulativeMap[row.manager_id] = row.live_total_points;
+              }
             });
           }
 
-          const managerIds = Object.keys(monthlyPointsMap).map(Number);
+          const managerIds = Object.keys(gwPointsPerManager).map(Number);
           if (managerIds.length === 0) {
             setStandings([]);
             setLoading(false);
@@ -186,15 +203,19 @@ export function useLeaguePageData() {
 
           const rawItems = managerIds.map((id) => {
             const mgr = managerMap.get(id);
+            const gwMap = gwPointsPerManager[id] || {};
+            const monthlyTotal = Object.values(gwMap).reduce((sum, val) => sum + val, 0);
             return {
               manager_id: id,
               team: mgr?.team_name ?? `Manager ${id}`,
               manager: mgr?.manager_name ?? '-',
-              monthlyTotal: monthlyPointsMap[id] ?? 0,
+              monthlyTotal,
+              cumulativeTotal: cumulativeMap[id] ?? monthlyTotal,
+              gwPointsMap: gwMap,
             };
           });
 
-          // Sort by monthlyTotal DESC, team_name ASC
+          // Sort strictly by monthlyTotal DESC, team_name ASC
           rawItems.sort((a, b) => {
             if (b.monthlyTotal !== a.monthlyTotal) return b.monthlyTotal - a.monthlyTotal;
             return a.team.localeCompare(b.team);
@@ -213,7 +234,10 @@ export function useLeaguePageData() {
               team: item.team,
               manager: item.manager,
               gw: item.monthlyTotal,
-              tot: item.monthlyTotal,
+              tot: item.cumulativeTotal,
+              monthTotalPts: item.monthlyTotal,
+              seasonTotalPts: item.cumulativeTotal,
+              gwPointsMap: item.gwPointsMap,
               isPhaseTotal: true,
             };
           });

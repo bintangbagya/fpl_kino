@@ -5,6 +5,7 @@ import {
 } from '../hooks/useNewsletterData';
 import { NewsletterDetailPage } from './NewsletterDetailPage';
 import { useLanguage } from '../context/LanguageContext';
+import { slugifyTitle } from '../utils/slugify';
 
 
 
@@ -336,40 +337,52 @@ export const NewsletterPage: React.FC = () => {
 
   const [selectedStory, setSelectedStory] = useState<{ gwNumber: number; storyId: string } | null>(null);
 
-  // Deep linking: check URL search params for direct article link on mount
+  // Deep linking: check URL pathname (/newsletter/[slug]) or query params on mount/popstate
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      const params = new URLSearchParams(window.location.search);
-      const articleParam = params.get('article');
-      const gwParam = params.get('gw');
-      if (articleParam) {
-        setSelectedStory({
-          gwNumber: gwParam ? Number(gwParam) : 2,
-          storyId: articleParam,
-        });
-      }
+      const checkUrlForStory = () => {
+        const pathname = window.location.pathname;
+        if (pathname.startsWith('/newsletter/')) {
+          const rawSlug = pathname.replace('/newsletter/', '').trim();
+          if (rawSlug) {
+            setSelectedStory({
+              gwNumber: 2,
+              storyId: rawSlug,
+            });
+            return;
+          }
+        }
+
+        const params = new URLSearchParams(window.location.search);
+        const articleParam = params.get('article');
+        const gwParam = params.get('gw');
+        if (articleParam) {
+          setSelectedStory({
+            gwNumber: gwParam ? Number(gwParam) : 2,
+            storyId: articleParam,
+          });
+        }
+      };
+
+      checkUrlForStory();
+      window.addEventListener('popstate', checkUrlForStory);
+      return () => window.removeEventListener('popstate', checkUrlForStory);
     }
   }, []);
 
-  const handleSelectStory = (storyId: string, gwNumber: number) => {
-    setSelectedStory({ gwNumber, storyId });
+  const handleSelectStory = (storyId: string, gwNumber: number, title?: string) => {
+    const slug = title ? slugifyTitle(title) : (storyId.startsWith('news_') ? storyId.replace('news_', '') : storyId);
+    setSelectedStory({ gwNumber, storyId: slug });
     if (typeof window !== 'undefined') {
-      const url = new URL(window.location.href);
-      const cleanId = storyId.startsWith('news_') ? storyId.replace('news_', '') : storyId;
-      url.searchParams.set('tab', 'newsletter');
-      url.searchParams.set('article', cleanId);
-      if (gwNumber) url.searchParams.set('gw', String(gwNumber));
-      window.history.pushState({}, '', url.toString());
+      const cleanUrl = `/newsletter/${slug}`;
+      window.history.pushState({}, '', cleanUrl);
     }
   };
 
   const handleBackToList = () => {
     setSelectedStory(null);
     if (typeof window !== 'undefined') {
-      const url = new URL(window.location.href);
-      url.searchParams.delete('article');
-      url.searchParams.set('tab', 'newsletter');
-      window.history.pushState({}, '', url.toString());
+      window.history.pushState({}, '', '/newsletter');
     }
   };
 
@@ -775,7 +788,7 @@ export const NewsletterPage: React.FC = () => {
               <HeroCard
                 story={filteredStories[0]}
                 onClick={() =>
-                  handleSelectStory(filteredStories[0].story_id, filteredStories[0].gw_number || gwData.gwNumber)
+                  handleSelectStory(filteredStories[0].story_id, filteredStories[0].gw_number || gwData.gwNumber, filteredStories[0].title)
                 }
               />
             )}
@@ -794,7 +807,7 @@ export const NewsletterPage: React.FC = () => {
                     key={story.id}
                     story={story}
                     onClick={() =>
-                      handleSelectStory(story.story_id, story.gw_number || gwData.gwNumber)
+                      handleSelectStory(story.story_id, story.gw_number || gwData.gwNumber, story.title)
                     }
                   />
                 ))}

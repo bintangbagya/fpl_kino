@@ -14,6 +14,13 @@ export const App: React.FC = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [activeTab, setActiveTab] = useState(() => {
     if (typeof window !== 'undefined') {
+      const pathname = window.location.pathname;
+      if (pathname.startsWith('/newsletter')) return 'newsletter';
+      if (pathname.startsWith('/league')) return 'league';
+      if (pathname.startsWith('/cup')) return 'cup';
+      if (pathname.startsWith('/prizes')) return 'prizes';
+      if (pathname.startsWith('/stats')) return 'stats';
+
       const params = new URLSearchParams(window.location.search);
       const article = params.get('article');
       const tab = params.get('tab');
@@ -25,12 +32,23 @@ export const App: React.FC = () => {
 
   React.useEffect(() => {
     if (typeof window !== 'undefined') {
-      const params = new URLSearchParams(window.location.search);
-      const article = params.get('article');
-      const tab = params.get('tab');
-      if (article || tab === 'newsletter') {
-        setActiveTab('newsletter');
-      }
+      const handleLocationCheck = () => {
+        const pathname = window.location.pathname;
+        if (pathname.startsWith('/newsletter')) {
+          setActiveTab('newsletter');
+        } else {
+          const params = new URLSearchParams(window.location.search);
+          const article = params.get('article');
+          const tab = params.get('tab');
+          if (article || tab === 'newsletter') {
+            setActiveTab('newsletter');
+          }
+        }
+      };
+
+      handleLocationCheck();
+      window.addEventListener('popstate', handleLocationCheck);
+      return () => window.removeEventListener('popstate', handleLocationCheck);
     }
   }, []);
 

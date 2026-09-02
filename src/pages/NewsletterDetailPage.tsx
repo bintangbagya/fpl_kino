@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabaseClient';
 import { ArticleShareButton } from '../components/newsletter/ArticleShareButton';
+import { slugifyTitle } from '../utils/slugify';
 
 export interface NewsletterDetailData {
   id: number;
@@ -245,12 +246,29 @@ export const NewsletterDetailPage: React.FC<NewsletterDetailPageProps> = ({
       try {
         const rawId = storyId.startsWith('news_') ? storyId.replace('news_', '') : storyId;
 
-        // 1. Query from public.newsletters table
-        const { data: nlt } = await supabase
-          .from('newsletters')
-          .select('*')
-          .eq('id', rawId)
-          .maybeSingle();
+        let nlt: any = null;
+        const isUUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(rawId);
+
+        if (isUUID) {
+          const { data } = await supabase
+            .from('newsletters')
+            .select('*')
+            .eq('id', rawId)
+            .maybeSingle();
+          nlt = data;
+        } else {
+          const { data: allNews } = await supabase
+            .from('newsletters')
+            .select('*');
+          if (allNews && allNews.length > 0) {
+            nlt = allNews.find(
+              (row) =>
+                slugifyTitle(row.title) === rawId ||
+                rawId.includes(slugifyTitle(row.title)) ||
+                slugifyTitle(row.title).includes(rawId)
+            );
+          }
+        }
 
         if (nlt) {
           const tagList = Array.isArray(nlt.tags) ? nlt.tags : [];
@@ -347,6 +365,24 @@ export const NewsletterDetailPage: React.FC<NewsletterDetailPageProps> = ({
 
     fetchDetail();
   }, [gwNumber, storyId]);
+
+  // Dynamic Document Title and Meta Description for Newsletter Article
+  useEffect(() => {
+    if (detail) {
+      document.title = `${detail.title} | FPL KINO HUB`;
+      const metaDesc = document.querySelector('meta[name="description"]');
+      if (metaDesc) {
+        metaDesc.setAttribute('content', `${detail.subtitle || detail.title} | FPL KINO HUB`);
+      }
+    }
+    return () => {
+      document.title = 'FPL KINO HUB';
+      const metaDesc = document.querySelector('meta[name="description"]');
+      if (metaDesc) {
+        metaDesc.setAttribute('content', 'One League. One Community. Endless Drama. 🔥');
+      }
+    };
+  }, [detail]);
 
   const styleSheet = `
     @keyframes fadeInUp {
