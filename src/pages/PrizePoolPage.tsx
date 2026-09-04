@@ -732,63 +732,59 @@ export const PrizePoolPage: React.FC = () => {
             padding: '24px',
             display: 'flex',
             flexDirection: 'column',
-            justifyContent: 'space-between',
             height: '100%',
             boxSizing: 'border-box',
           }}
         >
-          <div style={{ display: 'flex', flexDirection: 'column', height: '100%', justifyContent: 'space-between' }}>
-            <div>
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '4px' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                  <span className="material-symbols-outlined" style={{ color: '#CCFF00', fontSize: '22px' }}>
-                    analytics
-                  </span>
-                  <h4
-                    style={{
-                      fontFamily: 'var(--font-headline)',
-                      fontSize: '18px',
-                      fontWeight: 900,
-                      color: '#FFFFFF',
-                      margin: 0,
-                      letterSpacing: '0.02em',
-                      textTransform: 'uppercase',
-                    }}
-                  >
-                    HALF SEASON
-                  </h4>
-                </div>
-                <span
+          <div style={{ display: 'flex', flexDirection: 'column' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '4px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <span className="material-symbols-outlined" style={{ color: '#CCFF00', fontSize: '22px' }}>
+                  analytics
+                </span>
+                <h4
                   style={{
-                    fontFamily: 'var(--font-mono)',
-                    fontSize: '10px',
-                    fontWeight: 800,
-                    color: '#CCFF00',
-                    backgroundColor: 'rgba(204, 255, 0, 0.1)',
-                    border: '1px solid rgba(204, 255, 0, 0.2)',
-                    padding: '2px 6px',
-                    borderRadius: '4px',
+                    fontFamily: 'var(--font-headline)',
+                    fontSize: '18px',
+                    fontWeight: 900,
+                    color: '#FFFFFF',
+                    margin: 0,
+                    letterSpacing: '0.02em',
+                    textTransform: 'uppercase',
                   }}
                 >
-                  Rp600.000
-                </span>
+                  HALF SEASON
+                </h4>
               </div>
-              <p
+              <span
                 style={{
                   fontFamily: 'var(--font-mono)',
                   fontSize: '10px',
-                  color: '#9E9E9E',
-                  letterSpacing: '0.08em',
-                  marginBottom: '16px',
-                  margin: 0,
-                  textTransform: 'uppercase',
+                  fontWeight: 800,
+                  color: '#CCFF00',
+                  backgroundColor: 'rgba(204, 255, 0, 0.1)',
+                  border: '1px solid rgba(204, 255, 0, 0.2)',
+                  padding: '2px 6px',
+                  borderRadius: '4px',
                 }}
               >
-                TOP MANAGERS (GW1 — GW19)
-              </p>
+                Rp600.000
+              </span>
             </div>
+            <p
+              style={{
+                fontFamily: 'var(--font-mono)',
+                fontSize: '10px',
+                color: '#9E9E9E',
+                letterSpacing: '0.08em',
+                margin: 0,
+                textTransform: 'uppercase',
+              }}
+            >
+              TOP MANAGERS (GW1 — GW19)
+            </p>
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginTop: '16px' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginTop: '24px' }}>
               <div
                 className="prize-row-hover"
                 style={{
@@ -860,63 +856,59 @@ export const PrizePoolPage: React.FC = () => {
             padding: '24px',
             display: 'flex',
             flexDirection: 'column',
-            justifyContent: 'space-between',
             height: '100%',
             boxSizing: 'border-box',
           }}
         >
-          <div style={{ display: 'flex', flexDirection: 'column', height: '100%', justifyContent: 'space-between' }}>
-            <div>
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '4px' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                  <span className="material-symbols-outlined" style={{ color: '#CCFF00', fontSize: '22px' }}>
-                    sports_kabaddi
-                  </span>
-                  <h4
-                    style={{
-                      fontFamily: 'var(--font-headline)',
-                      fontSize: '18px',
-                      fontWeight: 900,
-                      color: '#FFFFFF',
-                      margin: 0,
-                      letterSpacing: '0.02em',
-                      textTransform: 'uppercase',
-                    }}
-                  >
-                    FPL KINO CUP
-                  </h4>
-                </div>
-                <span
+          <div style={{ display: 'flex', flexDirection: 'column' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '4px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <span className="material-symbols-outlined" style={{ color: '#CCFF00', fontSize: '22px' }}>
+                  sports_kabaddi
+                </span>
+                <h4
                   style={{
-                    fontFamily: 'var(--font-mono)',
-                    fontSize: '10px',
-                    fontWeight: 800,
-                    color: '#CCFF00',
-                    backgroundColor: 'rgba(204, 255, 0, 0.1)',
-                    border: '1px solid rgba(204, 255, 0, 0.2)',
-                    padding: '2px 6px',
-                    borderRadius: '4px',
+                    fontFamily: 'var(--font-headline)',
+                    fontSize: '18px',
+                    fontWeight: 900,
+                    color: '#FFFFFF',
+                    margin: 0,
+                    letterSpacing: '0.02em',
+                    textTransform: 'uppercase',
                   }}
                 >
-                  Rp550.000
-                </span>
+                  FPL KINO CUP
+                </h4>
               </div>
-              <p
+              <span
                 style={{
                   fontFamily: 'var(--font-mono)',
                   fontSize: '10px',
-                  color: '#9E9E9E',
-                  letterSpacing: '0.08em',
-                  marginBottom: '16px',
-                  margin: 0,
-                  textTransform: 'uppercase',
+                  fontWeight: 800,
+                  color: '#CCFF00',
+                  backgroundColor: 'rgba(204, 255, 0, 0.1)',
+                  border: '1px solid rgba(204, 255, 0, 0.2)',
+                  padding: '2px 6px',
+                  borderRadius: '4px',
                 }}
               >
-                KNOCKOUT TOURNAMENT WINNERS
-              </p>
+                Rp550.000
+              </span>
             </div>
+            <p
+              style={{
+                fontFamily: 'var(--font-mono)',
+                fontSize: '10px',
+                color: '#9E9E9E',
+                letterSpacing: '0.08em',
+                margin: 0,
+                textTransform: 'uppercase',
+              }}
+            >
+              KNOCKOUT TOURNAMENT WINNERS
+            </p>
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginTop: '16px' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginTop: '24px' }}>
               <div
                 className="prize-row-hover"
                 style={{
