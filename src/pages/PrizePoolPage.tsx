@@ -268,7 +268,7 @@ export const PrizePoolPage: React.FC = () => {
                     lineHeight: 1.1,
                   }}
                 >
-                  Rp4.410.000
+                  Rp4.310.000
                 </h3>
                 <span
                   className="material-symbols-outlined"
@@ -588,7 +588,7 @@ export const PrizePoolPage: React.FC = () => {
                       borderRadius: '4px',
                     }}
                   >
-                    Rp700.000
+                    Rp600.000
                   </span>
                 </div>
                 <p
@@ -622,7 +622,7 @@ export const PrizePoolPage: React.FC = () => {
                       🥇 1ST PLACE
                     </span>
                     <span style={{ fontFamily: 'var(--font-headline)', fontWeight: 900, color: '#CCFF00', fontSize: '16px' }}>
-                      Rp350.000
+                      Rp300.000
                     </span>
                   </div>
                   <div
@@ -660,7 +660,7 @@ export const PrizePoolPage: React.FC = () => {
                       🥉 3RD PLACE
                     </span>
                     <span style={{ fontFamily: 'var(--font-headline)', fontWeight: 900, color: '#CCFF00', fontSize: '16px' }}>
-                      Rp150.000
+                      Rp100.000
                     </span>
                   </div>
                 </div>
@@ -822,7 +822,7 @@ export const PrizePoolPage: React.FC = () => {
                 textTransform: 'uppercase',
               }}
             >
-              10 MONTHLY AWARDS × 10 WINNERS
+              10 MONTHLY AWARDS × Rp100.000
             </p>
 
             <div
@@ -868,6 +868,30 @@ export const PrizePoolPage: React.FC = () => {
                 Awarded to the highest scoring manager of each month across 10 months.
               </p>
             </div>
+
+            {/* Season Progress */}
+            <div style={{ marginTop: '24px' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '8px' }}>
+                <span style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', color: '#9E9E9E', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
+                  Season Progress
+                </span>
+                <span style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', color: '#CCFF00', letterSpacing: '0.08em', fontWeight: 800 }}>
+                  MONTH 1 / 10
+                </span>
+              </div>
+              <div
+                style={{
+                  height: '6px',
+                  width: '100%',
+                  backgroundColor: '#0D0D0D',
+                  borderRadius: '9999px',
+                  overflow: 'hidden',
+                  border: '1px solid #222222',
+                }}
+              >
+                <div style={{ height: '100%', backgroundColor: '#CCFF00', width: '10%', borderRadius: '9999px' }}></div>
+              </div>
+            </div>
           </div>
 
           {/* Manager of the Week */}
@@ -909,7 +933,7 @@ export const PrizePoolPage: React.FC = () => {
                 textTransform: 'uppercase',
               }}
             >
-              38 GAMEWEEKS × 38 WINNERS
+              38 GAMEWEEKS × FREE JAVALATTE BLUELANE
             </p>
 
             <div
@@ -1016,9 +1040,9 @@ export const PrizePoolPage: React.FC = () => {
           {[
             { cat: 'Full Season Champion', detail: '1st Place (Rp750.000) + 2nd Place (Rp400.000) + 3rd Place (Rp250.000)', subtotal: 'Rp1.400.000' },
             { cat: 'Manager of the Month', detail: '10 Monthly Awards × Rp100.000', subtotal: 'Rp1.000.000' },
-            { cat: 'Half Season Champion', detail: '1st Place (Rp350.000) + 2nd Place (Rp200.000) + 3rd Place (Rp150.000)', subtotal: 'Rp700.000' },
+            { cat: 'Half Season Champion', detail: '1st Place (Rp300.000) + 2nd Place (Rp200.000) + 3rd Place (Rp100.000)', subtotal: 'Rp600.000' },
             { cat: 'FPL Kino Cup', detail: 'Champion (Rp350.000) + Runner Up (Rp200.000)', subtotal: 'Rp550.000' },
-            { cat: 'Manager of the Week', detail: '38 Gameweeks × FREE JavaLatte BlueLane (Rp20.000)', subtotal: 'Rp760.000' },
+            { cat: 'Manager of the Week', detail: '38 Gameweeks × FREE JavaLatte BlueLane', subtotal: 'FREE JavaLatte BlueLane' },
           ].map((row, idx) => (
             <div
               key={idx}
@@ -1070,7 +1094,7 @@ export const PrizePoolPage: React.FC = () => {
             className="neon-text-glow"
             style={{ fontFamily: 'var(--font-headline)', fontSize: '24px', fontWeight: 900, color: '#CCFF00', letterSpacing: '0.02em' }}
           >
-            Rp4.410.000
+            Rp4.310.000
           </span>
         </div>
       </section>

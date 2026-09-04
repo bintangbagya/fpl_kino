@@ -128,7 +128,7 @@ export const NewsletterPreviewCard: React.FC<NewsletterPreviewCardProps> = ({
         }}
       />
 
-      {/* Header Row: Badge left & GW/MD metadata right */}
+      {/* Header Row: Badge left */}
       <div
         style={{
           display: 'flex',
@@ -163,22 +163,6 @@ export const NewsletterPreviewCard: React.FC<NewsletterPreviewCardProps> = ({
             EDITORIAL HEADLINE
           </span>
         </div>
-
-        <span
-          style={{
-            fontFamily: 'var(--font-mono)',
-            fontSize: '11px',
-            fontWeight: 700,
-            color: '#9E9E9E',
-            letterSpacing: '0.05em',
-            backgroundColor: 'rgba(255,255,255,0.04)',
-            border: '1px solid #282828',
-            padding: '3px 10px',
-            borderRadius: '6px',
-          }}
-        >
-          GW {article.gw_number} • MD {article.matchday_number}
-        </span>
       </div>
 
       {/* Judul Headline (Full multi-line title without truncation) */}
