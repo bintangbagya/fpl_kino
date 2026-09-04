@@ -89,13 +89,19 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const signInWithGoogle = async () => {
     try {
+      const isLocalhost = typeof window !== 'undefined' && 
+        (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
       const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
       
-      // If Supabase URL is placeholder or unconfigured, fallback gracefully to interactive email input or quick login in dev
-      if (!supabaseUrl || supabaseUrl.includes('placeholder')) {
-        const testEmail = window.prompt(
-          '[Dev Mode - Supabase Config Required]\nSupabase URL belum dikonfigurasi. Masukkan email Google Anda untuk simulasi Login:'
-        ) || 'user.kino@gmail.com';
+      // If on localhost OR Supabase URL is placeholder, use local dev login to stay on localhost
+      if (isLocalhost || !supabaseUrl || supabaseUrl.includes('placeholder')) {
+        const defaultEmail = 'bintang.anugrah@kino.co.id';
+        const testEmail = (typeof window !== 'undefined'
+          ? window.prompt(
+              '[Localhost Mode]\nLogin di localhost untuk testing UI.\nMasukkan email Anda (atau klik OK untuk default):',
+              defaultEmail
+            )
+          : defaultEmail) || defaultEmail;
         
         const mock: AppUser = {
           id: 'mock-user-' + Date.now(),

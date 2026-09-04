@@ -161,6 +161,28 @@ export const CommentSection: React.FC<CommentSectionProps> = ({ articleId }) => 
         paddingTop: '24px',
       }}
     >
+      <style
+        dangerouslySetInnerHTML={{
+          __html: `
+            .comment-card-grid {
+              display: grid;
+              grid-template-columns: auto 1fr auto;
+              align-items: center;
+              gap: 12px;
+            }
+            .comment-body {
+              padding-left: 50px;
+            }
+            @media (max-width: 640px) {
+              .comment-body {
+                padding-left: 0;
+                margin-top: 8px;
+              }
+            }
+          `,
+        }}
+      />
+
       {/* Header */}
       <div
         style={{
@@ -206,9 +228,12 @@ export const CommentSection: React.FC<CommentSectionProps> = ({ articleId }) => 
           Belum ada komentar. Jadilah yang pertama memberikan pendapat!
         </div>
       ) : (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '24px' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '14px', marginBottom: '24px' }}>
           {comments.map((comment) => {
             const isOwner = user && user.id === comment.user_id;
+            const displayName =
+              comment.user_name || (comment.user_email ? comment.user_email.split('@')[0] : 'Pengguna');
+            const initialChar = displayName.charAt(0).toUpperCase();
 
             return (
               <div
@@ -217,53 +242,78 @@ export const CommentSection: React.FC<CommentSectionProps> = ({ articleId }) => 
                   backgroundColor: '#161616',
                   border: '1px solid #262626',
                   borderRadius: '12px',
-                  padding: '14px 16px',
+                  padding: '16px 18px',
                   display: 'flex',
                   flexDirection: 'column',
-                  gap: '8px',
+                  gap: '10px',
+                  width: '100%',
+                  boxSizing: 'border-box',
                 }}
               >
-                {/* Comment Author Header */}
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                    <div
-                      style={{
-                        width: '26px',
-                        height: '26px',
-                        borderRadius: '50%',
-                        backgroundColor: '#2563EB',
-                        color: '#FFFFFF',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        fontWeight: 700,
-                        fontSize: '11px',
-                        flexShrink: 0,
-                      }}
-                    >
-                      {comment.user_name?.charAt(0).toUpperCase() || comment.user_email.charAt(0).toUpperCase()}
-                    </div>
-                    <div style={{ display: 'flex', flexDirection: 'column' }}>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                        <span style={{ color: '#F3F4F6', fontSize: '13px', fontWeight: 600 }}>
-                          {comment.user_name || comment.user_email.split('@')[0]}
-                        </span>
-                        <span
-                          style={{
-                            fontSize: '11px',
-                            color: '#9CA3AF',
-                            backgroundColor: '#222222',
-                            padding: '1px 6px',
-                            borderRadius: '4px',
-                          }}
-                        >
-                          {comment.user_email}
-                        </span>
-                      </div>
-                    </div>
+                {/* Comment Header Grid */}
+                <div className="comment-card-grid">
+                  {/* Column 1: Avatar */}
+                  <div
+                    style={{
+                      width: '38px',
+                      height: '38px',
+                      borderRadius: '50%',
+                      backgroundColor: '#2563EB',
+                      color: '#FFFFFF',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      fontWeight: 700,
+                      fontSize: '14px',
+                      flexShrink: 0,
+                      overflow: 'hidden',
+                    }}
+                  >
+                    {comment.user_avatar ? (
+                      <img
+                        src={comment.user_avatar}
+                        alt={displayName}
+                        style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                      />
+                    ) : (
+                      initialChar
+                    )}
                   </div>
 
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  {/* Column 2: User Display Name */}
+                  <div
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      minWidth: 0,
+                    }}
+                  >
+                    <span
+                      style={{
+                        color: '#F3F4F6',
+                        fontSize: '14px',
+                        fontWeight: 600,
+                        lineHeight: 1.3,
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                        whiteSpace: 'nowrap',
+                      }}
+                      title={displayName}
+                    >
+                      {displayName}
+                    </span>
+                  </div>
+
+                  {/* Column 3: Timestamp & Delete */}
+                  <div
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '8px',
+                      justifyContent: 'flex-end',
+                      flexShrink: 0,
+                    }}
+                  >
                     <span
                       style={{
                         display: 'flex',
@@ -271,6 +321,7 @@ export const CommentSection: React.FC<CommentSectionProps> = ({ articleId }) => 
                         gap: '4px',
                         fontSize: '11px',
                         color: '#6B7280',
+                        whiteSpace: 'nowrap',
                       }}
                     >
                       <Clock size={12} />
@@ -286,7 +337,7 @@ export const CommentSection: React.FC<CommentSectionProps> = ({ articleId }) => 
                           border: 'none',
                           color: '#EF4444',
                           cursor: 'pointer',
-                          padding: '4px',
+                          padding: '2px',
                           display: 'flex',
                           alignItems: 'center',
                         }}
@@ -299,12 +350,14 @@ export const CommentSection: React.FC<CommentSectionProps> = ({ articleId }) => 
 
                 {/* Comment Content */}
                 <div
+                  className="comment-body"
                   style={{
                     color: '#E5E7EB',
-                    fontSize: '13px',
-                    lineHeight: 1.5,
+                    fontSize: '13.5px',
+                    lineHeight: 1.6,
                     whiteSpace: 'pre-wrap',
-                    paddingLeft: '34px',
+                    wordBreak: 'break-word',
+                    overflowWrap: 'anywhere',
                   }}
                 >
                   {comment.content}
@@ -317,7 +370,7 @@ export const CommentSection: React.FC<CommentSectionProps> = ({ articleId }) => 
 
       {/* New Comment Input Form */}
       {user ? (
-        <form onSubmit={handlePostComment} style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+        <form onSubmit={handlePostComment} style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
           <div
             style={{
               fontSize: '12px',
@@ -329,7 +382,10 @@ export const CommentSection: React.FC<CommentSectionProps> = ({ articleId }) => 
           >
             <User size={13} color="#3B82F6" />
             <span>
-              Komentar sebagai: <strong style={{ color: '#E5E7EB' }}>{user.email}</strong>
+              Komentar sebagai:{' '}
+              <strong style={{ color: '#E5E7EB' }}>
+                {user.name || (user.email ? user.email.split('@')[0] : 'Pengguna')}
+              </strong>
             </span>
           </div>
 
@@ -347,7 +403,7 @@ export const CommentSection: React.FC<CommentSectionProps> = ({ articleId }) => 
                 borderRadius: '12px',
                 padding: '12px 14px',
                 color: '#FFFFFF',
-                fontSize: '13px',
+                fontSize: '13.5px',
                 lineHeight: 1.5,
                 boxSizing: 'border-box',
                 resize: 'vertical',
@@ -379,7 +435,7 @@ export const CommentSection: React.FC<CommentSectionProps> = ({ articleId }) => 
                 color: '#FFFFFF',
                 border: 'none',
                 borderRadius: '8px',
-                padding: '8px 16px',
+                padding: '8px 18px',
                 fontSize: '13px',
                 fontWeight: 600,
                 cursor: isSubmitting || !newComment.trim() ? 'not-allowed' : 'pointer',
